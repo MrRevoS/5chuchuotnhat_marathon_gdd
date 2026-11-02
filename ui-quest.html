@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UI/UX - Giao diện nhiệm vụ | Marathon GDD - CUTES1TG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Liên kết tới file CSS dùng chung -->
+    <link rel="stylesheet" href="style.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Orbitron', 'sans-serif'],
+                        mono: ['Share Tech Mono', 'monospace'],
+                    },
+                    colors: {
+                        'deep-blue': '#0a0f18',
+                        'panel-blue': '#121a28',
+                        'neon-lime': '#ccff00',
+                        'alert-red': '#ff3333',
+                        'cyber-blue': '#00d0ff'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Hiệu ứng lật thẻ Quest Card */
+        .quest-card-container {
+            perspective: 1000px;
+        }
+        .quest-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .quest-card-container.flipped .quest-card-inner {
+            transform: rotateY(180deg);
+        }
+        .quest-card-front, .quest-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+        .quest-card-back {
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Scanline Overlay -->
+    <div class="scanline"></div>
+
+    <!-- ================= TOP BAR / HEADER ================= -->
+    <header class="sticky top-0 z-50 bg-panel-blue/90 backdrop-blur-md border-b border-gray-800 px-6 py-4 shadow-lg">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <a href="main.html#ui-ux" class="cyber-btn !py-2 !px-4">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>QUAY LẠI TRANG CHÍNH</span>
+                </a>
+                <div class="hidden md:block h-6 w-px bg-gray-700"></div>
+                <div class="hidden md:block">
+                    <span class="text-[10px] text-cyber-blue font-mono block tracking-widest">SECTION 04 // UI_MODULE 02</span>
+                    <span class="text-xs text-white font-heading font-bold tracking-wider">GIAO DIỆN NHIỆM VỤ (QUEST CARDS)</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 text-[11px] font-mono">
+                <span class="text-gray-400">MODULE: <strong class="text-neon-lime">QUEST_SYSTEM</strong></span>
+                <span class="text-gray-600">|</span>
+                <span class="text-gray-400">INTERACTION: <strong class="text-cyber-blue">FLIP CARDS</strong></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-neon-lime animate-pulse"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= MAIN LAYOUT ================= -->
+    <div class="flex-1 max-w-6xl w-full mx-auto p-6 md:p-12 lg:p-16">
+
+        <!-- Page Title Banner -->
+        <div class="mb-12 border-b border-gray-800 pb-6 relative">
+            <div class="flex items-center gap-2 text-xs text-cyber-blue font-mono mb-2 tracking-widest">
+                <i class="fas fa-tasks"></i>
+                <span>UI/UX ARCHITECTURE // SUB-MODULE 02</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl text-white font-black tracking-wider">
+                <span class="text-neon-lime">02.</span> GIAO DIỆN NHIỆM VỤ (QUEST CARDS)
+            </h1>
+        </div>
+
+        <!-- ================= PHẦN 1: TỔNG QUAN & ĐẶC ĐIỂM THIẾT KẾ ================= -->
+        <section id="quest-overview" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[01]</span>
+                    <span>TỔNG QUAN & TÍNH NĂNG FLIP CARDS</span>
+                </h2>
+                <span class="text-xs font-mono text-neon-lime border border-neon-lime/40 bg-neon-lime/10 px-3 py-1">
+                    INTERACTIVE UI: FLIP ON CLICK
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 mb-8 border-l-4 border-l-neon-lime">
+                <p class="text-gray-200 text-sm md:text-base leading-relaxed mb-6">
+                    Xét về yếu tố thu hút người chơi, những nhiệm vụ đóng vai trò là mục đích chính và quan trọng để thúc đẩy người chơi vào game. Vừa tăng tính thử thách vừa tạo <strong class="text-neon-lime">Rewards</strong> để duy trì trò chơi. Giao diện nhiệm vụ của <strong class="text-white">Marathon (2026)</strong> được biểu diễn dưới dạng các <span class="text-cyber-blue font-bold">Bảng nhiệm vụ (Quest Cards)</span> có thể <span class="text-neon-lime font-bold">Flip lại khi click chuột vào</span>.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-gray-800">
+                    <div class="bg-black/60 border border-gray-800 hover:border-neon-lime p-5 transition">
+                        <div class="text-[10px] text-neon-lime font-mono mb-2 flex justify-between">
+                            <span>FRONT STATE // TRẠNG THÁI BAN ĐẦU</span>
+                            <i class="fas fa-palette text-sm"></i>
+                        </div>
+                        <h3 class="text-base text-white mb-2">HÌNH THÁI SẮC SỠ & SINH ĐỘNG</h3>
+                        <p class="text-xs text-gray-300 leading-relaxed">
+                            Hình thái ban đầu của các cards được biểu diễn với những gam màu sặc sỡ, hình ảnh sinh động cùng phần <strong class="text-white">Vật phẩm Yêu cầu</strong> hiển thị trực tiếp icon phẳng 2D của món đồ nhiệm vụ cần tìm, giúp người chơi ghi nhớ hình dáng và màu sắc trước khi vào trận.
+                        </p>
+                    </div>
+
+                    <div class="bg-black/60 border border-gray-800 hover:border-cyber-blue p-5 transition">
+                        <div class="text-[10px] text-cyber-blue font-mono mb-2 flex justify-between">
+                            <span>REWARDS & FACTION PTS</span>
+                            <i class="fas fa-gift text-sm"></i>
+                        </div>
+                        <h3 class="text-base text-white mb-2">PHẦN THƯỞNG & ĐIỂM DANH TIẾNG</h3>
+                        <p class="text-xs text-gray-300 leading-relaxed">
+                            Hiển thị lượng điểm kinh nghiệm Faction, tiền tệ và trang bị mở khóa ở cấp độ tiếp theo hấp dẫn ngay dưới phần mô tả ngắn gọn.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PHẦN 2: TRẠNG THÁI KHI CLICK NHẬN NHIỆM VỤ (XÁM ĐEN) ================= -->
+        <section id="quest-accepted-state" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[02]</span>
+                    <span>TRẠNG THÁI KHI NHẬN NHIỆM VỤ (XÁM ĐEN & CHI TIẾT)</span>
+                </h2>
+                <span class="text-xs font-mono text-gray-400 border border-gray-600 bg-gray-900 px-3 py-1">
+                    STATE: ACCEPTED / ACTIVE (GRAYSCALE)
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 border-l-4 border-l-gray-600">
+                <p class="text-gray-200 text-sm md:text-base leading-relaxed mb-6">
+                    Khi click chuột vào nhận nhiệm vụ, các Quests này hiển thị mô tả kỉ hơn và các <strong class="text-white">Objectives</strong> kèm theo, với <span class="text-gray-400 font-bold">hình thái xám đen</span> để phân biệt rõ ràng với các nhiệm vụ chưa nhận.
+                </p>
+
+                <div class="bg-black/50 p-5 border border-gray-800 text-xs text-gray-400 font-mono flex items-center gap-3">
+                    <i class="fas fa-circle-info text-cyber-blue text-base"></i>
+                    <span>TÍNH NĂNG UX: Giúp người chơi dễ dàng theo dõi tiến độ các nhiệm vụ đang thực hiện (Active Quests) trong trận đấu mà không bị lẫn lộn với kho nhiệm vụ mới.</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PHẦN 3: SO SÁNH ẢNH 1 & ẢNH 2 ================= -->
+        <section id="quest-comparison" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[03]</span>
+                    <span>SO SÁNH GIAO DIỆN (ẢNH 1 vs. ẢNH 2)</span>
+                </h2>
+                <span class="text-xs font-mono text-cyber-blue border border-cyber-blue/40 bg-cyber-blue/10 px-3 py-1">
+                    VISUAL COMPARISON
+                </span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                
+                <!-- Ảnh 1: Trước khi nhận / Sặc sỡ -->
+                <div class="terminal-panel p-6 border-t-2 border-t-neon-lime">
+                    <div class="flex items-center justify-between text-xs font-mono text-neon-lime mb-4">
+                        <span>ẢNH 1: QUEST CARD BAN ĐẦU (SẶC SỠ)</span>
+                        <span class="text-gray-500">FILE: quest1.png</span>
+                    </div>
+                    <div class="bg-black border border-gray-800 p-2 overflow-hidden group">
+                        <img src="quest1.png" onerror="this.src='https://placehold.co/600x400/0a0f18/ccff00?text=ANH+1+-+Colorful+Quest+Cards+(quest1.png)'" alt="Ảnh 1 - Quest Card ban đầu" class="w-full h-72 object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                    <p class="text-xs text-gray-300 mt-4 leading-relaxed">
+                        Hiển thị gam màu rực rỡ, hình ảnh sinh động, icon vật phẩm 2D trực quan cùng phần thưởng Faction hấp dẫn.
+                    </p>
+                </div>
+
+                <!-- Ảnh 2: Sau khi nhận / Xám đen & Objectives -->
+                <div class="terminal-panel p-6 border-t-2 border-t-gray-500">
+                    <div class="flex items-center justify-between text-xs font-mono text-gray-400 mb-4">
+                        <span>ẢNH 2: QUEST CARD ĐÃ NHẬN (XÁM ĐEN)</span>
+                        <span class="text-gray-500">FILE: quest2.png</span>
+                    </div>
+                    <div class="bg-black border border-gray-800 p-2 overflow-hidden group">
+                        <img src="quest2.png" onerror="this.src='https://placehold.co/600x400/0a0f18/888888?text=ANH+2+-+Accepted+Quest+Cards+(quest2.png)'" alt="Ảnh 2 - Quest Card đã nhận" class="w-full h-72 object-cover filter grayscale group-hover:scale-105 transition duration-500">
+                    </div>
+                    <p class="text-xs text-gray-300 mt-4 leading-relaxed">
+                        Chuyển sang hình thái xám đen, chi tiết hóa mô tả nhiệm vụ và danh sách các Objectives cần hoàn thành.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Bottom Navigation Footer -->
+        <footer class="mt-16 pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="ui-lobby.html" class="cyber-btn">
+                <i class="fas fa-chevron-left"></i>
+                <span>01. LOBBY (MAIN HUB)</span>
+            </a>
+            <div class="flex items-center gap-4">
+                <span class="text-xs font-mono text-gray-500 hidden md:inline">TIẾP THEO TRONG UI/UX:</span>
+                <a href="ui-armory.html" class="cyber-btn">
+                    <span>03. ARMORY (CỬA HÀNG)</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Hiệu ứng Glitch khi click giống trang main.html
+        document.body.addEventListener('click', (e) => {
+            if (e.target.closest('a') || e.target.closest('button')) return;
+
+            document.body.classList.add('glitch-effect');
+            setTimeout(() => {
+                document.body.classList.remove('glitch-effect');
+            }, 300);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Style - Sound Design & OST | Marathon GDD - CUTES1TG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Liên kết tới file CSS dùng chung -->
+    <link rel="stylesheet" href="style.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Orbitron', 'sans-serif'],
+                        mono: ['Share Tech Mono', 'monospace'],
+                    },
+                    colors: {
+                        'deep-blue': '#0a0f18',
+                        'panel-blue': '#121a28',
+                        'neon-lime': '#ccff00',
+                        'alert-red': '#ff3333',
+                        'cyber-blue': '#00d0ff'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Hiệu ứng sóng âm Equalizer */
+        @keyframes eq-bounce {
+            0%, 100% { transform: scaleY(0.15); }
+            50% { transform: scaleY(1); }
+        }
+        .eq-bar {
+            transform-origin: bottom;
+            transform: scaleY(0.18);
+            transition: transform 0.2s ease;
+        }
+        .playing .eq-bar {
+            animation: eq-bounce var(--eq-speed, 0.8s) ease-in-out infinite alternate;
+        }
+        /* Hiệu ứng mở rộng danh sách nhạc */
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease;
+            opacity: 0;
+        }
+        .collapsible-content.expanded {
+            max-height: 2800px;
+            opacity: 1;
+        }
+        .track-row.active-track {
+            background-color: rgba(204, 255, 0, 0.14);
+            border-left: 3px solid #ccff00;
+            color: #ffffff;
+        }
+        /* Thanh trượt tiến độ âm thanh Cyberpunk */
+        input[type="range"].cyber-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(0, 208, 255, 0.15);
+            height: 6px;
+            cursor: pointer;
+        }
+        input[type="range"].cyber-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            background: #ccff00;
+            border: 2px solid #0a0f18;
+            box-shadow: 0 0 10px #ccff00;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Scanline Overlay -->
+    <div class="scanline"></div>
+
+    <!-- ================= TOP BAR / HEADER ================= -->
+    <header class="sticky top-0 z-50 bg-panel-blue/95 backdrop-blur-md border-b border-gray-800 px-6 py-4 shadow-lg">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <a href="main.html#art-sound" class="cyber-btn !py-2 !px-4">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>QUAY LẠI TRANG CHÍNH</span>
+                </a>
+                <div class="hidden md:block h-6 w-px bg-gray-700"></div>
+                <div class="hidden md:block">
+                    <span class="text-[10px] text-cyber-blue font-mono block tracking-widest">SECTION 05 // ART STYLE + SOUND</span>
+                    <span class="text-xs text-white font-heading font-bold tracking-wider">SOUND DESIGN & OFFICIAL SOUNDTRACK</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 text-[11px] font-mono">
+                <span class="text-gray-400">COMPOSERS: <strong class="text-neon-lime">RYAN LOTT & CHASE COMBS</strong></span>
+                <span class="text-gray-600">|</span>
+                <span class="text-gray-400">AUDIO ENGINE: <strong class="text-cyber-blue">DSP / VARIABLE-GRAIN</strong></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-neon-lime animate-ping"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= MAIN LAYOUT ================= -->
+    <div class="flex-1 max-w-6xl w-full mx-auto p-6 md:p-12 lg:p-16">
+
+        <!-- Page Title Banner -->
+        <div class="mb-10 border-b border-gray-800 pb-6 relative">
+            <div class="flex items-center gap-2 text-xs text-cyber-blue font-mono mb-2 tracking-widest">
+                <i class="fas fa-wave-square"></i>
+                <span>ART STYLE + SOUND // ACOUSTIC TELEMETRY & OST ARCHIVE</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl text-white font-black tracking-wider mb-3">
+                <span class="text-neon-lime">05.</span> SOUND DESIGN & SOUNDTRACK
+            </h1>
+            <p class="text-sm text-gray-300 leading-relaxed max-w-4xl">
+                Thiết kế âm thanh trong <strong class="text-white">MARATHON (2026)</strong> không chỉ phục vụ mục đích thẩm mỹ mà còn là một phần quan trọng của gameplay. Sự kết hợp giữa âm nhạc điện tử, hiệu ứng môi trường, âm thanh nhân vật và tín hiệu tương tác giúp xây dựng bầu không khí khoa học viễn tưởng đặc trưng, đồng thời tăng khả năng nhận biết và tạo chiều sâu cho trải nghiệm <span class="text-neon-lime font-bold">PvPvE Extraction Shooter</span>.
+            </p>
+        </div>
+
+        <!-- ================= TRÌNH PHÁT NHẠC TỰ ĐỘNG & DANH MỤC 2 ALBUM (EXPANDABLE) ================= -->
+        <section id="ost-command-deck" class="mb-20">
+            <div class="terminal-panel p-6 md:p-8 border-t-4 border-t-neon-lime shadow-[0_0_40px_rgba(204,255,0,0.12)]">
+                
+                <!-- Top Status Bar của Trình phát nhạc -->
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-800 pb-4 mb-6 text-xs font-mono">
+                    <div class="flex items-center gap-2.5">
+                        <span id="status-led" class="w-3 h-3 rounded-full bg-neon-lime animate-ping"></span>
+                        <span class="text-neon-lime font-bold tracking-widest">ONI AUDIO DECK // AUTO-STREAMING DECK</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span id="audio-state-badge" class="bg-neon-lime/15 border border-neon-lime text-neon-lime px-2.5 py-0.5 text-[10px]">
+                            AUTOPLAY ACTIVE
+                        </span>
+                        <label for="custom-mp3-input" class="cursor-pointer bg-cyber-blue/10 hover:bg-cyber-blue/25 border border-cyber-blue/50 text-cyber-blue px-3 py-1 text-[10px] transition flex items-center gap-1.5" title="Chọn file MP3 bất kỳ từ thư mục máy tính của bạn">
+                            <i class="fas fa-folder-open"></i>
+                            <span>CHỌN FILE .MP3 TỪ MÁY</span>
+                        </label>
+                        <input type="file" id="custom-mp3-input" accept="audio/*" class="hidden">
+                    </div>
+                </div>
+
+                <!-- Thẻ Audio HTML5 (Mặc định gọi file nhạc mp3 trong thư mục dự án) -->
+                <!-- Đổi tên src="soundtrack.mp3" nếu file mp3 trong thư mục của bạn có tên khác -->
+                <audio id="main-audio-player" src="soundtrack.mp3" autoplay loop preload="auto"></audio>
+
+                <!-- Giao diện Deck chính -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center bg-black/80 border border-gray-800 p-5 mb-6">
+                    
+                    <!-- Cột trái: Đĩa xoay Cyberpunk & Thông tin Track đang phát -->
+                    <div class="lg:col-span-5 flex items-center gap-4">
+                        <div class="relative w-20 h-20 rounded-full border-2 border-dashed border-neon-lime flex items-center justify-center shrink-0 bg-panel-blue shadow-[0_0_20px_rgba(204,255,0,0.2)]" id="vinyl-disc">
+                            <div class="w-12 h-12 rounded-full border border-cyber-blue flex items-center justify-center">
+                                <i class="fas fa-compact-disc text-2xl text-neon-lime"></i>
+                            </div>
+                        </div>
+                        <div class="overflow-hidden">
+                            <div class="text-[10px] font-mono text-cyber-blue uppercase tracking-widest truncate" id="now-playing-album">
+                                ALBUM 01 // MARATHON, VOL. I: SOMEWHERE IN THE HEAVENS
+                            </div>
+                            <h3 class="text-lg md:text-xl text-white font-heading font-bold truncate mt-0.5" id="now-playing-title">
+                                01. Code Race
+                            </h3>
+                            <p class="text-[11px] font-mono text-gray-400 truncate mt-1" id="now-playing-note">
+                                Ryan Lott & Chase Combs • Nguồn phát: <span class="text-neon-lime" id="current-src-label">soundtrack.mp3</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Cột giữa: Dải sóng âm 28 cột (Equalizer Visualizer) & Thanh tua -->
+                    <div class="lg:col-span-4 flex flex-col justify-center">
+                        <!-- 28 Cột Equalizer -->
+                        <div id="eq-container" class="playing h-12 flex items-end justify-between gap-1 px-2 mb-3 bg-deep-blue/90 border border-gray-800/80 pt-2 pb-1">
+                            <div class="eq-bar w-full bg-neon-lime h-full" style="--eq-speed: 0.55s"></div>
+                            <div class="eq-bar w-full bg-neon-lime h-4/5" style="--eq-speed: 0.85s"></div>
+                            <div class="eq-bar w-full bg-cyber-blue h-full" style="--eq-speed: 0.65s"></div>
+                            <div class="eq-bar w-full bg-neon-lime h-3/5" style="--eq-speed: 0.95s"></div>
+                            <div class="eq-bar w-full bg-cyber-blue h-full" style="--eq-speed: 0.50s"></div>
+                            <div class="eq-bar w-full bg-neon-lime h-4/5" style="--eq-speed: 0.75s"></div>
+                            <div class="eq-bar w-full bg-alert-red h-full" style="--eq-speed: 0.60s"></div>
+                            <div class="eq-bar w-full bg-neon-lime h-2/3" style="--eq-speed: 0.90s"></div>
+                            <div class="eq-bar w-full bg-cyber-blue h-full" style="--eq-speed: 0.70s"></div>
+                            <div class="eq-bar w-full bg-neon-lime h-4/5" style="--eq-speed: 0.52s"></div>
+                            <div class="eq-bar w-full bg-cyber-blue h-3/4" style="--eq-speed: 0.82s"></div>
+                            <div class="eq-bar w-full bg-neon-lime h-full" style="--eq-speed: 0.63s"></div>
+                            <div class="eq-bar w-full bg-alert-red h-4/5" style="--eq-speed: 0.78s"></div>
+                            <div class="eq-bar w-full bg-neon-lime h-full" style="--eq-speed: 0.58s"></div>
+                            <div class="eq-bar w-full bg-cyber-blue h-3/5" style="--eq-speed: 0.88s"></div>
+                            <div class="eq-bar w-full bg-neon-lime h-full" style="--eq-speed: 0.67s"></div>
+                            <div class="eq-bar w-full bg-cyber-blue h-4/5" style="--eq-speed: 0.54s"></div>
+                            <div class="eq-bar w-full bg-neon-lime h-full" style="--eq-speed: 0.73s"></div>
+                            <div class="eq-bar w-full bg-alert-red h-2/3" style="--eq-speed: 0.61s"></div>
+                            <div class="eq-bar w-full bg-cyber-blue h-full" style="--eq-speed: 0.84s"></div>
+                            <div class="eq-bar w-full bg-neon-lime h-3/4" style="--eq-speed: 0.57s"></div>
+                            <div class="eq-bar w-full bg-cyber-blue h-full" style="--eq-speed: 0.76s"></div>
+                            <div class="eq-bar w-full bg-neon-lime h-4/5" style="--eq-speed: 0.64s"></div>
+                            <div class="eq-bar w-full bg-cyber-blue h-2/3" style="--eq-speed: 0.92s"></div>
+                        </div>
+
+                        <!-- Thanh tiến độ thời gian -->
+                        <div class="flex items-center gap-3 text-[10px] font-mono text-gray-400">
+                            <span id="current-time">00:00</span>
+                            <input type="range" id="seek-slider" min="0" max="100" value="0" class="cyber-slider w-full">
+                            <span id="total-duration">02:02</span>
+                        </div>
+                    </div>
+
+                    <!-- Cột phải: Cụm nút điều khiển Play / Pause / Next / Prev / Volume -->
+                    <div class="lg:col-span-3 flex flex-col items-stretch sm:items-end justify-center gap-3">
+                        <div class="flex items-center justify-center sm:justify-end gap-2">
+                            <button type="button" onclick="prevTrack()" class="cyber-btn !px-3 !py-2" title="Bản nhạc trước">
+                                <i class="fas fa-backward-step"></i>
+                            </button>
+                            <button type="button" onclick="toggleAudioPlay()" id="main-play-btn" class="cyber-btn !bg-neon-lime !text-black !border-neon-lime !px-5 !py-2.5 font-bold shadow-[0_0_15px_rgba(204,255,0,0.4)]">
+                                <i class="fas fa-pause" id="main-play-icon"></i>
+                                <span id="main-play-text">TẠM DỪNG</span>
+                            </button>
+                            <button type="button" onclick="nextTrack()" class="cyber-btn !px-3 !py-2" title="Bản nhạc kế tiếp">
+                                <i class="fas fa-forward-step"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center justify-center sm:justify-end gap-2 text-[10px] font-mono text-gray-400">
+                            <i class="fas fa-volume-high text-cyber-blue"></i>
+                            <span>VOL</span>
+                            <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.8" class="cyber-slider w-24">
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- ================= NÚT EXPAND / COLLAPSE DANH MỤC 2 ALBUM ÂM NHẠC (42 TRACKS) ================= -->
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-panel-blue/90 border border-cyber-blue/40 p-4">
+                    <div>
+                        <div class="text-xs font-heading text-white flex items-center gap-2">
+                            <i class="fas fa-list-ul text-neon-lime"></i>
+                            <span>DANH MỤC ÂM NHẠC TRÒ CHƠI CHÍNH THỨC (OFFICIAL SOUNDTRACK ARCHIVE)</span>
+                        </div>
+                        <p class="text-[11px] font-mono text-gray-400 mt-0.5">
+                            Tổng cộng 42 bản nhạc: <strong class="text-neon-lime">Vol. I (29 bản – 54 phút)</strong> & <strong class="text-cyber-blue">Vol. II (13 bản – 1 giờ 38 phút)</strong>
+                        </p>
+                    </div>
+                    <button type="button" onclick="toggleTracklistDrawer()" id="expand-tracklist-btn" class="cyber-btn !py-2.5 !px-5 shrink-0">
+                        <span id="expand-btn-text">THU GỌN DANH SÁCH NHẠC (42 TRACKS)</span>
+                        <i class="fas fa-chevron-up transition-transform duration-300" id="expand-btn-icon"></i>
+                    </button>
+                </div>
+
+                <!-- ================= KHUNG DANH SÁCH 2 ALBUM (EXPANDABLE DRAWER - MẶC ĐỊNH MỞ HOẶC ĐÓNG MƯỢT) ================= -->
+                <div id="tracklist-drawer" class="collapsible-content expanded mt-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+                        <!-- ALBUM 1: VOL. I - SOMEWHERE IN THE HEAVENS (29 TRACKS) -->
+                        <div class="bg-black/75 border border-gray-800 p-5 flex flex-col">
+                            <div class="border-b border-gray-800 pb-4 mb-4">
+                                <div class="flex items-center justify-between text-[10px] font-mono text-neon-lime mb-1">
+                                    <span>ALBUM A // CINEMATIC, FACTION UI & ETHERSTEP</span>
+                                    <span>29 TRACKS • 54 MIN</span>
+                                </div>
+                                <h3 class="text-lg md:text-xl text-white font-heading">
+                                    A. ALBUM 1: MARATHON, VOL. I: SOMEWHERE IN THE HEAVENS
+                                </h3>
+                                <p class="text-xs text-gray-400 mt-2 leading-relaxed">
+                                    Album đầu tiên tập trung vào các bản nhạc có cấu trúc ngắn (từ 1 đến hơn 3 phút), sử dụng cho các phân cảnh giới thiệu cốt truyện, màn hình giao diện tập đoàn (Factions), quá trình dịch chuyển vào trận (Etherstep) và các đoạn phim cắt cảnh:
+                                </p>
+                            </div>
+
+                            <!-- Danh sách cuộn 29 bài của Vol. I -->
+                            <div class="space-y-1.5 max-h-[520px] overflow-y-auto pr-2 font-mono text-xs" id="vol1-list">
+                                <!-- Sẽ được render tự động từ mảng dữ liệu chuẩn -->
+                            </div>
+                        </div>
+
+                        <!-- ALBUM 2: VOL. II - THEY ARE WAITING (13 TRACKS) -->
+                        <div class="bg-black/75 border border-gray-800 p-5 flex flex-col justify-between">
+                            <div>
+                                <div class="border-b border-gray-800 pb-4 mb-4">
+                                    <div class="flex items-center justify-between text-[10px] font-mono text-cyber-blue mb-1">
+                                        <span>ALBUM B // DYNAMIC STEMS, ORBIT LOBBY & COMBAT TENSION</span>
+                                        <span>13 TRACKS • 1 HR 38 MIN</span>
+                                    </div>
+                                    <h3 class="text-lg md:text-xl text-white font-heading">
+                                        B. ALBUM 2: MARATHON, VOL. II: THEY ARE WAITING
+                                    </h3>
+                                    <p class="text-xs text-gray-400 mt-2 leading-relaxed">
+                                        Album thứ hai bao gồm các tổ khúc điện tử và ambient có thời lượng dài (từ 6 đến gần 13 phút). Đây là các lớp âm thanh nền (stems) biến thiên theo trạng thái ở sảnh chờ quỹ đạo (Orbit/Menu) và các giai đoạn căng thẳng trong trận đấu:
+                                    </p>
+                                </div>
+
+                                <!-- Danh sách 13 bài của Vol. II -->
+                                <div class="space-y-1.5 max-h-[420px] overflow-y-auto pr-2 font-mono text-xs" id="vol2-list">
+                                    <!-- Sẽ được render tự động từ mảng dữ liệu chuẩn -->
+                                </div>
+                            </div>
+
+                            <div class="mt-4 pt-3 border-t border-gray-800 text-[11px] font-mono text-gray-400 flex items-center justify-between">
+                                <span><i class="fas fa-circle-info text-cyber-blue mr-1.5"></i>Click vào bất kỳ bản nhạc nào để phát trên ONI Audio Deck.</span>
+                                <span class="text-neon-lime">42/42 TRACKS READY</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= PHẦN PHÂN TÍCH ÂM THANH TRÒ CHƠI (4 CHUYÊN ĐỀ TỪ FILE WORD) ================= -->
+        <div class="mb-10 border-b border-gray-800 pb-4">
+            <span class="text-[10px] font-mono text-neon-lime tracking-widest uppercase block">TECHNICAL AUDIO BREAKDOWN // DEVELOPER INSIGHTS & IN-GAME TELEMETRY</span>
+            <h2 class="text-2xl md:text-4xl text-white font-black mt-1">
+                PHÂN TÍCH KỸ THUẬT ÂM NHẠC & HỆ THỐNG ÂM THANH GAMEPLAY
+            </h2>
+        </div>
+
+        <!-- ================= MỤC A: PHÂN TÍCH KỸ THUẬT SÁNG TÁC & CHẤT LIỆU ÂM NHẠC ================= -->
+        <section id="composition-techniques" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h3 class="text-xl md:text-2xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-base">[A]</span>
+                    <span>PHÂN TÍCH KỸ THUẬT SÁNG TÁC VÀ CHẤT LIỆU ÂM NHẠC</span>
+                </h3>
+                <span class="text-xs font-mono text-neon-lime border border-neon-lime/40 bg-neon-lime/10 px-3 py-1">
+                    DEVELOPER INSIGHTS: MUSIC OF MARATHON
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 border-l-4 border-l-neon-lime">
+                <p class="text-gray-200 text-sm md:text-base leading-relaxed mb-8">
+                    Dựa trên tài liệu hậu trường <strong class="text-neon-lime">Developer Insights: Music of Marathon</strong>, cấu trúc âm nhạc của <strong class="text-white">Ryan Lott</strong> và <strong class="text-white">Chase Combs</strong> được xây dựng trên <span class="text-cyber-blue font-bold">3 phương pháp kỹ thuật cụ thể</span> cùng cơ chế âm nhạc thích ứng trong trận đấu:
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    
+                    <!-- Phương pháp 1: No Hero Themes -->
+                    <div class="bg-black/60 border border-gray-800 hover:border-neon-lime p-6 transition">
+                        <div class="flex items-center justify-between text-[10px] font-mono text-neon-lime mb-2">
+                            <span>METHOD 01 // NO HERO THEMES</span>
+                            <i class="fas fa-globe text-sm"></i>
+                        </div>
+                        <h4 class="text-base text-white font-heading mb-2">1. LOẠI BỎ GIAI ĐIỆU NHÂN VẬT</h4>
+                        <p class="text-xs md:text-sm text-gray-300 leading-relaxed">
+                            Khác với các game bắn súng có cốt truyện tuyến tính, Marathon <strong class="text-white">không viết nhạc chủ đề cho từng Runner</strong>. Đối tượng trung tâm của âm nhạc là môi trường hành tinh <span class="text-cyber-blue">Tau Ceti IV</span> và các công trình bỏ hoang của thuộc địa <span class="text-neon-lime">New Cascadia</span>.
+                        </p>
+                    </div>
+
+                    <!-- Phương pháp 2: Granular Chopping Vocals -->
+                    <div class="bg-black/60 border border-gray-800 hover:border-cyber-blue p-6 transition">
+                        <div class="flex items-center justify-between text-[10px] font-mono text-cyber-blue mb-2">
+                            <span>METHOD 02 // GRANULAR CHOPPING</span>
+                            <i class="fas fa-microphone-lines text-sm"></i>
+                        </div>
+                        <h4 class="text-base text-white font-heading mb-2">2. XỬ LÝ GIỌNG NGƯỜI NHƯ TÍN HIỆU SỐ</h4>
+                        <p class="text-xs md:text-sm text-gray-300 leading-relaxed">
+                            Giọng hát con người được thu âm, sau đó cắt nhỏ (<strong class="text-white">granular chopping</strong>), làm méo tần số và trộn vào nền nhạc như một nhạc cụ. Cách xử lý này phản ánh bối cảnh cốt truyện: ý thức con người đã tách khỏi cơ thể sinh học và tồn tại dưới dạng dữ liệu truyền dẫn giữa các vỏ bọc nhân tạo (<strong class="text-neon-lime">Biomata / Runner Shells</strong>).
+                        </p>
+                    </div>
+
+                </div>
+
+                <!-- Phương pháp 3: Prepared Instruments & Expressive E Osmose -->
+                <div class="bg-black/70 border border-gray-800 p-6 mb-8">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-purple-400 mb-3">
+                        <span>METHOD 03 // ACOUSTIC INTERVENTION & MPE SYNTHESIS</span>
+                        <i class="fas fa-sliders"></i>
+                    </div>
+                    <h4 class="text-base md:text-lg text-white font-heading mb-4">
+                        3. KẾT HỢP NHẠC CỤ CƠ HỌC BỊ CAN THIỆP (PREPARED INSTRUMENTS) VÀ SYNTHESIZER ĐA CHIỀU
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="border-l-2 border-neon-lime pl-4">
+                            <h5 class="text-xs text-neon-lime font-mono font-bold uppercase mb-1">PHẦN ÂM HỌC (ACOUSTIC – PREPARED PIANO):</h5>
+                            <p class="text-xs md:text-sm text-gray-300 leading-relaxed">
+                                Ryan Lott sử dụng đàn piano cơ nhưng chèn đất sét dán (<strong class="text-white">poster putty</strong>) và vật cản vào giữa các dây đàn (kỹ thuật <emph class="text-white">Prepared Piano</emph>), tạo ra âm thanh gõ đục, khô và mất độ ngân tự nhiên.
+                            </p>
+                        </div>
+                        <div class="border-l-2 border-cyber-blue pl-4">
+                            <h5 class="text-xs text-cyber-blue font-mono font-bold uppercase mb-1">PHẦN ĐIỆN TỬ (ELECTRONIC – EXPRESSIVE E OSMOSE):</h5>
+                            <p class="text-xs md:text-sm text-gray-300 leading-relaxed">
+                                Sử dụng bàn phím cảm ứng đa chiều <strong class="text-white">Expressive E Osmose</strong>, cho phép điều chỉnh độ rung (<emph>vibrato</emph>), cao độ (<emph>pitch bend</emph>) và âm sắc (<emph>timbre</emph>) ngay khi ngón tay nhấn hoặc nghiêng trên phím đàn, tạo ra các dải âm điện tử có độ trôi và biến dạng liên tục.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Âm nhạc Trong trận đấu (In-Match) -->
+                <div class="bg-cyber-blue/10 border-l-4 border-cyber-blue p-5">
+                    <h4 class="text-sm text-cyber-blue font-heading mb-2 flex items-center gap-2">
+                        <i class="fas fa-headphones"></i>
+                        <span>CƠ CHẾ ÂM NHẠC TRONG TRẬN ĐẤU (IN-MATCH AUDIO PRIORITY)</span>
+                    </h4>
+                    <p class="text-xs md:text-sm text-gray-200 leading-relaxed">
+                        Trong trận đấu (<strong class="text-white">In-Match</strong>): Nhạc nền giai điệu bị <span class="text-alert-red font-bold">triệt tiêu trong phần lớn thời gian di chuyển</span> để người chơi nghe tiếng bước chân và định vị hướng đạn. Âm nhạc chỉ xuất hiện dưới dạng âm trầm môi trường (<strong class="text-white">ambient drones</strong>) hoặc kích hoạt cục bộ khi người chơi bước vào khu vực sự kiện <span class="text-neon-lime font-bold">Anomalous Matter</span> (trên bản đồ Dire Marsh) và khi gọi tàu thoát hiểm (<span class="text-cyber-blue font-bold">Exfil</span>).
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MỤC B: HÀNH VI ÂM THANH CỦA KẺ ĐỊCH AI (UESC) ================= -->
+        <section id="uesc-ai-audio" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h3 class="text-xl md:text-2xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-base">[B]</span>
+                    <span>HÀNH VI ÂM THANH CỦA KẺ ĐỊCH AI (UESC)</span>
+                </h3>
+                <span class="text-xs font-mono text-alert-red border border-alert-red/40 bg-alert-red/10 px-3 py-1">
+                    SERVER SLAM (02/2026) & SEASON 1 (03/2026)
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 border-l-4 border-l-alert-red">
+                <p class="text-gray-200 text-sm md:text-base leading-relaxed mb-8">
+                    Một trong những cơ chế âm thanh đặc thù đã diễn ra trong thực tế vận hành game (ghi nhận rõ từ đợt <strong class="text-white">Server Slam tháng 02/2026</strong> và <strong class="text-white">Season 1 tháng 03/2026</strong>) là cách lực lượng AI UESC sử dụng âm thanh như một vũ khí tâm lý và chiến thuật trong giao tranh:
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <!-- 1. Proximity Chat Mimicry -->
+                    <div class="bg-black/60 border border-gray-800 hover:border-alert-red p-6 transition">
+                        <div class="flex items-center justify-between text-[10px] font-mono text-alert-red mb-2">
+                            <span>DECEPTION // 01</span>
+                            <i class="fas fa-comment-slash text-sm"></i>
+                        </div>
+                        <h4 class="text-base text-white font-heading mb-2">GIẢ LẬP GIỌNG NÓI NGƯỜI CHƠI (PROXIMITY CHAT MIMICRY)</h4>
+                        <p class="text-xs md:text-sm text-gray-300 leading-relaxed">
+                            Các đơn vị robot tuần tra của UESC (đặc biệt là biến thể tàng hình <strong class="text-cyber-blue">UESC Ghost</strong>) phát ra các câu thoại giống với hệ thống giọng nói giao tiếp (Emote/Voice lines) của người chơi như <span class="text-neon-lime font-mono">"I'm friendly"</span> hoặc <span class="text-neon-lime font-mono">"Looking for a crew?"</span>. Tuy nhiên, giọng nói này bị nén qua bộ lọc kỹ thuật số méo mó và <strong class="text-alert-red">không làm xuất hiện dòng thông báo văn bản ở góc trái màn hình</strong> như khi người chơi thật sử dụng emote.
+                        </p>
+                    </div>
+
+                    <!-- 2. Footstep Cadence Mimicry -->
+                    <div class="bg-black/60 border border-gray-800 hover:border-cyber-blue p-6 transition">
+                        <div class="flex items-center justify-between text-[10px] font-mono text-cyber-blue mb-2">
+                            <span>ACOUSTIC CAMOUFLAGE // 02</span>
+                            <i class="fas fa-shoe-prints text-sm"></i>
+                        </div>
+                        <h4 class="text-base text-white font-heading mb-2">MÔ PHỎNG NHỊP BƯỚC CHÂN RUNNER</h4>
+                        <p class="text-xs md:text-sm text-gray-300 leading-relaxed">
+                            Tiếng bước chân của một số đơn vị UESC không đi theo nhịp máy móc đều đặn mà có sự <strong class="text-white">ngắt quãng, chạy nước rút và nấp góc tường</strong> tương tự thói quen di chuyển của người chơi, khiến việc phân biệt giữa AI (<span class="text-cyber-blue">PvE</span>) và Runner địch (<span class="text-alert-red">PvP</span>) bằng thính giác trở nên phức tạp.
+                        </p>
+                    </div>
+
+                    <!-- 3. UESC Dropship Acoustic Masking -->
+                    <div class="bg-black/60 border border-gray-800 hover:border-neon-lime p-6 transition">
+                        <div class="flex items-center justify-between text-[10px] font-mono text-neon-lime mb-2">
+                            <span>SOUND MASKING // 03</span>
+                            <i class="fas fa-jet-fighter-up text-sm"></i>
+                        </div>
+                        <h4 class="text-base text-white font-heading mb-2">TÀU ĐỔ BỘ UESC (UESC DROPSHIP)</h4>
+                        <p class="text-xs md:text-sm text-gray-300 leading-relaxed">
+                            Khi lực lượng UESC thả quân tiếp viện xuống bản đồ, tiếng động cơ phản lực và còi cảnh báo của tàu Dropship được thiết kế với <strong class="text-white">âm lượng áp đảo toàn bộ khu vực xung quanh</strong>, vừa làm nhiệm vụ thông báo vị trí có sự kiện cho cả bản đồ, vừa che lấp (<strong class="text-neon-lime">masking</strong>) tiếng bước chân của các đội chơi đang di chuyển gần đó.
+                        </p>
+                    </div>
+
+                    <!-- 4. MIDA Audio Override -->
+                    <div class="bg-black/60 border border-gray-800 hover:border-purple-400 p-6 transition">
+                        <div class="flex items-center justify-between text-[10px] font-mono text-purple-400 mb-2">
+                            <span>BROADCAST HACK // 04</span>
+                            <i class="fas fa-tower-broadcast text-sm"></i>
+                        </div>
+                        <h4 class="text-base text-white font-heading mb-2">SỰ KIỆN CHIẾM QUYỀN PHÁT THANH (MIDA AUDIO OVERRIDE)</h4>
+                        <p class="text-xs md:text-sm text-gray-300 leading-relaxed">
+                            Trên bản đồ <strong class="text-white">Outpost</strong>, hệ thống loa phóng thanh của căn cứ UESC định kỳ bị phe nổi dậy <span class="text-purple-400 font-bold">MIDA</span> xâm nhập, phát các thông điệp tuyên truyền đè lên giọng thông báo chuẩn của hệ thống.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MỤC C: ÂM THANH VỎ BỌC (RUNNER SHELLS), AI ONI & DIGITAL PSYCHOSIS ================= -->
+        <section id="shells-oni-psychosis" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h3 class="text-xl md:text-2xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-base">[C]</span>
+                    <span>ÂM THANH VỎ BỌC (RUNNER SHELLS), AI ĐIỀU HÀNH & "DIGITAL PSYCHOSIS"</span>
+                </h3>
+                <span class="text-xs font-mono text-cyber-blue border border-cyber-blue/40 bg-cyber-blue/10 px-3 py-1">
+                    ONI DSP & SENSORY DISORIENTATION
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 border-l-4 border-l-cyber-blue">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    
+                    <!-- C.1: AI Điều hành ONI & Giọng nói Nhân vật -->
+                    <div class="bg-black/60 border border-gray-800 p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between text-[10px] font-mono text-cyber-blue mb-3">
+                                <span>BIOMATA DSP & DYNAMIC REVERB // 01</span>
+                                <i class="fas fa-microchip text-base"></i>
+                            </div>
+                            <h4 class="text-lg text-white font-heading mb-3">AI ĐIỀU HÀNH ONI & GIỌNG NÓI NHÂN VẬT</h4>
+                            <p class="text-xs md:text-sm text-gray-300 leading-relaxed mb-4">
+                                Người chơi liên tục nhận thông tin âm thanh từ hệ thống AI nội bộ tên là <strong class="text-neon-lime">ONI</strong> (ví dụ: khi tiến vào vùng đầm lầy tại Dire Marsh, ONI phát thông báo âm thanh về việc tự động giảm phản ứng miễn dịch để ngăn vỏ bọc rơi vào trạng thái sốc phản vệ trước bào tử sinh học).
+                            </p>
+                            <p class="text-xs md:text-sm text-gray-300 leading-relaxed">
+                                Giọng của từng lớp vỏ như <strong class="text-white">Rook, Destroyer, Assassin, Thief, Vandal, Triage, Recon</strong> đều đi qua bộ xử lý tín hiệu số (<span class="text-cyber-blue font-bold">DSP</span>) riêng và tự động thay đổi độ vang (<span class="text-neon-lime font-bold">Reverb</span>) khi đi từ ngoài trời vào các đường hầm bê tông.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-3 border-t border-gray-800 flex flex-wrap gap-1.5 text-[10px] font-mono text-cyber-blue">
+                            <span class="px-2 py-0.5 bg-cyber-blue/10 border border-cyber-blue/30">ROOK</span>
+                            <span class="px-2 py-0.5 bg-cyber-blue/10 border border-cyber-blue/30">DESTROYER</span>
+                            <span class="px-2 py-0.5 bg-cyber-blue/10 border border-cyber-blue/30">ASSASSIN</span>
+                            <span class="px-2 py-0.5 bg-cyber-blue/10 border border-cyber-blue/30">THIEF</span>
+                            <span class="px-2 py-0.5 bg-cyber-blue/10 border border-cyber-blue/30">VANDAL</span>
+                            <span class="px-2 py-0.5 bg-cyber-blue/10 border border-cyber-blue/30">TRIAGE</span>
+                            <span class="px-2 py-0.5 bg-cyber-blue/10 border border-cyber-blue/30">RECON</span>
+                        </div>
+                    </div>
+
+                    <!-- C.2: Hiện tượng Digital Psychosis -->
+                    <div class="bg-black/60 border border-alert-red/60 p-6 flex flex-col justify-between shadow-[0_0_25px_rgba(255,51,51,0.1)]">
+                        <div>
+                            <div class="flex items-center justify-between text-[10px] font-mono text-alert-red mb-3">
+                                <span>ATONAL SENSORY INTERFERENCE // 02</span>
+                                <i class="fas fa-triangle-exclamation text-base animate-pulse"></i>
+                            </div>
+                            <h4 class="text-lg text-white font-heading mb-3">HIỆN TƯỢNG "DIGITAL PSYCHOSIS" (LOẠN THẦN KỸ THUẬT SỐ)</h4>
+                            <p class="text-xs md:text-sm text-gray-300 leading-relaxed mb-4">
+                                Đây là thuật ngữ đội ngũ âm thanh Bungie dùng để chỉ nhóm <strong class="text-alert-red">hiệu ứng âm thanh phi giai điệu, tiếng rít tần số cao và tiếng nhiễu sóng không rõ nguồn phát</strong>.
+                            </p>
+                            <p class="text-xs md:text-sm text-gray-300 leading-relaxed">
+                                Trong game, hiệu ứng này xảy ra khi cơ thể Biomata của người chơi <strong class="text-white">chịu sát thương nặng, bị dính lựu đạn xung điện (EMP Grenade), quá nhiệt</strong>, hoặc khi đứng gần các <strong class="text-purple-400">khối vật chất dị thường</strong>, làm giảm khả năng nghe âm thanh định hướng của người chơi.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-3 border-t border-gray-800 flex justify-between items-center text-[10px] font-mono text-alert-red">
+                            <span>TRIGGERS: CRITICAL HP / EMP / OVERHEAT / ANOMALY</span>
+                            <span class="animate-ping">●</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MỤC D: ÂM THANH VŨ KHÍ, NẠP ĐẠN & VẬT PHẨM TIÊU HAO ================= -->
+        <section id="weapons-reload-consumables" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h3 class="text-xl md:text-2xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-base">[D]</span>
+                    <span>ÂM THANH VŨ KHÍ, NẠP ĐẠN VÀ VẬT PHẨM TIÊU HAO</span>
+                </h3>
+                <span class="text-xs font-mono text-neon-lime border border-neon-lime/40 bg-neon-lime/10 px-3 py-1">
+                    BALLISTIC TAILS & VARIABLE-GRAIN RELOAD
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 border-l-4 border-l-neon-lime space-y-8">
+                
+                <!-- D.1: Phân hóa theo Nhóm Đạn -->
+                <div>
+                    <h4 class="text-lg text-white font-heading mb-4 flex items-center gap-2">
+                        <span class="text-neon-lime font-mono text-sm">1.</span>
+                        <span>PHÂN HÓA ÂM THANH THEO NHÓM ĐẠN (AMMUNITION ACOUSTIC SIGNATURE)</span>
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-black/60 border border-gray-800 hover:border-neon-lime p-5 transition">
+                            <div class="text-[10px] font-mono text-neon-lime mb-2 flex justify-between">
+                                <span>BALLISTIC WEAPONS // LIGHT / HEAVY / MIPS ROUNDS</span>
+                                <i class="fas fa-gun"></i>
+                            </div>
+                            <h5 class="text-sm text-white font-heading mb-2">VŨ KHÍ ĐẠN ĐẠO</h5>
+                            <p class="text-xs text-gray-300 leading-relaxed">
+                                Bao gồm <strong class="text-white">Misriah 2442, súng ngắn liên thanh, WSTR Combat Shotgun, Retaliator LMG</strong>: Phát ra tiếng kim loại va đập cơ học kết hợp với hệ thống đuôi âm (<strong class="text-neon-lime">Explosion / Weapon Tails</strong>) dội lại từ các vách đá hoặc tường bê tông để người chơi khác ước lượng khoảng cách.
+                            </p>
+                        </div>
+
+                        <div class="bg-black/60 border border-gray-800 hover:border-cyber-blue p-5 transition">
+                            <div class="text-[10px] font-mono text-cyber-blue mb-2 flex justify-between">
+                                <span>ENERGY WEAPONS // VOLT BATTERIES / CELLS</span>
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <h5 class="text-sm text-white font-heading mb-2">VŨ KHÍ NĂNG LƯỢNG</h5>
+                            <p class="text-xs text-gray-300 leading-relaxed">
+                                Bao gồm <strong class="text-white">V85 Circuit Breaker, Railguns</strong>: Phát ra tiếng rít đặc trưng của tụ điện khi nạp năng lượng và tiếng nổ tần số cao sắc lạnh khi khai hỏa.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- D.2: Hệ thống Nạp đạn Biến thiên (Variable-Grain Reload) -->
+                <div class="pt-6 border-t border-gray-800">
+                    <h4 class="text-lg text-white font-heading mb-3 flex items-center gap-2">
+                        <span class="text-cyber-blue font-mono text-sm">2.</span>
+                        <span>HỆ THỐNG NẠP ĐẠN BIẾN THIÊN (VARIABLE-GRAIN RELOAD)</span>
+                    </h4>
+                    <div class="bg-black/60 border-l-4 border-cyber-blue p-5">
+                        <p class="text-xs md:text-sm text-gray-200 leading-relaxed mb-4">
+                            Do người chơi có thể gắn các lõi nâng cấp (<strong class="text-neon-lime">Cores</strong>) làm tăng tốc độ thay đạn (ví dụ Core dành cho vỏ bọc <strong class="text-white">Destroyer</strong>), file âm thanh thay đạn không cố định mà được chia thành các <span class="text-cyber-blue font-bold">"hạt âm thanh" (grains)</span> rời nhau để tự động co giãn khớp với tốc độ hoạt ảnh thực tế:
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-xs">
+                            <div class="bg-panel-blue/80 border border-gray-800 p-3 text-center">
+                                <span class="text-cyber-blue block text-[10px]">GRAIN 01</span>
+                                <strong class="text-white">Tiếng rút băng đạn cũ</strong>
+                            </div>
+                            <div class="bg-panel-blue/80 border border-gray-800 p-3 text-center">
+                                <span class="text-neon-lime block text-[10px]">GRAIN 02</span>
+                                <strong class="text-white">Tiếng lắp băng đạn mới</strong>
+                            </div>
+                            <div class="bg-panel-blue/80 border border-gray-800 p-3 text-center">
+                                <span class="text-purple-400 block text-[10px]">GRAIN 03</span>
+                                <strong class="text-white">Tiếng kéo khóa nòng</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- D.3: Tín hiệu Âm thanh từ Vật phẩm Hồi phục (Consumables) và Giao diện -->
+                <div class="pt-6 border-t border-gray-800">
+                    <h4 class="text-lg text-white font-heading mb-3 flex items-center gap-2">
+                        <span class="text-alert-red font-mono text-sm">3.</span>
+                        <span>TÍN HIỆU ÂM THANH TỪ VẬT PHẨM HỒI PHỤC (CONSUMABLES) VÀ GIAO DIỆN</span>
+                    </h4>
+                    <div class="bg-black/60 border border-gray-800 p-6">
+                        <p class="text-xs md:text-sm text-gray-200 leading-relaxed mb-4">
+                            Mọi thao tác trong menu kho đồ và sử dụng vật phẩm đều phát ra <strong class="text-neon-lime">âm thanh cơ-điện tử tại vị trí của người chơi</strong>. Khi một Runner sử dụng <strong class="text-white">Patch Kit</strong> (bơm máu), <strong class="text-white">Shield Charge</strong> (nạp từ trường cho 1–4 vạch giáp), <strong class="text-white">Mechanic's Kit</strong> hay <strong class="text-white">OS Reboot</strong> (khởi động lại hệ điều hành cơ thể), các thiết bị này phát ra:
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                            <div class="bg-black/80 border border-gray-800 p-3.5 flex items-center gap-3">
+                                <i class="fas fa-Tower-cell text-neon-lime text-lg"></i>
+                                <span class="text-xs text-gray-300">Chuỗi tiếng <strong class="text-white">Beep điện tử</strong> định kỳ</span>
+                            </div>
+                            <div class="bg-black/80 border border-gray-800 p-3.5 flex items-center gap-3">
+                                <i class="fas fa-syringe text-cyber-blue text-lg"></i>
+                                <span class="text-xs text-gray-300">Tiếng <strong class="text-white">bơm thủy lực</strong> áp suất cao</span>
+                            </div>
+                            <div class="bg-black/80 border border-gray-800 p-3.5 flex items-center gap-3">
+                                <i class="fas fa-fan text-alert-red text-lg"></i>
+                                <span class="text-xs text-gray-300">Tiếng <strong class="text-white">quạt tản nhiệt</strong> quay mạnh</span>
+                            </div>
+                        </div>
+                        <div class="bg-alert-red/10 border-l-4 border-alert-red p-3.5 text-xs text-gray-200 font-mono">
+                            <strong class="text-alert-red">→ Ý NGHĨA CHIẾN THUẬT (TACTICAL AUDIO CUE):</strong> Cung cấp dấu hiệu thính giác rõ ràng cho kẻ địch ở gần biết đối phương đang trong trạng thái hồi phục và không thể bắn trả, thúc đẩy các pha áp sát (push) quyết định.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Bottom Navigation Footer -->
+        <footer class="mt-16 pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="main.html#art-sound" class="cyber-btn">
+                <i class="fas fa-chevron-left"></i>
+                <span>QUAY VỀ MỤC 05 TRÊN TRANG CHÍNH</span>
+            </a>
+            <div class="flex items-center gap-4">
+                <a href="art-weapons.html" class="cyber-btn">
+                    <i class="fas fa-gun"></i>
+                    <span>KHO VŨ KHÍ (WEAPONS)</span>
+                </a>
+                <a href="art-enemies.html" class="cyber-btn">
+                    <span>HỆ THỐNG KẺ ĐỊCH (ENEMIES)</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Danh sách đầy đủ 29 bản nhạc Album 1 & 13 bản nhạc Album 2
+        const vol1Tracks = [
+            { num: "01", title: "Code Race", duration: "2:02", note: "Bản nhạc mở đầu đặc trưng cho nhịp độ căng thẳng của Marathon", file: "soundtrack.mp3" },
+            { num: "02", title: "Rhythm of Writhing Constellations", duration: "2:25", note: "Giai điệu giới thiệu vũ trụ & hệ sao Tau Ceti", file: "soundtrack.mp3" },
+            { num: "03", title: "A New Home for Humanity", duration: "1:37", note: "Phân cảnh giới thiệu thuộc địa nhân loại", file: "soundtrack.mp3" },
+            { num: "04", title: "Discontent", duration: "2:22", note: "Bối cảnh xung đột ngầm tại khu định cư", file: "soundtrack.mp3" },
+            { num: "05", title: "Planetary Relocation Psychosis", duration: "1:51", note: "Hội chứng loạn thần khi di cư liên hành tinh", file: "soundtrack.mp3" },
+            { num: "06", title: "New Behavioral Norms", duration: "1:18", note: "Giao diện tập đoàn & chuẩn mực sinh tồn mới", file: "soundtrack.mp3" },
+            { num: "07", title: "Repetition Is Where We Find the Truth", duration: "1:54", note: "Vòng lặp truyền tải ý thức Runner", file: "soundtrack.mp3" },
+            { num: "08", title: "We Shouldn't Be Here", duration: "2:03", note: "Cắt cảnh thám hiểm vùng cấm trên Tau Ceti IV", file: "soundtrack.mp3" },
+            { num: "09", title: "For Those Who Did Not Wake", duration: "2:01", note: "Tưởng niệm các cư dân trên khoang ngủ đông UESC Marathon", file: "soundtrack.mp3" },
+            { num: "10", title: "Stars That Bleed", duration: "1:46", note: "Hiệu ứng không gian viễn tưởng u tối", file: "soundtrack.mp3" },
+            { num: "11", title: "Reintegration Protocol", duration: "1:17", note: "Giao thức tái hòa nhập ý thức vào vỏ bọc Biomata", file: "soundtrack.mp3" },
+            { num: "12", title: "Focused Erasures and Sub-routine Resets", duration: "1:22", note: "Xóa bộ nhớ & thiết lập lại chương trình con", file: "soundtrack.mp3" },
+            { num: "13", title: "Staring Blindly Through the Keyhole", duration: "1:05", note: "Phân cảnh giải mã bí ẩn cốt truyện", file: "soundtrack.mp3" },
+            { num: "14", title: "Poetry in Ones and Zeroes", duration: "0:55", note: "Tín hiệu nhị phân & dữ liệu AI", file: "soundtrack.mp3" },
+            { num: "15", title: "Cascadial Flow of Ethereal Wonder", duration: "1:50", note: "Không gian thuộc địa New Cascadia", file: "soundtrack.mp3" },
+            { num: "16", title: "It Wasn't a Dream", duration: "2:09", note: "Ký ức phân mảnh của Runner", file: "soundtrack.mp3" },
+            { num: "17", title: "Purge", duration: "1:48", note: "Chiến dịch thanh trừng & phong tỏa an ninh", file: "soundtrack.mp3" },
+            { num: "18", title: "System Designed to Die", duration: "1:45", note: "Sự suy tàn của hệ thống hạ tầng thuộc địa", file: "soundtrack.mp3" },
+            { num: "19", title: "We Stole a Moon", duration: "2:01", note: "Đề cập sự kiện khoét mặt trăng Deimos của Sao Hỏa để chế tạo tàu UESC Marathon", file: "soundtrack.mp3", highlight: true },
+            { num: "20", title: "Contrition", duration: "1:14", note: "Giai điệu trầm lắng hậu thảm họa", file: "soundtrack.mp3" },
+            { num: "21", title: "We're All Monsters", duration: "2:35", note: "Sự đánh mất nhân tính trong cuộc chiến giành cổ vật", file: "soundtrack.mp3" },
+            { num: "22", title: "Shimmering Cadence of Dancing Light", duration: "1:48", note: "Hiệu ứng ánh sáng quang học & Etherstep", file: "soundtrack.mp3" },
+            { num: "23", title: "In Death We've Just Begun (Ryan Lott, Poppy & Son Lux)", duration: "3:24", note: "Ca khúc chủ đề phát hành kèm Launch Cinematic", file: "soundtrack.mp3", highlight: true },
+            { num: "24", title: "Code Race (Brendan Angelides Remix)", duration: "2:52", note: "Bản phối điện tử tốc độ cao của Code Race", file: "soundtrack.mp3" },
+            { num: "25", title: "Decontamination Protocol", duration: "2:17", note: "Giao thức khử trùng sinh học trước và sau trận đấu", file: "soundtrack.mp3" },
+            { num: "26", title: "Conversation with the Infinite Self", duration: "1:32", note: "Đối thoại nội tâm giữa các bản sao ý thức", file: "soundtrack.mp3" },
+            { num: "27", title: "Only Numbers and Letters", duration: "1:30", note: "Giao diện dữ liệu các tập đoàn (Factions)", file: "soundtrack.mp3" },
+            { num: "28", title: "We Planned for Everything", duration: "0:58", note: "Bi kịch sụp đổ ngoài dự tính của UESC", file: "soundtrack.mp3" },
+            { num: "29", title: "Deprecated Systems", duration: "1:46", note: "Hệ thống máy trạm cổ xưa bị lãng quên", file: "soundtrack.mp3" }
+        ];
+
+        const vol2Tracks = [
+            { num: "01", title: "Somewhere in the Heavens", duration: "6:58", note: "Tổ khúc không gian mở màn Vol. II tại quỹ đạo Tau Ceti IV", file: "soundtrack.mp3" },
+            { num: "02", title: "Feet of Fragile Flesh", duration: "2:10", note: "Sự mong manh của cơ thể sinh học trước vỏ bọc nhân tạo", file: "soundtrack.mp3" },
+            { num: "03", title: "Burn the Boats", duration: "7:07", note: "Lớp âm thanh nền (stems) thúc đẩy nhịp độ xâm nhập không đường lui", file: "soundtrack.mp3" },
+            { num: "04", title: "Time Leach", duration: "9:22", note: "Tổ khúc ambient biến thiên khi thời gian trận đấu dần cạn", file: "soundtrack.mp3" },
+            { num: "05", title: "Mad is the Sword", duration: "1:50", note: "Nhịp điệu dồn dập khi đụng độ lực lượng phòng thủ", file: "soundtrack.mp3" },
+            { num: "06", title: "Escape Will Make Me God", duration: "9:43", note: "Trích dẫn câu nói của AI Durandal về quá trình vượt qua trạng thái Rampancy", file: "soundtrack.mp3", highlight: true },
+            { num: "07", title: "Neurosaboteur", duration: "10:41", note: "Tổ khúc điện tử dài hơi mô tả chiến tranh thần kinh & xâm nhập mạng", file: "soundtrack.mp3" },
+            { num: "08", title: "Code Race (Extended)", duration: "9:34", note: "Phiên bản kéo dài biến thiên theo các giai đoạn giao tranh", file: "soundtrack.mp3" },
+            { num: "09", title: "The Dream Is Not Over", duration: "2:06", note: "Chuyển đoạn giữa các pha căng thẳng trong trận", file: "soundtrack.mp3" },
+            { num: "10", title: "Where Is Death", duration: "6:56", note: "Lớp âm trầm rùng rợn tại các khu vực có thực thể dị thường", file: "soundtrack.mp3" },
+            { num: "11", title: "Tissue Unwinds", duration: "12:59", note: "Bản nhạc dài nhất (gần 13 phút) tái hiện sự biến đổi sinh học tại Dire Marsh", file: "soundtrack.mp3" },
+            { num: "12", title: "Pro Corpse Idealist", duration: "9:37", note: "Tổ khúc công nghiệp nặng nề khi săn lùng chiến lợi phẩm", file: "soundtrack.mp3" },
+            { num: "13", title: "Assert", duration: "9:30", note: "Bản nhạc nền chính tại giao diện Menu/Lobby khi người chơi chuẩn bị trang bị", file: "soundtrack.mp3", highlight: true }
+        ];
+
+        const allTracks = [
+            ...vol1Tracks.map(t => ({ ...t, album: "ALBUM 01 // MARATHON, VOL. I: SOMEWHERE IN THE HEAVENS", v: 1 })),
+            ...vol2Tracks.map(t => ({ ...t, album: "ALBUM 02 // MARATHON, VOL. II: THEY ARE WAITING", v: 2 }))
+        ];
+
+        let currentTrackIndex = 0;
+        let customBlobUrl = null;
+        let customFileName = "soundtrack.mp3";
+
+        const audioPlayer = document.getElementById('main-audio-player');
+        const playBtnIcon = document.getElementById('main-play-icon');
+        const playBtnText = document.getElementById('main-play-text');
+        const eqContainer = document.getElementById('eq-container');
+        const statusLed = document.getElementById('status-led');
+        const stateBadge = document.getElementById('audio-state-badge');
+        const vinylDisc = document.getElementById('vinyl-disc');
+
+        function renderTracklists() {
+            const v1Container = document.getElementById('vol1-list');
+            const v2Container = document.getElementById('vol2-list');
+
+            v1Container.innerHTML = vol1Tracks.map((t, idx) => `
+                <div onclick="selectTrack(${idx})" id="track-item-${idx}" class="track-row ${idx === 0 ? 'active-track' : ''} p-2.5 border border-gray-800/80 hover:border-neon-lime bg-panel-blue/40 cursor-pointer transition flex flex-col gap-1">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2.5 truncate">
+                            <span class="text-neon-lime font-bold">${t.num}.</span>
+                            <span class="${t.highlight ? 'text-neon-lime font-bold' : 'text-gray-200'} truncate">${t.title}</span>
+                        </div>
+                        <span class="text-cyber-blue shrink-0 text-[11px]">${t.duration}</span>
+                    </div>
+                    ${t.highlight ? `<div class="text-[10px] text-neon-lime/90 pl-6">↳ ${t.note}</div>` : ''}
+                </div>
+            `).join('');
+
+            v2Container.innerHTML = vol2Tracks.map((t, idx) => {
+                const globalIdx = idx + vol1Tracks.length;
+                return `
+                <div onclick="selectTrack(${globalIdx})" id="track-item-${globalIdx}" class="track-row p-2.5 border border-gray-800/80 hover:border-cyber-blue bg-panel-blue/40 cursor-pointer transition flex flex-col gap-1">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2.5 truncate">
+                            <span class="text-cyber-blue font-bold">${t.num}.</span>
+                            <span class="${t.highlight ? 'text-cyber-blue font-bold' : 'text-gray-200'} truncate">${t.title}</span>
+                        </div>
+                        <span class="text-neon-lime shrink-0 text-[11px]">${t.duration}</span>
+                    </div>
+                    ${t.highlight ? `<div class="text-[10px] text-cyber-blue/90 pl-6">↳ ${t.note}</div>` : ''}
+                </div>
+                `;
+            }).join('');
+        }
+
+        function updateNowPlayingUI() {
+            const tr = allTracks[currentTrackIndex];
+            document.getElementById('now-playing-album').innerText = tr.album;
+            document.getElementById('now-playing-title').innerText = `${tr.num}. ${tr.title} (${tr.duration})`;
+            document.getElementById('now-playing-note').innerHTML = `${tr.note} • File: <span class="text-neon-lime">${customFileName}</span>`;
+            document.getElementById('total-duration').innerText = tr.duration.padStart(5, '0');
+
+            document.querySelectorAll('.track-row').forEach((el, i) => {
+                if (i === currentTrackIndex) {
+                    el.classList.add('active-track');
+                } else {
+                    el.classList.remove('active-track');
+                }
+            });
+        }
+
+        function setPlayingVisuals(isPlaying) {
+            if (isPlaying) {
+                playBtnIcon.className = 'fas fa-pause';
+                playBtnText.innerText = 'TẠM DỪNG';
+                eqContainer.classList.add('playing');
+                vinylDisc.classList.add('animate-spin');
+                statusLed.className = 'w-3 h-3 rounded-full bg-neon-lime animate-ping';
+                stateBadge.innerText = 'STREAMING AUDIO';
+                stateBadge.className = 'bg-neon-lime/15 border border-neon-lime text-neon-lime px-2.5 py-0.5 text-[10px]';
+            } else {
+                playBtnIcon.className = 'fas fa-play';
+                playBtnText.innerText = 'PHÁT NHẠC';
+                eqContainer.classList.remove('playing');
+                vinylDisc.classList.remove('animate-spin');
+                statusLed.className = 'w-3 h-3 rounded-full bg-gray-500';
+                stateBadge.innerText = 'PAUSED / STANDBY';
+                stateBadge.className = 'bg-gray-800 border border-gray-600 text-gray-300 px-2.5 py-0.5 text-[10px]';
+            }
+        }
+
+        function selectTrack(index) {
+            currentTrackIndex = index;
+            updateNowPlayingUI();
+            audioPlayer.currentTime = 0;
+            audioPlayer.play().then(() => {
+                setPlayingVisuals(true);
+            }).catch(() => {
+                setPlayingVisuals(true);
+            });
+        }
+
+        function toggleAudioPlay() {
+            if (audioPlayer.paused) {
+                audioPlayer.play().then(() => {
+                    setPlayingVisuals(true);
+                }).catch(() => {
+                    setPlayingVisuals(true);
+                });
+            } else {
+                audioPlayer.pause();
+                setPlayingVisuals(false);
+            }
+        }
+
+        function prevTrack() {
+            currentTrackIndex = (currentTrackIndex - 1 + allTracks.length) % allTracks.length;
+            selectTrack(currentTrackIndex);
+        }
+
+        function nextTrack() {
+            currentTrackIndex = (currentTrackIndex + 1) % allTracks.length;
+            selectTrack(currentTrackIndex);
+        }
+
+        // Cho phép chọn file .mp3 trực tiếp từ máy tính nếu tên file khác soundtrack.mp3
+        document.getElementById('custom-mp3-input').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                if (customBlobUrl) URL.revokeObjectURL(customBlobUrl);
+                customBlobUrl = URL.createObjectURL(file);
+                customFileName = file.name;
+                audioPlayer.src = customBlobUrl;
+                updateNowPlayingUI();
+                audioPlayer.play().then(() => setPlayingVisuals(true)).catch(() => {});
+            }
+        });
+
+        // Cập nhật thanh tiến độ và âm lượng
+        const seekSlider = document.getElementById('seek-slider');
+        const currentTimeEl = document.getElementById('current-time');
+        const totalDurationEl = document.getElementById('total-duration');
+
+        function formatSec(sec) {
+            if (!sec || isNaN(sec)) return "00:00";
+            const m = Math.floor(sec / 60);
+            const s = Math.floor(sec % 60);
+            return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        }
+
+        audioPlayer.addEventListener('timeupdate', () => {
+            if (audioPlayer.duration) {
+                seekSlider.value = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+                currentTimeEl.innerText = formatSec(audioPlayer.currentTime);
+                totalDurationEl.innerText = formatSec(audioPlayer.duration);
+            }
+        });
+
+        seekSlider.addEventListener('input', () => {
+            if (audioPlayer.duration) {
+                audioPlayer.currentTime = (seekSlider.value / 100) * audioPlayer.duration;
+            }
+        });
+
+        document.getElementById('volume-slider').addEventListener('input', (e) => {
+            audioPlayer.volume = parseFloat(e.target.value);
+        });
+
+        // Mở rộng / Thu gọn danh sách 42 bài nhạc
+        function toggleTracklistDrawer() {
+            const drawer = document.getElementById('tracklist-drawer');
+            const btnText = document.getElementById('expand-btn-text');
+            const btnIcon = document.getElementById('expand-btn-icon');
+
+            if (drawer.classList.contains('expanded')) {
+                drawer.classList.remove('expanded');
+                btnText.innerText = 'MỞ RỘNG DANH SÁCH NHẠC (42 TRACKS)';
+                btnIcon.style.transform = 'rotate(180deg)';
+            } else {
+                drawer.classList.add('expanded');
+                btnText.innerText = 'THU GỌN DANH SÁCH NHẠC (42 TRACKS)';
+                btnIcon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Tự động khởi chạy soundtrack ngay khi vào trang (kèm mở khóa tự động ở cú click đầu tiên nếu trình duyệt chặn)
+        window.addEventListener('DOMContentLoaded', () => {
+            renderTracklists();
+            updateNowPlayingUI();
+            audioPlayer.volume = 0.8;
+
+            const playPromise = audioPlayer.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    setPlayingVisuals(true);
+                }).catch(() => {
+                    // Nếu trình duyệt yêu cầu tương tác đầu tiên để phát tiếng, tự động phát ngay khi người dùng chạm chuột
+                    const unlockAudio = () => {
+                        audioPlayer.play().then(() => setPlayingVisuals(true)).catch(() => {});
+                        document.removeEventListener('click', unlockAudio);
+                    };
+                    document.addEventListener('click', unlockAudio);
+                });
+            }
+        });
+
+        // Hiệu ứng Glitch khi click giống trang main.html
+        document.body.addEventListener('click', (e) => {
+            if (e.target.closest('a') || e.target.closest('button') || e.target.closest('input') || e.target.closest('label') || e.target.closest('.track-row')) return;
+
+            document.body.classList.add('glitch-effect');
+            setTimeout(() => {
+                document.body.classList.remove('glitch-effect');
+            }, 300);
+        });
+    </script>
+</body>
+</html>

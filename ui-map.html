@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UI/UX - Giao diện Map | Marathon GDD - CUTES1TG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Liên kết tới file CSS dùng chung -->
+    <link rel="stylesheet" href="style.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Orbitron', 'sans-serif'],
+                        mono: ['Share Tech Mono', 'monospace'],
+                    },
+                    colors: {
+                        'deep-blue': '#0a0f18',
+                        'panel-blue': '#121a28',
+                        'neon-lime': '#ccff00',
+                        'alert-red': '#ff3333',
+                        'cyber-blue': '#00d0ff'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Scanline Overlay -->
+    <div class="scanline"></div>
+
+    <!-- ================= TOP BAR / HEADER ================= -->
+    <header class="sticky top-0 z-50 bg-panel-blue/90 backdrop-blur-md border-b border-gray-800 px-6 py-4 shadow-lg">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <a href="main.html#ui-ux" class="cyber-btn !py-2 !px-4">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>QUAY LẠI TRANG CHÍNH</span>
+                </a>
+                <div class="hidden md:block h-6 w-px bg-gray-700"></div>
+                <div class="hidden md:block">
+                    <span class="text-[10px] text-cyber-blue font-mono block tracking-widest">SECTION 04 // UI_MODULE 04</span>
+                    <span class="text-xs text-white font-heading font-bold tracking-wider">GIAO DIỆN MAP (TACTICAL & SELECTION)</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 text-[11px] font-mono">
+                <span class="text-gray-400">MODULE: <strong class="text-neon-lime">MAP_SYSTEM</strong></span>
+                <span class="text-gray-600">|</span>
+                <span class="text-gray-400">STATES: <strong class="text-cyber-blue">SELECTION + TACTICAL 2D</strong></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-neon-lime animate-pulse"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= MAIN LAYOUT ================= -->
+    <div class="flex-1 max-w-6xl w-full mx-auto p-6 md:p-12 lg:p-16">
+
+        <!-- Page Title Banner -->
+        <div class="mb-12 border-b border-gray-800 pb-6 relative">
+            <div class="flex items-center gap-2 text-xs text-cyber-blue font-mono mb-2 tracking-widest">
+                <i class="fas fa-map-location-dot"></i>
+                <span>UI/UX ARCHITECTURE // SUB-MODULE 04</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl text-white font-black tracking-wider">
+                <span class="text-neon-lime">04.</span> GIAO DIỆN MAP (HỆ THỐNG BẢN ĐỒ)
+            </h1>
+        </div>
+
+        <!-- ================= PHẦN 1: TỔNG QUAN 2 TRẠNG THÁI BẢN ĐỒ ================= -->
+        <section id="map-overview" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[01]</span>
+                    <span>HAI TRẠNG THÁI BẢN ĐỒ TRONG MARATHON (2026)</span>
+                </h2>
+                <span class="text-xs font-mono text-neon-lime border border-neon-lime/40 bg-neon-lime/10 px-3 py-1">
+                    DUAL-STATE MAP ARCHITECTURE
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 mb-8 border-l-4 border-l-neon-lime">
+                <p class="text-gray-200 text-sm md:text-base leading-relaxed mb-6">
+                    Hệ thống bản đồ trong <strong class="text-white">Marathon (2026)</strong> tồn tại ở <span class="text-cyber-blue font-bold">2 trạng thái</span> với mục đích sử dụng khác nhau nhằm phục vụ cả giai đoạn chuẩn bị trước trận và điều hướng chiến thuật trong trận.
+                </p>
+
+                <!-- Bảng so sánh 2 loại bản đồ -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-gray-800">
+                    
+                    <!-- Loại 1: Bản đồ Chọn Khu vực -->
+                    <div class="bg-black/60 border border-gray-800 hover:border-cyber-blue p-6 transition flex flex-col justify-between">
+                        <div>
+                            <div class="text-[10px] text-cyber-blue font-mono mb-2 flex justify-between">
+                                <span>STATE 01 // PRE-MATCH</span>
+                                <i class="fas fa-globe text-sm"></i>
+                            </div>
+                            <h3 class="text-lg text-white font-heading mb-3">1. BẢN ĐỒ CHỌN KHU VỰC</h3>
+                            <p class="text-xs text-gray-300 leading-relaxed mb-4">
+                                <strong class="text-white">Cấu trúc đồ họa & Hiển thị:</strong> Hiển thị tổng quan bề mặt thuộc địa trên hành tinh Tau Ceti IV (gồm các khu vực Perimeter, Dire Marsh, Outpost) và con tàu UESC Marathon trên quỹ đạo.
+                            </p>
+                            <p class="text-xs text-gray-400 leading-relaxed bg-black/50 p-3 border border-gray-800/80">
+                                <strong class="text-neon-lime">Chức năng UX Thực tế:</strong> Cung cấp thông tin đầu vào trước trận: mức độ nguy hiểm, yêu cầu cấp độ bảo mật (Security Clearance), điều kiện môi trường và các hợp đồng Faction có thể thực hiện tại bản đồ đó.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Loại 2: Bản đồ Chiến thuật Trong trận -->
+                    <div class="bg-black/60 border border-gray-800 hover:border-neon-lime p-6 transition flex flex-col justify-between">
+                        <div>
+                            <div class="text-[10px] text-neon-lime font-mono mb-2 flex justify-between">
+                                <span>STATE 02 // IN-GAME TACTICAL</span>
+                                <i class="fas fa-map text-sm"></i>
+                            </div>
+                            <h3 class="text-lg text-white font-heading mb-3">2. BẢN ĐỒ CHIẾN THUẬT TRONG TRẬN</h3>
+                            <p class="text-xs text-gray-300 leading-relaxed mb-4">
+                                <strong class="text-white">Cấu trúc đồ họa & Hiển thị:</strong> Loại bỏ hoàn toàn ảnh chụp địa hình 3D rối mắt; sử dụng thiết kế <span class="text-cyber-blue font-bold">Vector Phẳng Tương phản Cao (Neo-Brutalist Blueprint)</span> với các đường đồng mức địa hình, mặt cắt tòa nhà bê tông và số hiệu khu vực khổ lớn (Sector 01, 02...).
+                            </p>
+                            <p class="text-xs text-gray-400 leading-relaxed bg-black/50 p-3 border border-gray-800/80">
+                                <strong class="text-neon-lime">Chức năng UX Thực tế:</strong> Giúp người chơi tra cứu nhanh các điểm quan trọng: vị trí điểm thoát hiểm (Crew Exfil, Guarded Exfil), phòng khóa bảo mật (từ cấp 1 đến cấp 5), phòng độc hại (Hazard Room), máy trạm (Terminal) và cho phép đặt điểm đánh dấu (Ping) trực tiếp từ bản đồ 2D ra không gian 3D.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PHẦN 2: SO SÁNH ẢNH MINH HỌA MAP 1 & MAP 2 ================= -->
+        <section id="map-visual-comparison" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[02]</span>
+                    <span>MINH HỌA TRỰC QUAN (MAP DIRE MARSH)</span>
+                </h2>
+                <span class="text-xs font-mono text-cyber-blue border border-cyber-blue/40 bg-cyber-blue/10 px-3 py-1">
+                    VISUAL ASSETS: MAP 1 & MAP 2
+                </span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                
+                <!-- Ảnh 1: Bản đồ Chọn Khu vực -->
+                <div class="terminal-panel p-6 border-t-2 border-t-cyber-blue">
+                    <div class="flex items-center justify-between text-xs font-mono text-cyber-blue mb-4">
+                        <span>ẢNH 1: BẢN ĐỒ CHỌN KHU VỰC (ORBIT & COLONY)</span>
+                        <span class="text-gray-500">FILE: map1.png</span>
+                    </div>
+                    <div class="bg-black border border-gray-800 p-2 overflow-hidden group">
+                        <img src="map1.png" onerror="this.src='https://placehold.co/600x400/0a0f18/00d0ff?text=ANH+1+-+Area+Selection+Map+(map1.png)'" alt="Ảnh 1 - Bản đồ Chọn Khu vực" class="w-full h-72 object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                    <p class="text-xs text-gray-300 mt-4 leading-relaxed">
+                        Hiển thị tổng quan hành tinh Tau Ceti IV và tàu UESC Marathon, cung cấp thông số an ninh và điều kiện trước khi triển khai.
+                    </p>
+                </div>
+
+                <!-- Ảnh 2: Bản đồ Chiến thuật Trong trận -->
+                <div class="terminal-panel p-6 border-t-2 border-t-neon-lime">
+                    <div class="flex items-center justify-between text-xs font-mono text-neon-lime mb-4">
+                        <span>ẢNH 2: BẢN ĐỒ CHIẾN THUẬT (VECTOR BLUEPRINT)</span>
+                        <span class="text-gray-500">FILE: map2.png</span>
+                    </div>
+                    <div class="bg-black border border-gray-800 p-2 overflow-hidden group">
+                        <img src="map2.png" onerror="this.src='https://placehold.co/600x400/0a0f18/ccff00?text=ANH+2+-+Tactical+Vector+Map+(map2.png)'" alt="Ảnh 2 - Bản đồ Chiến thuật Trong trận" class="w-full h-72 object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                    <p class="text-xs text-gray-300 mt-4 leading-relaxed">
+                        Thiết kế Neo-Brutalist Blueprint với đường đồng mức, số hiệu Sector và định vị điểm Exfil, Hazard Room, Security Vault.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Bottom Navigation Footer -->
+        <footer class="mt-16 pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="ui-armory.html" class="cyber-btn">
+                <i class="fas fa-chevron-left"></i>
+                <span>03. ARMORY (CỬA HÀNG)</span>
+            </a>
+            <div class="flex items-center gap-4">
+                <span class="text-xs font-mono text-gray-500 hidden md:inline">TIẾP THEO TRONG UI/UX:</span>
+                <a href="ui-cosmetics.html" class="cyber-btn">
+                    <span>05. CỬA HÀNG SKIN</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Hiệu ứng Glitch khi click giống trang main.html
+        document.body.addEventListener('click', (e) => {
+            if (e.target.closest('a') || e.target.closest('button')) return;
+
+            document.body.classList.add('glitch-effect');
+            setTimeout(() => {
+                document.body.classList.remove('glitch-effect');
+            }, 300);
+        });
+    </script>
+</body>
+</html>

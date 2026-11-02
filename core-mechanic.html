@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Core Mechanic | Marathon GDD - CUTES1TG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Liên kết tới file CSS dùng chung -->
+    <link rel="stylesheet" href="style.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Orbitron', 'sans-serif'],
+                        mono: ['Share Tech Mono', 'monospace'],
+                    },
+                    colors: {
+                        'deep-blue': '#0a0f18',
+                        'panel-blue': '#121a28',
+                        'neon-lime': '#ccff00',
+                        'alert-red': '#ff3333',
+                        'cyber-blue': '#00d0ff'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Scanline Overlay -->
+    <div class="scanline"></div>
+
+    <!-- ================= TOP BAR / HEADER ================= -->
+    <header class="sticky top-0 z-50 bg-panel-blue/90 backdrop-blur-md border-b border-gray-800 px-6 py-4 shadow-lg">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <a href="main.html#mechanics" class="cyber-btn !py-2 !px-4">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>QUAY LẠI TRANG CHÍNH</span>
+                </a>
+                <div class="hidden md:block h-6 w-px bg-gray-700"></div>
+                <div class="hidden md:block">
+                    <span class="text-[10px] text-cyber-blue font-mono block tracking-widest">SECTION // 03</span>
+                    <span class="text-xs text-white font-heading font-bold tracking-wider">CORE MECHANIC</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 text-[11px] font-mono">
+                <span class="text-gray-400">ZONE CAPACITY: <strong class="text-neon-lime">MAX 18 RUNNERS</strong></span>
+                <span class="text-gray-600">|</span>
+                <span class="text-gray-400">PERSPECTIVE: <strong class="text-cyber-blue">3D FPS</strong></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-neon-lime animate-pulse"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= MAIN LAYOUT ================= -->
+    <div class="flex-1 max-w-6xl w-full mx-auto p-6 md:p-12 lg:p-16">
+
+        <!-- Page Title Banner -->
+        <div class="mb-12 border-b border-gray-800 pb-6 relative">
+            <div class="flex items-center gap-2 text-xs text-cyber-blue font-mono mb-2 tracking-widest">
+                <i class="fas fa-microchip"></i>
+                <span>SYSTEM ARCHITECTURE // GAMEPLAY MECHANICS</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl text-white font-black tracking-wider">
+                <span class="text-neon-lime">03.</span> CORE MECHANIC
+            </h1>
+        </div>
+
+        <!-- ================= TỔNG QUAN QUY TẮC ZONE, SHELL & RỦI RO ================= -->
+        <section id="general-rules" class="mb-16">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <!-- Card 1: 18 Người chơi / Zone -->
+                <div class="terminal-panel p-6 border-t-2 border-t-cyber-blue flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between text-xs font-mono text-cyber-blue mb-3">
+                            <span>ZONE_CAPACITY // 01</span>
+                            <i class="fas fa-users-viewfinder text-lg"></i>
+                        </div>
+                        <h3 class="text-xl text-white mb-3">MẬT ĐỘ NGƯỜI CHƠI</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            Mỗi zone chứa tối đa <span class="text-neon-lime font-bold text-base">18 người chơi</span>. Quy mô này đảm bảo nhịp độ chạm trán căng thẳng vừa đủ giữa các đội Runner mà vẫn giữ được không gian khám phá chiến thuật.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-3 border-t border-gray-800 text-[11px] font-mono text-gray-500 flex justify-between">
+                        <span>MAX_PLAYERS: 18</span>
+                        <span class="text-cyber-blue">ACTIVE_ZONES</span>
+                    </div>
+                </div>
+
+                <!-- Card 2: Định nghĩa Runner Shell -->
+                <div class="terminal-panel p-6 border-t-2 border-t-neon-lime flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between text-xs font-mono text-neon-lime mb-3">
+                            <span>BIOSYNTH_CHASSIS // 02</span>
+                            <i class="fas fa-dna text-lg"></i>
+                        </div>
+                        <h3 class="text-xl text-white mb-3">RUNNER SHELL</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            <strong class="text-white">Shell (Runner shell)</strong> được biết đến là những thân thể sinh – tổng hợp mà những người chơi (Runner) chuyển ý thức của mình vào trong đó để điều khiển khám phá Tau Ceti IV. Nó không chỉ đóng vai trò như một lớp skin trang trí thông thường, ở đó, mỗi shell đều có những kỹ năng và trang bị khác nhau, phù hợp với từng nhân vật mà người chơi điều khiển.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-3 border-t border-gray-800 text-[11px] font-mono text-gray-500 flex justify-between">
+                        <span>CONSCIOUSNESS_LINK</span>
+                        <span class="text-neon-lime">SYNCHRONIZED</span>
+                    </div>
+                </div>
+
+                <!-- Card 3: Quy tắc Mất / Giữ Vật Phẩm -->
+                <div class="terminal-panel p-6 border-t-2 border-t-alert-red flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between text-xs font-mono text-alert-red mb-3">
+                            <span>EXTRACTION_STAKES // 03</span>
+                            <i class="fas fa-triangle-exclamation text-lg"></i>
+                        </div>
+                        <h3 class="text-xl text-white mb-3">RỦI RO & THÀNH QUẢ</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            Người chơi khi <span class="text-alert-red font-bold">không thể thoát ra thành công</span> sẽ không thể lấy lại những vật phẩm đã lấy trước đó. Ngược lại, khi <span class="text-neon-lime font-bold">rút lui khỏi nhiệm vụ thành công</span>, những vật phẩm mang ra được sẽ được sử dụng cho những trận đấu kế tiếp.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-3 border-t border-gray-800 text-[11px] font-mono text-gray-500 flex justify-between">
+                        <span>HIGH_RISK // HIGH_REWARD</span>
+                        <span class="text-alert-red">PERMA_LOOT_LOSS</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= 1. CORE GAMEPLAY LOOP ================= -->
+        <section id="core-loop" class="mb-20">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[01]</span>
+                    <span>CORE GAMEPLAY LOOP – VÒNG LẶP GAMEPLAY CỐT LÕI</span>
+                </h2>
+                <span class="text-xs font-mono text-neon-lime border border-neon-lime/40 bg-neon-lime/10 px-3 py-1">
+                    GENRE: PvPvE EXTRACTION SHOOTER
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10">
+                <p class="text-gray-200 text-sm md:text-base leading-relaxed mb-8">
+                    Gameplay của Marathon xoay quanh thể loại <span class="text-neon-lime font-bold">PvPvE Extraction Shooter</span>. Người chơi điều khiển Runner tiến vào các khu vực trên <span class="text-cyber-blue font-bold">Tau Ceti IV</span>, thu thập tài nguyên, thực hiện nhiệm vụ và tìm cách rút lui an toàn.
+                </p>
+
+                <!-- Sơ đồ 9 bước Vòng lặp Gameplay Chính -->
+                <div class="bg-black/60 border border-gray-800 p-6 mb-8">
+                    <div class="flex items-center justify-between mb-4 border-b border-gray-800 pb-2">
+                        <span class="text-xs font-heading text-cyber-blue tracking-widest">VÒNG LẶP GAMEPLAY CHÍNH (9 STAGES)</span>
+                        <span class="text-[10px] font-mono text-gray-500">CYCLE_REPEAT // INFINITE</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="border border-gray-800 bg-panel-blue/60 p-4 relative group hover:border-cyber-blue transition">
+                            <span class="text-[10px] font-mono text-cyber-blue block mb-1">STAGE 01</span>
+                            <div class="text-white font-heading text-sm flex items-center justify-between">
+                                <span>Chuẩn bị trang bị</span>
+                                <i class="fas fa-arrow-right text-gray-600 group-hover:text-cyber-blue"></i>
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-800 bg-panel-blue/60 p-4 relative group hover:border-cyber-blue transition">
+                            <span class="text-[10px] font-mono text-cyber-blue block mb-1">STAGE 02</span>
+                            <div class="text-white font-heading text-sm flex items-center justify-between">
+                                <span>Triển khai vào bản đồ</span>
+                                <i class="fas fa-arrow-right text-gray-600 group-hover:text-cyber-blue"></i>
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-800 bg-panel-blue/60 p-4 relative group hover:border-cyber-blue transition">
+                            <span class="text-[10px] font-mono text-cyber-blue block mb-1">STAGE 03</span>
+                            <div class="text-white font-heading text-sm flex items-center justify-between">
+                                <span>Khám phá</span>
+                                <i class="fas fa-arrow-right text-gray-600 group-hover:text-cyber-blue"></i>
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-800 bg-panel-blue/60 p-4 relative group hover:border-alert-red transition">
+                            <span class="text-[10px] font-mono text-alert-red block mb-1">STAGE 04</span>
+                            <div class="text-white font-heading text-sm flex items-center justify-between">
+                                <span>Chiến đấu</span>
+                                <i class="fas fa-arrow-right text-gray-600 group-hover:text-alert-red"></i>
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-800 bg-panel-blue/60 p-4 relative group hover:border-neon-lime transition">
+                            <span class="text-[10px] font-mono text-neon-lime block mb-1">STAGE 05</span>
+                            <div class="text-white font-heading text-sm flex items-center justify-between">
+                                <span>Thu thập loot</span>
+                                <i class="fas fa-arrow-right text-gray-600 group-hover:text-neon-lime"></i>
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-800 bg-panel-blue/60 p-4 relative group hover:border-neon-lime transition">
+                            <span class="text-[10px] font-mono text-neon-lime block mb-1">STAGE 06</span>
+                            <div class="text-white font-heading text-sm flex items-center justify-between">
+                                <span>Hoàn thành nhiệm vụ</span>
+                                <i class="fas fa-arrow-right text-gray-600 group-hover:text-neon-lime"></i>
+                            </div>
+                        </div>
+
+                        <div class="border border-alert-red/50 bg-alert-red/5 p-4 relative group hover:border-alert-red transition">
+                            <span class="text-[10px] font-mono text-alert-red block mb-1">STAGE 07 // DECISION POINT</span>
+                            <div class="text-white font-heading text-sm flex items-center justify-between">
+                                <span>Quyết định tiếp tục hoặc rút lui</span>
+                                <i class="fas fa-code-branch text-alert-red"></i>
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-800 bg-panel-blue/60 p-4 relative group hover:border-neon-lime transition">
+                            <span class="text-[10px] font-mono text-neon-lime block mb-1">STAGE 08</span>
+                            <div class="text-white font-heading text-sm flex items-center justify-between">
+                                <span>Nhận thành quả</span>
+                                <i class="fas fa-arrow-right text-gray-600 group-hover:text-neon-lime"></i>
+                            </div>
+                        </div>
+
+                        <div class="border border-neon-lime/50 bg-neon-lime/5 p-4 relative group hover:border-neon-lime transition">
+                            <span class="text-[10px] font-mono text-neon-lime block mb-1">STAGE 09 // LOOP</span>
+                            <div class="text-white font-heading text-sm flex items-center justify-between">
+                                <span>Chuẩn bị lượt chơi tiếp theo</span>
+                                <i class="fas fa-rotate text-neon-lime"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Điểm nhấn chiến thuật + Hình ảnh minh họa giữa nội dung -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                    <div class="lg:col-span-7 bg-black/50 p-6 border-l-4 border-neon-lime">
+                        <h4 class="text-neon-lime text-sm mb-2 flex items-center gap-2">
+                            <i class="fas fa-scale-balanced"></i>
+                            <span>RISK VS. REWARD</span>
+                        </h4>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            Mỗi chuyến thám hiểm đặt người chơi trước sự lựa chọn giữa việc tiếp tục tìm kiếm phần thưởng có giá trị cao và rút lui để bảo toàn những gì đã thu thập được.
+                        </p>
+                    </div>
+                    <div class="lg:col-span-5 relative group overflow-hidden border border-gray-800">
+                        <img src="core.jpg" onerror="this.src='https://placehold.co/600x320/0a0f18/ccff00?text=Extraction+Loop+Zone'" alt="Tau Ceti IV Zone" class="w-full h-44 object-cover filter contrast-125 group-hover:scale-105 transition duration-500">
+                        <div class="absolute bottom-0 inset-x-0 bg-black/80 px-3 py-1.5 text-[10px] font-mono text-cyber-blue flex justify-between border-t border-gray-800">
+                            <span class="text-neon-lime">EXTRACTION_ACTIVE</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 2. PLAYER MOVEMENT ================= -->
+        <section id="player-movement" class="mb-20">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[02]</span>
+                    <span>PLAYER MOVEMENT – HỆ THỐNG DI CHUYỂN</span>
+                </h2>
+                <span class="text-xs font-mono text-cyber-blue border border-cyber-blue/40 bg-cyber-blue/10 px-3 py-1">
+                    VIEW: FIRST-PERSON 3D ENVIRONMENT
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    
+                    <!-- Cột nội dung di chuyển -->
+                    <div class="lg:col-span-7">
+                        <p class="text-gray-200 text-sm md:text-base leading-relaxed mb-6">
+                            Người chơi điều khiển Runner trong <span class="text-cyber-blue font-bold">môi trường 3D với góc nhìn thứ nhất</span>.
+                        </p>
+
+                        <h3 class="text-sm text-neon-lime mb-4 tracking-wider">CÁC HOẠT ĐỘNG DI CHUYỂN CHÍNH:</h3>
+                        <ul class="space-y-3 mb-6 text-sm text-gray-300">
+                            <li class="flex items-start gap-3 bg-black/40 p-3 border border-gray-800/80 hover:border-cyber-blue transition">
+                                <i class="fas fa-location-arrow text-cyber-blue mt-1 text-xs"></i>
+                                <span>Di chuyển qua các khu vực trên bản đồ.</span>
+                            </li>
+                            <li class="flex items-start gap-3 bg-black/40 p-3 border border-gray-800/80 hover:border-cyber-blue transition">
+                                <i class="fas fa-eye text-cyber-blue mt-1 text-xs"></i>
+                                <span>Quan sát môi trường và xác định hướng đi.</span>
+                            </li>
+                            <li class="flex items-start gap-3 bg-black/40 p-3 border border-gray-800/80 hover:border-cyber-blue transition">
+                                <i class="fas fa-mountain-city text-cyber-blue mt-1 text-xs"></i>
+                                <span>Sử dụng địa hình và công trình để lựa chọn tuyến đường.</span>
+                            </li>
+                            <li class="flex items-start gap-3 bg-black/40 p-3 border border-gray-800/80 hover:border-cyber-blue transition">
+                                <i class="fas fa-map-pin text-cyber-blue mt-1 text-xs"></i>
+                                <span>Tiếp cận khu vực nhiệm vụ và điểm chứa tài nguyên.</span>
+                            </li>
+                            <li class="flex items-start gap-3 bg-black/40 p-3 border border-gray-800/80 hover:border-cyber-blue transition">
+                                <i class="fas fa-crosshairs text-cyber-blue mt-1 text-xs"></i>
+                                <span>Điều chỉnh vị trí trong giao tranh.</span>
+                            </li>
+                            <li class="flex items-start gap-3 bg-black/40 p-3 border border-gray-800/80 hover:border-cyber-blue transition">
+                                <i class="fas fa-helicopter-symbol text-cyber-blue mt-1 text-xs"></i>
+                                <span>Di chuyển đến điểm extraction khi cần rút lui.</span>
+                            </li>
+                        </ul>
+
+                        <div class="bg-cyber-blue/10 border-l-4 border-cyber-blue p-4 text-xs md:text-sm text-gray-200 leading-relaxed">
+                            <span class="text-cyber-blue font-bold mr-1">→</span> Di chuyển có vai trò quan trọng trong việc kiểm soát khoảng cách với đối thủ, khám phá tài nguyên và tránh những tình huống bất lợi.
+                        </div>
+                    </div>
+
+                    <!-- Cột hình ảnh minh họa địa hình & di chuyển -->
+                    <div class="lg:col-span-5 flex flex-col gap-4">
+                        <div class="relative overflow-hidden border border-gray-800 group">
+                            <img src="core1.jpg" onerror="this.src='https://placehold.co/600x400/0a0f18/00d0ff?text=3D+Terrain+Navigation'" alt="Terrain Navigation" class="w-full h-56 object-cover group-hover:scale-105 transition duration-500">
+                            <div class="absolute bottom-0 inset-x-0 bg-black/85 p-2.5 text-[10px] font-mono text-cyber-blue border-t border-gray-800 flex justify-between">
+                                <span>FIG 2.1 </span>
+                            </div>
+                        </div>
+                        <div class="relative overflow-hidden border border-gray-800 group">
+                            <img src="core2.jpg" onerror="this.src='https://placehold.co/600x400/0a0f18/ccff00?text=Extraction+Point+Approach'" alt="Extraction Approach" class="w-full h-56 object-cover group-hover:scale-105 transition duration-500">
+                            <div class="absolute bottom-0 inset-x-0 bg-black/85 p-2.5 text-[10px] font-mono text-neon-lime border-t border-gray-800 flex justify-between">
+                                <span>FIG 2.2 </span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 3. RUNNER SHELL SYSTEM ================= -->
+        <section id="runner-shell-system" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[03]</span>
+                    <span>RUNNER SHELL SYSTEM – HỆ THỐNG NHÂN VẬT</span>
+                </h2>
+                <span class="text-xs font-mono text-neon-lime border border-neon-lime/40 bg-neon-lime/10 px-3 py-1">
+                    SYSTEM: MODULAR CYBERNETIC SHELLS
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mb-10">
+                    
+                    <!-- Minh họa Runner Shell bên trái -->
+                    <div class="lg:col-span-4 bg-black border border-gray-800 p-4 relative overflow-hidden group">
+                        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-neon-lime/15 to-transparent pointer-events-none"></div>
+                        <img src="openrecon.png" onerror="this.src='https://placehold.co/450x550/0a0f18/ccff00?text=Runner+Shell+Chassis'" alt="Runner Shell" class="w-full h-80 object-cover filter contrast-125 group-hover:scale-105 transition duration-500">
+                        <div class="absolute top-3 left-3 bg-black/80 border border-neon-lime px-2 py-0.5 text-[10px] font-mono text-neon-lime">
+                            SHELL_UNIT // RECON
+                        </div>
+                        <div class="mt-3 pt-2 border-t border-gray-800 text-[10px] font-mono text-gray-400 flex justify-between">
+                            <span>NEURAL_UPLINK: STABLE</span>
+                            <span class="text-cyber-blue">READY</span>
+                        </div>
+                    </div>
+
+                    <!-- Nội dung chi tiết Hệ thống nhân vật bên phải -->
+                    <div class="lg:col-span-8">
+                        <p class="text-gray-200 text-sm md:text-base leading-relaxed mb-4">
+                            <strong class="text-neon-lime">Runner Shell</strong> là các cơ thể nhân tạo mà người chơi sử dụng để tham gia trận đấu. Mỗi loại Shell có năng lực và đặc điểm riêng, tạo nên những phong cách gameplay khác nhau.
+                        </p>
+                        <p class="text-gray-300 text-sm md:text-base leading-relaxed mb-6">
+                            Hệ thống này cho phép người chơi lựa chọn cách tiếp cận dựa trên vai trò và sở thích.
+                        </p>
+
+                        <h3 class="text-sm text-cyber-blue mb-4 tracking-wider">CÁC YẾU TỐ GAMEPLAY:</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                            <div class="bg-black/60 border border-gray-800 p-4 hover:border-neon-lime transition">
+                                <div class="text-[10px] text-neon-lime font-mono mb-1">FACTOR // 01</div>
+                                <p class="text-xs md:text-sm text-white">Năng lực đặc trưng của từng Shell.</p>
+                            </div>
+                            <div class="bg-black/60 border border-gray-800 p-4 hover:border-cyber-blue transition">
+                                <div class="text-[10px] text-cyber-blue font-mono mb-1">FACTOR // 02</div>
+                                <p class="text-xs md:text-sm text-white">Khả năng hỗ trợ bản thân hoặc đồng đội.</p>
+                            </div>
+                            <div class="bg-black/60 border border-gray-800 p-4 hover:border-cyber-blue transition">
+                                <div class="text-[10px] text-cyber-blue font-mono mb-1">FACTOR // 03</div>
+                                <p class="text-xs md:text-sm text-white">Sự kết hợp giữa Shell, vũ khí và trang bị.</p>
+                            </div>
+                            <div class="bg-black/60 border border-gray-800 p-4 hover:border-neon-lime transition">
+                                <div class="text-[10px] text-neon-lime font-mono mb-1">FACTOR // 04</div>
+                                <p class="text-xs md:text-sm text-white">Lựa chọn chiến thuật phù hợp với mục tiêu chuyến đi.</p>
+                            </div>
+                        </div>
+
+                        <p class="text-gray-300 text-sm leading-relaxed border-l-2 border-neon-lime pl-4">
+                            Việc lựa chọn Shell ảnh hưởng đến cách người chơi khám phá, chiến đấu và phối hợp với nhóm.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- ================= 3.1 TỔNG QUAN VỀ CÁC SHELL TRONG GAME (BUTTON DẪN ĐẾN Characters.html) ================= -->
+                <div id="shells-overview" class="mt-8 pt-8 border-t border-gray-800">
+                    <div class="bg-black/75 border border-neon-lime/60 p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-[0_0_25px_rgba(204,255,0,0.1)]">
+                        <div>
+                            <div class="flex items-center gap-2 text-xs font-mono text-neon-lime mb-2">
+                                <i class="fas fa-folder-tree"></i>
+                                <span>SUB-MODULE // 3.1 DATABASE LINK</span>
+                            </div>
+                            <h3 class="text-xl md:text-2xl text-white mb-2">
+                                3.1 TỔNG QUAN VỀ CÁC SHELL TRONG GAME
+                            </h3>
+                            <p class="text-xs md:text-sm text-gray-400 max-w-2xl">
+                                Truy cập hồ sơ dữ liệu chi tiết về thông số kỹ thuật, bộ kỹ năng riêng biệt và vai trò chiến thuật của từng lớp Runner Shell trong Marathon.
+                            </p>
+                        </div>
+
+                        <a href="Characters.html" class="cyber-btn !py-3.5 !px-7 !text-xs shrink-0">
+                            <span>TRUY CẬP HỒ SƠ NHÂN VẬT</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Bottom Navigation Footer -->
+        <footer class="mt-16 pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="main.html#mechanics" class="cyber-btn">
+                <i class="fas fa-chevron-left"></i>
+                <span>QUAY VỀ MỤC 03 TRÊN TRANG CHÍNH</span>
+            </a>
+            <div class="text-xs font-mono text-gray-500">
+                SQUAD: <span class="text-neon-lime">CUTES1TG</span> // MARATHON 2026 GDD
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Hiệu ứng Glitch khi click giống trang main.html
+        document.body.addEventListener('click', (e) => {
+            if (e.target.closest('a') || e.target.closest('button')) return;
+
+            document.body.classList.add('glitch-effect');
+            setTimeout(() => {
+                document.body.classList.remove('glitch-effect');
+            }, 300);
+        });
+    </script>
+</body>
+</html>

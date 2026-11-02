@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Style - Phong Cách Mỹ Thuật Tổng Thể (Graphic Realism) | Marathon GDD - CUTES1TG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Liên kết tới file CSS dùng chung -->
+    <link rel="stylesheet" href="style.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Orbitron', 'sans-serif'],
+                        mono: ['Share Tech Mono', 'monospace'],
+                    },
+                    colors: {
+                        'deep-blue': '#0a0f18',
+                        'panel-blue': '#121a28',
+                        'neon-lime': '#ccff00',
+                        'alert-red': '#ff3333',
+                        'cyber-blue': '#00d0ff'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Scanline Overlay -->
+    <div class="scanline"></div>
+
+    <!-- ================= MODAL PHÓNG TO ẢNH (VISUAL INSPECTOR) ================= -->
+    <div id="inspect-modal" class="fixed inset-0 z-[9999] hidden items-center justify-center bg-black/85 backdrop-blur-md p-4">
+        <div class="terminal-panel max-w-5xl w-full p-6 md:p-8 border border-neon-lime shadow-[0_0_50px_rgba(204,255,0,0.25)] relative">
+            <button onclick="closeInspectModal()" class="absolute top-4 right-4 text-gray-400 hover:text-alert-red font-mono text-xs border border-gray-700 hover:border-alert-red px-3 py-1 transition">
+                [ X ] ĐÓNG
+            </button>
+            <div class="text-xs font-mono text-cyber-blue mb-1" id="modal-category">GRAPHIC REALISM // VISUAL REFERENCE</div>
+            <h3 class="text-xl md:text-2xl text-white font-heading mb-4" id="modal-title">IMAGE PREVIEW</h3>
+            
+            <div class="bg-black border border-gray-800 p-3 flex items-center justify-center max-h-[520px] mb-4 relative overflow-hidden">
+                <img id="modal-img" src="" alt="Inspect Visual" class="max-h-[480px] w-auto object-contain">
+            </div>
+
+            <div class="bg-black/70 border-l-2 border-neon-lime p-3 text-xs font-mono text-gray-300" id="modal-desc"></div>
+        </div>
+    </div>
+
+    <!-- ================= TOP BAR / HEADER ================= -->
+    <header class="sticky top-0 z-50 bg-panel-blue/95 backdrop-blur-md border-b border-gray-800 px-6 py-4 shadow-lg">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <a href="main.html#art-sound" class="cyber-btn !py-2 !px-4">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>QUAY LẠI TRANG CHÍNH</span>
+                </a>
+                <div class="hidden md:block h-6 w-px bg-gray-700"></div>
+                <div class="hidden md:block">
+                    <span class="text-[10px] text-cyber-blue font-mono block tracking-widest">SECTION 05 // PRIMARY ART DIRECTION</span>
+                    <span class="text-xs text-white font-heading font-bold tracking-wider">OVERALL ART STYLE & GRAPHIC REALISM</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 text-[11px] font-mono">
+                <span class="text-gray-400">DIRECTION: <strong class="text-neon-lime">GRAPHIC REALISM</strong></span>
+                <span class="text-gray-600">|</span>
+                <span class="text-gray-400">PARADOX: <strong class="text-cyber-blue">3D LOW-POLY NEON VS. ORGANIC</strong></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-neon-lime animate-pulse"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= MAIN LAYOUT ================= -->
+    <div class="flex-1 max-w-6xl w-full mx-auto p-6 md:p-12 lg:p-16">
+
+        <!-- Page Title Banner -->
+        <div class="mb-12 border-b border-gray-800 pb-6 relative">
+            <div class="flex items-center gap-2 text-xs text-cyber-blue font-mono mb-2 tracking-widest">
+                <i class="fas fa-eye"></i>
+                <span>ART DIRECTION // MASTER OVERVIEW // GRAPHIC REALISM</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl text-white font-black tracking-wider mb-3">
+                PHONG CÁCH MỸ THUẬT TỔNG THỂ CỦA <span class="text-neon-lime">MARATHON</span>
+            </h1>
+            <p class="text-sm text-gray-400 max-w-3xl leading-relaxed">
+                Phân tích triết lý thị giác cốt lõi của Marathon: sự đối lập có chủ đích giữa các cấu trúc nhân tạo mang hình khối cơ bản, màu sắc Neon rực rỡ với thiên nhiên chân thực và thế giới hậu tận thế khoa học viễn tưởng.
+            </p>
+        </div>
+
+        <!-- ================= MỤC 1: ẤN TƯỢNG THỊ GIÁC CHUNG CỦA TRÒ CHƠI ================= -->
+        <section id="visual-impression" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[1]</span>
+                    <span>ẤN TƯỢNG THỊ GIÁC CHUNG CỦA TRÒ CHƠI</span>
+                </h2>
+                <span class="text-xs font-mono text-neon-lime border border-neon-lime/40 bg-neon-lime/10 px-3 py-1">
+                    VISUAL PARADOX & FOCAL GUIDANCE
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 border-l-4 border-l-neon-lime">
+                <!-- Nội dung văn bản gốc -->
+                <div class="space-y-4 text-gray-200 text-sm md:text-base leading-relaxed mb-8">
+                    <p>
+                        <strong class="text-white">Marathon</strong> sử dụng phong cách đồ họa <span class="text-neon-lime font-bold">3D low poly</span> cùng <span class="text-neon-lime font-bold">palette màu neon chói rực</span> cho những thành phần nhân tạo như kiến trúc, vũ khí, vật phẩm… đồng thời dùng <span class="text-cyber-blue font-bold">đồ họa chân thực</span> cho những thành phần thuộc về thiên nhiên và hữu cơ như đất đá, rong rêu, cây cối…. Điều này tạo ra một <strong class="text-white">nghịch lý về thị giác</strong>, tăng tính tương phản giúp điều hướng góc nhìn của người chơi chú ý đến những điểm nóng trong bản đồ một cách tự nhiên.
+                    </p>
+                    <p>
+                        Sự kết hợp giữa khoa học viễn tưởng, công nghệ tương lai và dấu vết đổ nát tạo cảm giác vừa hiện đại nhưng cũng đậm chất hậu tận thế. Phong cách hình ảnh này đã tạo nên bản sắc riêng cho game.
+                    </p>
+                </div>
+
+                <!-- Sơ đồ đối chiếu Nghịch lý Thị giác (Visual Paradox Breakdown) -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                    <div class="bg-black/60 border border-neon-lime/50 p-5">
+                        <div class="flex items-center justify-between text-[10px] font-mono text-neon-lime mb-2">
+                            <span>ARTIFICIAL ELEMENTS // NHÂN TẠO</span>
+                            <i class="fas fa-cubes"></i>
+                        </div>
+                        <h3 class="text-sm text-white font-heading mb-1.5">3D LOW-POLY & NEON RỰC RỠ</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            Áp dụng cho kiến trúc, vũ khí, vật phẩm với khối kỷ hà sắc nét và màu Neon chói rực nổi bật trên nền tối.
+                        </p>
+                    </div>
+
+                    <div class="bg-black/60 border border-cyber-blue/50 p-5">
+                        <div class="flex items-center justify-between text-[10px] font-mono text-cyber-blue mb-2">
+                            <span>NATURAL & ORGANIC // HỮU CƠ</span>
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <h3 class="text-sm text-white font-heading mb-1.5">ĐỒ HỌA CHÂN THỰC & HẬU TẬN THẾ</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            Áp dụng cho đất đá, rong rêu, cây cối và dấu vết đổ nát, tạo chiều sâu sinh học chân thực cho hành tinh Tau Ceti IV.
+                        </p>
+                    </div>
+
+                    <div class="bg-black/60 border border-purple-400/50 p-5">
+                        <div class="flex items-center justify-between text-[10px] font-mono text-purple-400 mb-2">
+                            <span>GAMEPLAY IMPACT // ĐIỀU HƯỚNG</span>
+                            <i class="fas fa-crosshairs"></i>
+                        </div>
+                        <h3 class="text-sm text-white font-heading mb-1.5">ĐIỀU HƯỚNG ĐIỂM NÓNG TỰ NHIÊN</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            Nghịch lý thị giác tạo độ tương phản cực đại, tự động dẫn dắt mắt người chơi tập trung vào các điểm nóng (hotspots) và vật phẩm.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- KHUNG ẢNH 1 -->
+                <div class="bg-black border border-gray-800 p-4 relative group overflow-hidden cursor-pointer"
+                     onclick="openInspectModal('Ấn tượng thị giác chung của Marathon (Ảnh 1)', 'SECTION 1 // VISUAL PARADOX', 'Sự tương phản giữa thành phần nhân tạo (3D Low-Poly & màu Neon chói rực) và môi trường tự nhiên hữu cơ chân thực.', this.querySelector('img').src)">
+                    <div class="flex items-center justify-between text-[11px] font-mono text-gray-400 mb-3 pb-2 border-b border-gray-800">
+                        <span><i class="fas fa-image text-neon-lime mr-2"></i>VISUAL REFERENCE // ẢNH 1: ẤN TƯỢNG THỊ GIÁC CHUNG & ĐỐI LẬP MÔI TRƯỜNG</span>
+                        <span class="text-cyber-blue group-hover:text-neon-lime transition">FILE: gr1.png [ CLICK ZOOM ]</span>
+                    </div>
+                    <div class="overflow-hidden border border-gray-800/80 bg-deep-blue">
+                        <img src="gr1.png" 
+                             onerror="if(!this.dataset.triedAlt){this.dataset.triedAlt='1';this.src='anh1.png';}else{this.onerror=null;this.src='https://placehold.co/1200x650/0a0f18/ccff00?text=ANH+1:+AN+TUONG+THI+GIAC+CHUNG+(gr1.png+/+anh1.png)';}" 
+                             alt="Ảnh 1 - Ấn tượng thị giác chung của trò chơi" 
+                             class="w-full max-h-[520px] object-cover group-hover:scale-[1.02] transition duration-500">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MỤC 2.1: PHÂN TÍCH HÌNH DÁNG VŨ KHÍ VÀ CÁC CHI TIẾT CƠ KHÍ ================= -->
+        <section id="weapon-shapes-mechanics" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[2.1]</span>
+                    <span>PHÂN TÍCH HÌNH DÁNG VŨ KHÍ VÀ CÁC CHI TIẾT CƠ KHÍ</span>
+                </h2>
+                <a href="art-weapons.html" class="cyber-btn !py-1.5 !px-3.5 !text-xs">
+                    <i class="fas fa-gun"></i>
+                    <span>MỞ HỒ SƠ 28 VŨ KHÍ CHI TIẾT</span>
+                </a>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 border-l-4 border-l-cyber-blue">
+                <!-- KHUNG ẢNH 2 (Đặt ngay đầu mục 2.1 theo đúng bố cục tài liệu) -->
+                <div class="bg-black border border-gray-800 p-4 relative group overflow-hidden cursor-pointer mb-8"
+                     onclick="openInspectModal('Phân tích hình dáng vũ khí & Chi tiết cơ khí (Ảnh 2)', 'SECTION 2.1 // WEAPON GEOMETRY', 'Vũ khí được trừu tượng hóa bằng các khối vuông, hình lăng trụ kết hợp màu sắc rực rỡ đối lập với súng ngoài đời thực.', this.querySelector('img').src)">
+                    <div class="flex items-center justify-between text-[11px] font-mono text-gray-400 mb-3 pb-2 border-b border-gray-800">
+                        <span><i class="fas fa-image text-cyber-blue mr-2"></i>VISUAL REFERENCE // ẢNH 2: TRỪU TƯỢNG HÓA HÌNH HỌC & MÀU SẮC VŨ KHÍ</span>
+                        <span class="text-cyber-blue group-hover:text-neon-lime transition">FILE: gr2.png [ CLICK ZOOM ]</span>
+                    </div>
+                    <div class="overflow-hidden border border-gray-800/80 bg-deep-blue">
+                        <img src="gr2.png" 
+                             onerror="if(!this.dataset.triedAlt){this.dataset.triedAlt='1';this.src='anh2.png';}else{this.onerror=null;this.src='https://placehold.co/1200x650/0a0f18/00d0ff?text=ANH+2:+HINH+DANG+VU+KHI+VA+CHI+TIET+CO+KHI+(gr2.png+/+anh2.png)';}" 
+                             alt="Ảnh 2 - Phân tích hình dáng vũ khí và các chi tiết cơ khí" 
+                             class="w-full max-h-[520px] object-cover group-hover:scale-[1.02] transition duration-500">
+                    </div>
+                </div>
+
+                <!-- Nội dung văn bản gốc 2.1 -->
+                <p class="text-gray-200 text-sm md:text-base leading-relaxed mb-8">
+                    Những vũ khí được trừu tượng hóa bằng những hình học cơ bản như <strong class="text-white">khối vuông, hình lăng trụ…</strong> nhưng vẫn giữ được những nét quen thuộc riêng chỉ vừa đủ để người chơi có thể phân biệt thuộc tính. Có thể thấy như <span class="text-neon-lime font-bold">Twin Tap HBR</span> được lấy cảm hứng từ <strong class="text-white">M16</strong> hay <span class="text-cyber-blue font-bold">Magnum MC</span> được lấy cảm hứng từ <strong class="text-white">Magnum 44</strong> ngoài đời thực. Những khẩu súng cũng sử dụng những màu sắc rực rỡ, nổi bật, gần như đối lập với ví dụ ngoài đời thực. Cách làm này khiến người chơi một cảm giác <strong class="text-neon-lime">hoài niệm, vừa quen thuộc vừa lạ lẫm</strong>.
+                </p>
+
+                <!-- Bảng đối chiếu Cảm hứng Thực tế vs. Trừu tượng hóa trong Marathon -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-black/60 border border-gray-800 hover:border-neon-lime p-5 transition">
+                        <div class="flex items-center justify-between text-[10px] font-mono text-neon-lime mb-2">
+                            <span>CASE STUDY 01 // ASSAULT RIFLE ARCHETYPE</span>
+                            <span>M16 ➔ TWIN TAP HBR</span>
+                        </div>
+                        <h3 class="text-base text-white font-heading mb-2">TWIN TAP HBR (CẢM HỨNG TỪ M16)</h3>
+                        <p class="text-xs text-gray-300 leading-relaxed">
+                            Giữ lại tỷ lệ thân súng trường tấn công và cụm tay xách/ống ngắm quen thuộc của M16, nhưng toàn bộ ốp lót tay và thân súng được gọt phẳng thành các khối lăng trụ vuông vức phối màu sơn công nghiệp nổi bật.
+                        </p>
+                    </div>
+
+                    <div class="bg-black/60 border border-gray-800 hover:border-cyber-blue p-5 transition">
+                        <div class="flex items-center justify-between text-[10px] font-mono text-cyber-blue mb-2">
+                            <span>CASE STUDY 02 // HEAVY HANDGUN ARCHETYPE</span>
+                            <span>MAGNUM .44 ➔ MAGNUM MC</span>
+                        </div>
+                        <h3 class="text-base text-white font-heading mb-2">MAGNUM MC (CẢM HỨNG TỪ MAGNUM 44)</h3>
+                        <p class="text-xs text-gray-300 leading-relaxed">
+                            Kế thừa phom dáng nòng dài uy lực của súng lục Magnum .44 cổ điển, tái cấu trúc bằng khối hộp kim loại góc cạnh và màu sắc tương phản cao, mang lại cảm giác vừa hoài cổ vừa đậm chất tương lai.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MỤC 2.2: CÁCH THIẾT KẾ NHÂN VẬT THỂ HIỆN CHỨC NĂNG, CÁ TÍNH & CÂU CHUYỆN ================= -->
+        <section id="character-design-philosophy" class="mb-20">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[2.2]</span>
+                    <span>THIẾT KẾ NHÂN VẬT: CHỨC NĂNG, CÁ TÍNH & CÂU CHUYỆN</span>
+                </h2>
+                <a href="characters.html" class="cyber-btn !py-1.5 !px-3.5 !text-xs">
+                    <i class="fas fa-user-astronaut"></i>
+                    <span>XEM HỒ SƠ 7 RUNNER SHELLS</span>
+                </a>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 border-l-4 border-l-alert-red">
+                <!-- Nội dung văn bản gốc 2.2 -->
+                <div class="space-y-4 text-gray-200 text-sm md:text-base leading-relaxed mb-8">
+                    <p>
+                        Các nhân vật, cũng như vũ khí và kiến trúc nhân tạo trong game, sử dụng phong cách thiết kế <strong class="text-neon-lime">3D low poly</strong> khái quát hóa nhiều chi tiết trên cơ thể thành những hình khối cơ bản (<strong class="text-white">khối hộp, khối lăng trụ,...</strong>). Bề mặt cơ thể chất liệu <span class="text-cyber-blue font-bold">nhựa sáng bóng</span> tạo cảm giác nhân tạo. Tuy nhiên những nhân vật này vẫn có những đặc điểm có thể nhận dạng là con người như <strong class="text-white">khuôn mặt, chân, tay chân thực</strong>.
+                    </p>
+                    <p>
+                        Nhân vật được thiết kế cùng với <strong class="text-neon-lime">gam màu tươi sáng như mô hình đồ chơi</strong> nhưng lại <strong class="text-white">chuyển động giống con người</strong>. Điều này khiến nhân vật trở nên vô hồn, máy móc, đóng góp vào bối cảnh của thế giới game tương lai khoa học tiên tiến khi con người phải sống trong vỏ bọc của robot. Từ đó, người chơi không chỉ được tự do khai phá các chức năng mới lạ trong các nhân dạng, đồng thời trải nghiệm cảm giác bom tấn. Bên cạnh đấy, lối thiết kế này cũng kể một câu chuyện về <span class="text-alert-red font-bold">sự phát triển vượt bậc của công nghệ và sự đánh mất nhân tính của con người</span>.
+                    </p>
+                </div>
+
+                <!-- 3 Trụ cột Tạo hình Nhân vật (Biomata Aesthetic Pillars) -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+                    <div class="bg-black/65 border border-gray-800 p-5">
+                        <div class="text-[10px] font-mono text-cyber-blue mb-2 flex items-center justify-between">
+                            <span>PILLAR 01 // FORM & MATERIAL</span>
+                            <i class="fas fa-cube"></i>
+                        </div>
+                        <h3 class="text-sm text-white font-heading mb-2">KHỐI HÌNH HỌC & NHỰA BÓNG</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            Cơ thể được khái quát hóa thành khối hộp, khối lăng trụ với lớp vỏ nhựa sáng bóng nhân tạo, đan xen các nét giải phẫu người chân thực ở gương mặt và tứ chi.
+                        </p>
+                    </div>
+
+                    <div class="bg-black/65 border border-gray-800 p-5">
+                        <div class="text-[10px] font-mono text-neon-lime mb-2 flex items-center justify-between">
+                            <span>PILLAR 02 // UNCANNY CONTRAST</span>
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3 class="text-sm text-white font-heading mb-2">MÀU ĐỒ CHƠI VS. CHUYỂN ĐỘNG NGƯỜI</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            Khoác gam màu tươi sáng như mô hình đồ chơi (Action Figure) nhưng mang chuyển động sinh học của con người, tạo cảm giác lạnh lùng, vô hồn và máy móc.
+                        </p>
+                    </div>
+
+                    <div class="bg-black/65 border border-gray-800 p-5">
+                        <div class="text-[10px] font-mono text-alert-red mb-2 flex items-center justify-between">
+                            <span>PILLAR 03 // NARRATIVE MEANING</span>
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3 class="text-sm text-white font-heading mb-2">CÂU CHUYỆN ĐÁNH MẤT NHÂN TÍNH</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            Phản ánh trực tiếp bi kịch cốt truyện: khi công nghệ phát triển vượt bậc, ý thức con người bị đóng khung trong vỏ bọc robot, dần đánh mất bản원 nhân tính.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Nút điều hướng nhanh sang trang Hồ sơ chi tiết 7 Nhân vật -->
+                <div class="bg-panel-blue/90 border border-cyber-blue/40 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                        <span class="text-[10px] font-mono text-neon-lime block">DEEP-DIVE ARCHIVE // SECTION 2.2.1 → 2.2.7</span>
+                        <h4 class="text-sm md:text-base text-white font-heading">KHÁM PHÁ CHI TIẾT NGOẠI HÌNH & CHỨC NĂNG CỦA TỪNG RUNNER SHELL</h4>
+                        <p class="text-xs text-gray-400 mt-0.5">Xem phân tích chi tiết cho Vandal, Recon, Triage, Assassin, Thief, Sentinel và Destroyer.</p>
+                    </div>
+                    <a href="characters.html" class="cyber-btn shrink-0">
+                        <span>MỞ TRANG CHARACTERS</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= HỆ THỐNG ĐIỀU HƯỚNG 5 THƯ MỤC CON CỦA GRAPHIC REALISM ================= -->
+        <section id="graphic-realism-submodules" class="mb-12">
+            <div class="terminal-panel p-6 md:p-8 border-t-2 border-t-cyber-blue">
+                <div class="flex items-center justify-between border-b border-gray-800 pb-4 mb-6">
+                    <div>
+                        <span class="text-[10px] text-neon-lime font-mono uppercase tracking-widest">GRAPHIC REALISM SUB-TREE // 5 MODULES</span>
+                        <h3 class="text-xl text-white mt-1">TRUY CẬP CÁC CHUYÊN ĐỀ CON CỦA GRAPHIC REALISM</h3>
+                    </div>
+                    <i class="fas fa-sitemap text-cyber-blue text-xl"></i>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                    <div class="bg-black/60 border border-gray-800 hover:border-neon-lime p-4 flex flex-col justify-between transition">
+                        <div>
+                            <span class="text-[10px] text-cyber-blue font-mono">GR // 01</span>
+                            <h4 class="text-sm text-white mt-1 mb-2">COLOR PALETTE</h4>
+                            <p class="text-[11px] text-gray-400 mb-4">Bảng màu High-Contrast Acid & Hệ thống 5 Font chữ.</p>
+                        </div>
+                        <a href="art-color-palette.html" class="cyber-btn w-full !text-[10px] !py-2">TRUY CẬP</a>
+                    </div>
+
+                    <div class="bg-black/60 border border-gray-800 hover:border-neon-lime p-4 flex flex-col justify-between transition">
+                        <div>
+                            <span class="text-[10px] text-cyber-blue font-mono">GR // 02</span>
+                            <h4 class="text-sm text-white mt-1 mb-2">WORLD SETTING</h4>
+                            <p class="text-[11px] text-gray-400 mb-4">Thiết kế cảnh quan hành tinh và hệ sinh thái ngoại lai.</p>
+                        </div>
+                        <a href="art-world-setting.html" class="cyber-btn w-full !text-[10px] !py-2">TRUY CẬP</a>
+                    </div>
+
+                    <div class="bg-black/60 border border-gray-800 hover:border-neon-lime p-4 flex flex-col justify-between transition">
+                        <div>
+                            <span class="text-[10px] text-cyber-blue font-mono">GR // 03</span>
+                            <h4 class="text-sm text-white mt-1 mb-2">ENVIRONMENTAL ARCHITECTURE</h4>
+                            <p class="text-[11px] text-gray-400 mb-4">Kiến trúc công nghiệp Sci-Fi và tương quan tự nhiên.</p>
+                        </div>
+                        <a href="art-env-architecture.html" class="cyber-btn w-full !text-[10px] !py-2">TRUY CẬP</a>
+                    </div>
+
+                    <div class="bg-black/60 border border-gray-800 hover:border-neon-lime p-4 flex flex-col justify-between transition">
+                        <div>
+                            <span class="text-[10px] text-cyber-blue font-mono">GR // 04</span>
+                            <h4 class="text-sm text-white mt-1 mb-2">ENVIRONMENTAL STORYTELLING</h4>
+                            <p class="text-[11px] text-gray-400 mb-4">Kể chuyện qua hiện trường và dấu tích môi trường.</p>
+                        </div>
+                        <a href="art-env-storytelling.html" class="cyber-btn w-full !text-[10px] !py-2">TRUY CẬP</a>
+                    </div>
+
+                    <div class="bg-black/60 border border-gray-800 hover:border-neon-lime p-4 flex flex-col justify-between transition">
+                        <div>
+                            <span class="text-[10px] text-cyber-blue font-mono">GR // 05</span>
+                            <h4 class="text-sm text-white mt-1 mb-2">WEAPONS</h4>
+                            <p class="text-[11px] text-gray-400 mb-4">Kho 28 vũ khí mô-đun và thông số chi tiết.</p>
+                        </div>
+                        <a href="art-weapons.html" class="cyber-btn w-full !text-[10px] !py-2">TRUY CẬP</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom Navigation Footer -->
+        <footer class="mt-16 pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="main.html#art-sound" class="cyber-btn">
+                <i class="fas fa-chevron-left"></i>
+                <span>QUAY VỀ MỤC 05 TRÊN TRANG CHÍNH</span>
+            </a>
+            <div class="flex items-center gap-4">
+                <a href="art-color-palette.html" class="cyber-btn">
+                    <span>01. COLOR PALETTE & TYPOGRAPHY</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Modal Zoom
+        const inspectModal = document.getElementById('inspect-modal');
+        function openInspectModal(title, category, desc, imgSrc) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-category').innerText = category;
+            document.getElementById('modal-desc').innerText = desc;
+            document.getElementById('modal-img').src = imgSrc;
+            inspectModal.classList.remove('hidden');
+            inspectModal.classList.add('flex');
+        }
+        function closeInspectModal() {
+            inspectModal.classList.add('hidden');
+            inspectModal.classList.remove('flex');
+        }
+        inspectModal.addEventListener('click', (e) => {
+            if (e.target === inspectModal) closeInspectModal();
+        });
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeInspectModal();
+        });
+
+        // Hiệu ứng Glitch khi click giống trang main.html
+        document.body.addEventListener('click', (e) => {
+            if (e.target.closest('a') || e.target.closest('button') || e.target.closest('#inspect-modal')) return;
+
+            document.body.classList.add('glitch-effect');
+            setTimeout(() => {
+                document.body.classList.remove('glitch-effect');
+            }, 300);
+        });
+    </script>
+</body>
+</html>

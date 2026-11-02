@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Style - Kể chuyện qua môi trường (Environmental Storytelling) | Marathon GDD - CUTES1TG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Liên kết tới file CSS dùng chung -->
+    <link rel="stylesheet" href="style.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Orbitron', 'sans-serif'],
+                        mono: ['Share Tech Mono', 'monospace'],
+                    },
+                    colors: {
+                        'deep-blue': '#0a0f18',
+                        'panel-blue': '#121a28',
+                        'neon-lime': '#ccff00',
+                        'alert-red': '#ff3333',
+                        'cyber-blue': '#00d0ff'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Scanline Overlay -->
+    <div class="scanline"></div>
+
+    <!-- ================= TOP BAR / HEADER ================= -->
+    <header class="sticky top-0 z-50 bg-panel-blue/90 backdrop-blur-md border-b border-gray-800 px-6 py-4 shadow-lg">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <a href="main.html#art-sound" class="cyber-btn !py-2 !px-4">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>QUAY LẠI TRANG CHÍNH</span>
+                </a>
+                <div class="hidden md:block h-6 w-px bg-gray-700"></div>
+                <div class="hidden md:block">
+                    <span class="text-[10px] text-cyber-blue font-mono block tracking-widest">SECTION 05 // GRAPHIC REALISM</span>
+                    <span class="text-xs text-white font-heading font-bold tracking-wider">ENVIRONMENTAL STORYTELLING</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 text-[11px] font-mono">
+                <span class="text-gray-400">MODULE: <strong class="text-neon-lime">ENV_STORYTELLING</strong></span>
+                <span class="text-gray-600">|</span>
+                <span class="text-gray-400">NARRATIVE: <strong class="text-cyber-blue">ENVIRONMENTAL LORE</strong></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-neon-lime animate-pulse"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= MAIN LAYOUT ================= -->
+    <div class="flex-1 max-w-6xl w-full mx-auto p-6 md:p-12 lg:p-16">
+
+        <!-- Page Title Banner -->
+        <div class="mb-12 border-b border-gray-800 pb-6 relative">
+            <div class="flex items-center gap-2 text-xs text-cyber-blue font-mono mb-2 tracking-widest">
+                <i class="fas fa-book-atlas"></i>
+                <span>ART DIRECTION // GRAPHIC REALISM SUB-TREE</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl text-white font-black tracking-wider">
+                <span class="text-neon-lime">GR // 04.</span>ENVIRONMENTAL STORYTELLING (KỂ CHUYỆN QUA MÔI TRƯỜNG)
+            </h1>
+        </div>
+
+        <!-- ================= 1.1 KỂ CHUYỆN THÔNG QUA KIẾN TRÚC VÀ KHÔNG GIAN ================= -->
+        <section id="architecture-storytelling" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[1.1]</span>
+                    <span>KỂ CHUYỆN THÔNG QUA KIẾN TRÚC VÀ KHÔNG GIAN</span>
+                </h2>
+                <span class="text-xs font-mono text-neon-lime border border-neon-lime/40 bg-neon-lime/10 px-3 py-1">
+                    NARRATIVE ARCHITECTURE
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 mb-8 border-l-4 border-l-neon-lime">
+                <p class="text-gray-200 text-sm md:text-base leading-relaxed mb-6">
+                    Trong <strong class="text-white">MARATHON (2026)</strong>, kiến trúc không chỉ đóng vai trò tạo nên không gian gameplay mà còn phản ánh lịch sử và mục đích sử dụng của từng địa điểm. Các công trình công nghiệp, hành lang, phòng chức năng và khu vực bỏ hoang thể hiện dấu vết hoạt động của con người trên Tau Ceti IV. Tiêu biểu là <span class="text-cyber-blue font-bold">Cryo Archive</span> trên con tàu UESC Marathon, nơi cấu trúc các khoang và khu vực chức năng gợi nhắc đến hành trình đưa con người đến định cư trên hành tinh này.
+                </p>
+
+                <!-- Khung Ảnh 1 -->
+                <div class="bg-black border border-gray-800 p-3 relative group overflow-hidden mt-6">
+                    <div class="flex items-center justify-between text-[11px] font-mono text-gray-400 mb-2 px-2">
+                        <span><i class="fas fa-image text-neon-lime mr-2"></i>VISUAL REFERENCE // ẢNH 1: CRYO ARCHIVE TRÊN TÀU UESC MARATHON</span>
+                        <span class="text-cyber-blue">FILE: story1.png</span>
+                    </div>
+                    <div class="overflow-hidden border border-gray-800/80 bg-deep-blue">
+                        <img src="story1.png" onerror="this.src='https://placehold.co/1200x675/0a0f18/ccff00?text=CRYO+ARCHIVE+UESC+MARATHON+(story1.png)'" alt="Ảnh 1 - Cryo Archive" class="w-full max-h-[500px] object-cover group-hover:scale-[1.02] transition duration-500">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 1.2 KỂ CHUYỆN THÔNG QUA MÔI TRƯỜNG TỰ NHIÊN ================= -->
+        <section id="nature-storytelling" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[1.2]</span>
+                    <span>KỂ CHUYỆN THÔNG QUA MÔI TRƯỜNG TỰ NHIÊN</span>
+                </h2>
+                <span class="text-xs font-mono text-cyber-blue border border-cyber-blue/40 bg-cyber-blue/10 px-3 py-1">
+                    ORGANIC VS. INDUSTRIAL
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 mb-8 border-l-4 border-l-cyber-blue">
+                <p class="text-gray-200 text-sm md:text-base leading-relaxed mb-6">
+                    Sự tương phản giữa kiến trúc nhân tạo và hệ sinh thái ngoài hành tinh góp phần thể hiện mối quan hệ giữa con người với Tau Ceti IV. Trong khi công trình của con người mang tính công nghiệp, có tổ chức và thể hiện khả năng kiểm soát, môi trường tự nhiên lại mang tính hữu cơ, xa lạ và khó đoán. Sự đối lập này tạo cảm giác con người đang tồn tại trong một thế giới mà họ chưa hoàn toàn hiểu rõ hoặc kiểm soát được.
+                </p>
+
+                <!-- Khung Ảnh 2 -->
+                <div class="bg-black border border-gray-800 p-3 relative group overflow-hidden mt-6">
+                    <div class="flex items-center justify-between text-[11px] font-mono text-gray-400 mb-2 px-2">
+                        <span><i class="fas fa-image text-cyber-blue mr-2"></i>VISUAL REFERENCE // ẢNH 2: HỆ SINH THÁI NGOÀI HÀNH TINH & TƯƠNG PHẢN MÔI TRƯỜNG</span>
+                        <span class="text-cyber-blue">FILE: story2.png</span>
+                    </div>
+                    <div class="overflow-hidden border border-gray-800/80 bg-deep-blue">
+                        <img src="story2.png" onerror="this.src='https://placehold.co/1200x675/0a0f18/00d0ff?text=ALIEN+ECOSYSTEM+CONTRAST+(story2.png)'" alt="Ảnh 2 - Hệ sinh thái ngoài hành tinh" class="w-full max-h-[500px] object-cover group-hover:scale-[1.02] transition duration-500">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 1.3 MỐI LIÊN HỆ GIỮA ENVIRONMENTAL STORYTELLING VÀ GAMEPLAY ================= -->
+        <section id="storytelling-gameplay" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[1.3]</span>
+                    <span>MỐI LIÊN HỆ GIỮA ENVIRONMENTAL STORYTELLING VÀ GAMEPLAY</span>
+                </h2>
+                <span class="text-xs font-mono text-neon-lime border border-neon-lime/40 bg-neon-lime/10 px-3 py-1">
+                    EXPLORATION & DISCOVERY
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 mb-8 border-l-4 border-l-neon-lime">
+                <p class="text-gray-200 text-sm md:text-base leading-relaxed mb-6">
+                    Environmental Storytelling được tích hợp trực tiếp vào quá trình khám phá bản đồ. Người chơi tiếp nhận thông tin thông qua việc quan sát kiến trúc, tìm kiếm vật thể và thu thập dữ liệu trong môi trường. Vì vậy, hoạt động khám phá không chỉ phục vụ mục tiêu gameplay mà còn giúp người chơi từng bước tìm hiểu lịch sử và bối cảnh của thế giới trò chơi.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-gray-800">
+                    <div class="bg-black/60 border border-gray-800 p-4">
+                        <div class="text-[10px] text-cyber-blue font-mono mb-1">METHOD // 01</div>
+                        <h4 class="text-sm text-white font-heading mb-1">QUAN SÁT KIẾN TRÚC</h4>
+                        <p class="text-xs text-gray-400">Đọc hiểu lịch sử công trình qua dấu vết thời gian và bố cục không gian.</p>
+                    </div>
+                    <div class="bg-black/60 border border-gray-800 p-4">
+                        <div class="text-[10px] text-neon-lime font-mono mb-1">METHOD // 02</div>
+                        <h4 class="text-sm text-white font-heading mb-1">TÌM KIẾM VẬT THỂ</h4>
+                        <p class="text-xs text-gray-400">Thu thập các hiện vật và công cụ phản ánh đời sống dân cư cũ.</p>
+                    </div>
+                    <div class="bg-black/60 border border-gray-800 p-4">
+                        <div class="text-[10px] text-purple-400 font-mono mb-1">METHOD // 03</div>
+                        <h4 class="text-sm text-white font-heading mb-1">THU THẬP DỮ LIỆU</h4>
+                        <p class="text-xs text-gray-400">Truy cập các máy trạm để khôi phục nhật ký và dữ liệu lịch sử.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 1.4 TỔNG KẾ ================= -->
+        <section id="storytelling-summary" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[1.4]</span>
+                    <span>TỔNG KẾT</span>
+                </h2>
+                <span class="text-xs font-mono text-cyber-blue border border-cyber-blue/40 bg-cyber-blue/10 px-3 py-1">
+                    NARRATIVE SYNTHESIS
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 border-l-4 border-l-cyber-blue">
+                <p class="text-gray-200 text-sm md:text-base leading-relaxed">
+                    Environmental Storytelling trong <strong class="text-white">MARATHON (2026)</strong> góp phần xây dựng chiều sâu cho thế giới khoa học viễn tưởng trên Tau Ceti IV. Thông qua kiến trúc, vật thể, dấu tích và hệ sinh thái ngoài hành tinh, môi trường trở thành phương tiện truyền tải cảm xúc và thông tin.
+                </p>
+            </div>
+        </section>
+
+        <!-- Bottom Navigation Footer -->
+        <footer class="mt-16 pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="main.html#art-sound" class="cyber-btn">
+                <i class="fas fa-chevron-left"></i>
+                <span>QUAY VỀ MỤC 05 TRÊN TRANG CHÍNH</span>
+            </a>
+            <div class="text-xs font-mono text-gray-500">
+                SQUAD: <span class="text-neon-lime">CUTES1TG</span> // MARATHON 2026 GDD
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Hiệu ứng Glitch khi click giống trang main.html
+        document.body.addEventListener('click', (e) => {
+            if (e.target.closest('a') || e.target.closest('button')) return;
+
+            document.body.classList.add('glitch-effect');
+            setTimeout(() => {
+                document.body.classList.remove('glitch-effect');
+            }, 300);
+        });
+    </script>
+</body>
+</html>

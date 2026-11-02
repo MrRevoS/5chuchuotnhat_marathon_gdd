@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Style + Sound - World Setting | Marathon GDD - CUTES1TG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Liên kết tới file CSS dùng chung -->
+    <link rel="stylesheet" href="style.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Orbitron', 'sans-serif'],
+                        mono: ['Share Tech Mono', 'monospace'],
+                    },
+                    colors: {
+                        'deep-blue': '#0a0f18',
+                        'panel-blue': '#121a28',
+                        'neon-lime': '#ccff00',
+                        'alert-red': '#ff3333',
+                        'cyber-blue': '#00d0ff'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Scanline Overlay -->
+    <div class="scanline"></div>
+
+    <!-- ================= TOP BAR / HEADER ================= -->
+    <header class="sticky top-0 z-50 bg-panel-blue/90 backdrop-blur-md border-b border-gray-800 px-6 py-4 shadow-lg">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <a href="main.html#art-sound" class="cyber-btn !py-2 !px-4">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>QUAY LẠI TRANG CHÍNH</span>
+                </a>
+                <div class="hidden md:block h-6 w-px bg-gray-700"></div>
+                <div class="hidden md:block">
+                    <span class="text-[10px] text-cyber-blue font-mono block tracking-widest">SECTION 05 // ART_MODULE 02</span>
+                    <span class="text-xs text-white font-heading font-bold tracking-wider">WORLD SETTING & ENVIRONMENT</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 text-[11px] font-mono">
+                <span class="text-gray-400">SUB-TREE: <strong class="text-neon-lime">GRAPHIC REALISM</strong></span>
+                <span class="text-gray-600">|</span>
+                <span class="text-gray-400">ENVIRONMENT: <strong class="text-cyber-blue">TAU CETI IV</strong></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-neon-lime animate-pulse"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= MAIN LAYOUT ================= -->
+    <div class="flex-1 max-w-6xl w-full mx-auto p-6 md:p-12 lg:p-16">
+
+        <!-- Page Title Banner -->
+        <div class="mb-12 border-b border-gray-800 pb-6 relative">
+            <div class="flex items-center gap-2 text-xs text-cyber-blue font-mono mb-2 tracking-widest">
+                <i class="fas fa-globe"></i>
+                <span>ART DIRECTION ARCHITECTURE // GRAPHIC REALISM</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl text-white font-black tracking-wider">
+                <span class="text-neon-lime">GR // 02.</span> WORLD SETTING
+            </h1>
+        </div>
+
+        <!-- ================= 1.1 KHÔNG GIAN VÀ BỐI CẢNH CỐT TRUYỆN ================= -->
+        <section id="world-context" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[01]</span>
+                    <span>1.1. KHÔNG GIAN VÀ BỐI CẢNH CỐT TRUYỆN</span>
+                </h2>
+                <span class="text-xs font-mono text-neon-lime border border-neon-lime/40 bg-neon-lime/10 px-3 py-1">
+                    BUNGIE DESIGN PHILOSOPHY
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 mb-8 border-l-4 border-l-neon-lime">
+                <div class="space-y-4 text-gray-200 text-sm md:text-base leading-relaxed mb-8">
+                    <p>
+                        Thế giới trong game được hình thành từ sự tồn tại đan xen giữa: những công trình do con người xây dựng; các cơ sở nghiên cứu và khai thác công nghệ; hệ thống kiến trúc công nghiệp, quân sự và hạ tầng kỹ thuật; môi trường tự nhiên ngoài hành tinh với những yếu tố sinh học xa lạ; những dấu tích của các sự kiện và nền văn minh trước đó.
+                    </p>
+                    <p>
+                        Bối cảnh này tạo nên một mâu thuẫn quan trọng: <strong class="text-white">con người đang cố gắng kiểm soát một môi trường mà bản thân họ không hoàn toàn thấu hiểu</strong>. Đây là nền tảng để Bungie xây dựng cảm giác cô lập, nguy hiểm và bí ẩn thông qua thiết kế không gian.
+                    </p>
+                    <p class="bg-black/50 p-4 border border-gray-800 text-xs text-gray-300 font-mono">
+                        <i class="fas fa-microchip text-cyber-blue mr-2"></i>Theo Bungie, thế giới Marathon được xây dựng bằng cách kết hợp thiết kế bối cảnh, gameplay và những câu chuyện có thể khám phá trực tiếp trong môi trường.
+                    </p>
+                </div>
+
+                <!-- KHUNG ẢNH 1 MINH HỌA WORLD SETTING -->
+                <div class="bg-black border border-gray-800 p-3 relative group overflow-hidden">
+                    <div class="flex items-center justify-between text-[11px] font-mono text-gray-400 mb-2 px-2">
+                        <span><i class="fas fa-image text-neon-lime mr-2"></i>VISUAL REFERENCE // ẢNH 1: KHÔNG GIAN ĐAN XEN TỰ NHIÊN VÀ CÔNG NGHIỆP</span>
+                        <span class="text-cyber-blue">FILE: world1.png</span>
+                    </div>
+                    <div class="overflow-hidden border border-gray-800/80 bg-deep-blue">
+                        <img src="world1.png" onerror="this.src='https://placehold.co/1200x675/0a0f18/ccff00?text=WORLD+SETTING+CONCEPT+ART+(world1.png)'" alt="Ảnh 1 - World Setting Concept Art" class="w-full max-h-[500px] object-cover group-hover:scale-[1.02] transition duration-500">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 1.2 ĐẶC ĐIỂM KHÔNG GIAN ================= -->
+        <section id="space-characteristics" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[02]</span>
+                    <span>1.2. ĐẶC ĐIỂM KHÔNG GIAN</span>
+                </h2>
+                <span class="text-xs font-mono text-cyber-blue border border-cyber-blue/40 bg-cyber-blue/10 px-3 py-1">
+                    SPATIAL CHARACTERISTICS TABLE
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 mb-8 border-l-4 border-l-cyber-blue">
+                <p class="text-gray-200 text-sm md:text-base leading-relaxed mb-6">
+                    Bảng phân tích cấu trúc không gian, đặc điểm tạo hình và vai trò đồ họa định hình bản sắc thế giới Tau Ceti IV:
+                </p>
+
+                <!-- Bảng đặc điểm không gian -->
+                <div class="overflow-x-auto mb-8 border border-gray-800 bg-black/60">
+                    <table class="w-full text-left border-collapse text-xs md:text-sm">
+                        <thead>
+                            <tr class="border-b border-gray-800 text-neon-lime font-heading tracking-wider bg-panel-blue/80">
+                                <th class="p-4 border-r border-gray-800 w-1/4">Không gian</th>
+                                <th class="p-4 border-r border-gray-800 w-2/5">Đặc điểm tạo hình</th>
+                                <th class="p-4 w-7/20">Vai trò đồ họa</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-800 text-gray-300 font-mono">
+                            <tr class="hover:bg-cyber-blue/5 transition">
+                                <td class="p-4 border-r border-gray-800 font-bold text-white">Môi trường tự nhiên</td>
+                                <td class="p-4 border-r border-gray-800">Địa hình ngoài hành tinh, thảm thực vật và hệ sinh thái lạ</td>
+                                <td class="p-4 text-cyber-blue">Tạo cảm giác xa lạ</td>
+                            </tr>
+                            <tr class="hover:bg-cyber-blue/5 transition">
+                                <td class="p-4 border-r border-gray-800 font-bold text-white">Môi trường nhân tạo</td>
+                                <td class="p-4 border-r border-gray-800">Công trình công nghiệp, cơ sở nghiên cứu, khu khai thác</td>
+                                <td class="p-4 text-neon-lime">Thể hiện dấu ấn con người</td>
+                            </tr>
+                            <tr class="hover:bg-cyber-blue/5 transition">
+                                <td class="p-4 border-r border-gray-800 font-bold text-white">Không gian nối tiếp</td>
+                                <td class="p-4 border-r border-gray-800">Hành lang, khu vực kết nối, vùng giao thoa giữa tự nhiên và nhân tạo</td>
+                                <td class="p-4 text-purple-400">Tạo chiều sâu và dẫn dắt người chơi</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Kết luận sự đối lập -->
+                <div class="bg-cyber-blue/10 border-l-4 border-cyber-blue p-5">
+                    <p class="text-gray-200 text-xs md:text-sm leading-relaxed">
+                        <strong class="text-cyber-blue">Sự đối lập giữa môi trường tự nhiên và kiến trúc nhân tạo</strong> chính là một trong những yếu tố quan trọng tạo nên bản sắc không gian của game. Đồng thời đây cũng là một trong những yếu tố thu hút đối tượng người chơi.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom Navigation Footer -->
+        <footer class="mt-16 pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="main.html#art-sound" class="cyber-btn">
+                <i class="fas fa-chevron-left"></i>
+                <span>QUAY VỀ MỤC 05 (ART STYLE + SOUND) TRÊN TRANG CHÍNH</span>
+            </a>
+            <div class="text-xs font-mono text-gray-500">
+                SQUAD: <span class="text-neon-lime">CUTES1TG</span> // MARATHON 2026 GDD
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Hiệu ứng Glitch khi click giống trang main.html
+        document.body.addEventListener('click', (e) => {
+            if (e.target.closest('a') || e.target.closest('button')) return;
+
+            document.body.classList.add('glitch-effect');
+            setTimeout(() => {
+                document.body.classList.remove('glitch-effect');
+            }, 300);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+/* ==========================================================================
+   MARATHON GDD | TAU CETI IV - SHARED TEMPLATE STYLESHEET (style.css)
+   Squad: CUTES1TG (5 Chú Chuột Nhắt)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap');
+
+:root {
+    --deep-blue: #0a0f18;
+    --panel-blue: #121a28;
+    --neon-lime: #ccff00;
+    --alert-red: #ff3333;
+    --cyber-blue: #00d0ff;
+}
+
+/* Base Styles & Background */
+body, html {
+    margin: 0;
+    padding: 0;
+    background-color: var(--deep-blue);
+    color: #a0aec0;
+    font-family: 'Share Tech Mono', monospace;
+    scroll-behavior: smooth;
+}
+
+body {
+    background-image: 
+        linear-gradient(rgba(10, 15, 24, 0.85), rgba(10, 15, 24, 0.85)),
+        url('data:image/svg+xml;utf8,<svg width="40" height="40" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h40v40H0z" fill="none"/><path d="M0 19h40v2H0z" fill="rgba(0, 208, 255, 0.05)"/><path d="M19 0h2v40h-2z" fill="rgba(0, 208, 255, 0.05)"/></svg>');
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #0a0f18; }
+::-webkit-scrollbar-thumb { background: rgba(204, 255, 0, 0.3); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #ccff00; }
+
+/* Terminal UI Elements */
+.terminal-panel {
+    background-color: rgba(18, 26, 40, 0.8);
+    border: 1px solid rgba(0, 208, 255, 0.2);
+    position: relative;
+    backdrop-filter: blur(5px);
+}
+.terminal-panel::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    width: 15px;
+    height: 15px;
+    border-top: 2px solid #ccff00;
+    border-left: 2px solid #ccff00;
+}
+.terminal-panel::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    right: -1px;
+    width: 15px;
+    height: 15px;
+    border-bottom: 2px solid #ccff00;
+    border-right: 2px solid #ccff00;
+}
+
+/* Scanline Overlay */
+.scanline {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(to bottom, transparent 50%, rgba(0, 208, 255, 0.03) 51%);
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 9998;
+}
+
+/* Glitch Animation Classes (Triggered via JS) */
+.glitch-effect {
+    animation: chromatic-aberration 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+@keyframes chromatic-aberration {
+    0% { transform: translate(0); filter: none; }
+    20% { transform: translate(-3px, 2px); filter: drop-shadow(3px 0px 0px rgba(255,51,51,0.8)) drop-shadow(-3px 0px 0px rgba(0,208,255,0.8)); }
+    40% { transform: translate(3px, -2px); filter: drop-shadow(-3px 0px 0px rgba(255,51,51,0.8)) drop-shadow(3px 0px 0px rgba(0,208,255,0.8)) contrast(150%); }
+    60% { transform: translate(-2px, 0); filter: hue-rotate(90deg); }
+    80% { transform: translate(2px, 2px); filter: invert(10%); }
+    100% { transform: translate(0); filter: none; }
+}
+
+/* Sidebar Navigation Active State */
+.nav-link {
+    transition: all 0.3s ease;
+    border-left: 2px solid transparent;
+}
+.nav-link:hover {
+    color: #fff;
+    background: rgba(0, 208, 255, 0.1);
+    border-left-color: #00d0ff;
+    padding-left: 1.5rem;
+}
+.nav-link.active {
+    color: #ccff00;
+    background: rgba(204, 255, 0, 0.1);
+    border-left-color: #ccff00;
+    font-weight: bold;
+}
+
+/* Hero Buttons */
+.hero-btn {
+    background: rgba(10, 15, 24, 0.75);
+    border: 1px solid #00d0ff;
+    color: #00d0ff;
+    padding: 15px 40px;
+    min-width: 240px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    text-align: center;
+    clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(4px);
+    cursor: pointer;
+}
+.hero-btn:hover {
+    background: rgba(204, 255, 0, 0.2);
+    border-color: #ccff00;
+    color: #ccff00;
+    box-shadow: 0 0 20px rgba(204, 255, 0, 0.4);
+    transform: scale(1.05);
+}
+
+/* Cyber Sub-module Action Button */
+.cyber-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: rgba(0, 208, 255, 0.08);
+    border: 1px solid rgba(0, 208, 255, 0.4);
+    color: #00d0ff;
+    padding: 10px 22px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    clip-path: polygon(8% 0, 100% 0, 92% 100%, 0% 100%);
+    transition: all 0.25s ease;
+}
+.cyber-btn:hover {
+    background: #ccff00;
+    border-color: #ccff00;
+    color: #0a0f18;
+    box-shadow: 0 0 15px rgba(204, 255, 0, 0.5);
+    transform: translateY(-2px);
+}
+
+/* HUD Iron Man Elements */
+.hud-bracket {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+}
+.bracket-tl { top: 20%; left: 20%; border-top: 2px solid #ccff00; border-left: 2px solid #ccff00; }
+.bracket-tr { top: 20%; right: 20%; border-top: 2px solid #ccff00; border-right: 2px solid #ccff00; }
+.bracket-bl { bottom: 20%; left: 20%; border-bottom: 2px solid #ccff00; border-left: 2px solid #ccff00; }
+.bracket-br { bottom: 20%; right: 20%; border-bottom: 2px solid #ccff00; border-right: 2px solid #ccff00; }

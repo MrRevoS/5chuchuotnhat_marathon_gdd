@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marathon GDD | Tau Ceti IV - 5 CHÚ CHUỘT NHẮT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Liên kết tới file CSS dùng chung cho cả trang chính và các tab con -->
+    <link rel="stylesheet" href="style.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Orbitron', 'sans-serif'],
+                        mono: ['Share Tech Mono', 'monospace'],
+                    },
+                    colors: {
+                        'deep-blue': '#0a0f18',
+                        'panel-blue': '#121a28',
+                        'neon-lime': '#ccff00',
+                        'alert-red': '#ff3333',
+                        'cyber-blue': '#00d0ff'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <div class="scanline"></div>
+
+    <!-- ================= MODAL 5 CHÚ CHUỘT NHẮT (5 THÀNH VIÊN NHÓM) ================= -->
+    <div id="team-modal" class="fixed inset-0 z-[9999] hidden items-center justify-center bg-black/85 backdrop-blur-md p-4 transition-opacity duration-300">
+        <div class="terminal-panel max-w-4xl w-full p-6 md:p-10 border border-neon-lime shadow-[0_0_50px_rgba(204,255,0,0.2)] relative">
+            
+            <!-- Close Button -->
+            <button onclick="closeTeamModal()" class="absolute top-4 right-4 text-gray-400 hover:text-alert-red font-mono text-sm border border-gray-700 hover:border-alert-red px-3 py-1 transition">
+                [ X ] ĐÓNG
+            </button>
+
+            <!-- Modal Header -->
+            <div class="border-b border-gray-800 pb-4 mb-6">
+                <div class="flex items-center gap-3">
+                    <span class="w-3 h-3 bg-neon-lime animate-ping rounded-full"></span>
+                    <p class="text-xs text-cyber-blue font-mono tracking-widest">THÔNG TIN NHÓM</p>
+                </div>
+                <h2 class="text-2xl md:text-3xl text-white mt-2">
+                    5 CHÚ <span class="text-neon-lime">CHUỘT NHẮT</span>
+                </h2>
+            </div>
+
+            <!-- 5 Team Members Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                
+                <!-- Thành viên 1 -->
+                <div class="bg-black/60 border border-gray-800 hover:border-neon-lime p-4 transition group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-neon-lime text-black font-mono text-[10px] font-bold px-2 py-0.5">Ibuprofen 200mg (10 vỉ x 10 viên)</div>
+                    <div class="flex items-center gap-3 mb-3 mt-2">
+                        <div class="w-10 h-10 rounded bg-neon-lime/10 border border-neon-lime flex items-center justify-center text-neon-lime">
+                            <i class="fas fa-user-astronaut"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white text-sm group-hover:text-neon-lime transition">TRƯƠNG HẢI ĐĂNG</h4>
+                            <p class="text-[11px] text-cyber-blue font-mono">MSV: B26DCGM013</p>
+                        </div>
+                    </div>
+                    <div class="text-[11px] text-gray-400 border-t border-gray-800/80 pt-2 flex justify-between">
+                        <span>ROLE: SQUAD LEADER</span>
+                        <span class="text-neon-lime">ONLINE</span>
+                    </div>
+                </div>
+
+                <!-- Thành viên 2 -->
+                <div class="bg-black/60 border border-gray-800 hover:border-cyber-blue p-4 transition group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-cyber-blue text-black font-mono text-[10px] font-bold px-2 py-0.5">Panadol</div>
+                    <div class="flex items-center gap-3 mb-3 mt-2">
+                        <div class="w-10 h-10 rounded bg-cyber-blue/10 border border-cyber-blue flex items-center justify-center text-cyber-blue">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white text-sm group-hover:text-cyber-blue transition">LÊ HUY THÀNH</h4>
+                            <p class="text-[11px] text-cyber-blue font-mono">MSV: B26DCGM044</p>
+                        </div>
+                    </div>
+                    <div class="text-[11px] text-gray-400 border-t border-gray-800/80 pt-2 flex justify-between">
+                        <span>ROLE: CODER & UI/UX </span>
+                        <span class="text-neon-lime">ONLINE</span>
+                    </div>
+                </div>
+
+                <!-- Thành viên 3 -->
+                <div class="bg-black/60 border border-pink-800 hover:border-pink-500 p-4 transition group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-pink-500 text-black font-mono text-[10px] font-bold px-2 py-0.5">5 chú chuột nhắt</div>
+
+                    <div class="flex items-center gap-3 mb-3 mt-2">
+                        <div class="w-10 h-10 rounded bg-pink-500/10 border border-pink-500 flex items-center justify-center text-pink-400">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white text-sm group-hover:text-pink-400 transition">NGUYỄN BẢO NGỌC</h4>
+                            <p class="text-[11px] text-pink-400 font-mono">MSV: B26DCGM035</p>
+                        </div>
+                    </div>
+
+                    <div class="text-[11px] text-gray-400 border-t border-gray-800/80 pt-2 flex justify-between">
+                        <span>ROLE:GAME CONCEPT & TRUYỀN THÔNG </span>
+                        <span class="text-neon-lime">ONLINE</span>
+                    </div>
+                </div>
+
+                <!-- Thành viên 4 -->
+                <div class="bg-black/60 border border-purple-800 hover:border-purple-500 p-4 transition group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-purple-600 text-white font-mono text-[10px] font-bold px-2 py-0.5">waffle</div>
+
+                    <div class="flex items-center gap-3 mb-3 mt-2">
+                        <div class="w-10 h-10 rounded bg-purple-500/10 border border-purple-500 flex items-center justify-center text-purple-400">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white text-sm group-hover:text-purple-400 transition">NGUYỄN MINH TRANG</h4>
+                            <p class="text-[11px] text-purple-400 font-mono">MSV: B26DCGM050</p>
+                        </div>
+                    </div>
+
+                    <div class="text-[11px] text-gray-400 border-t border-gray-800/80 pt-2 flex justify-between">
+                        <span>ROLE: ART STYLE </span>
+                        <span class="text-neon-lime">ONLINE</span>
+                    </div>
+                </div>
+
+                <!-- Thành viên 5 -->
+                <div class="bg-black/60 border border-gray-800 hover:border-alert-red p-4 transition group relative overflow-hidden md:col-span-2 lg:col-span-1">
+                    <div class="absolute top-0 right-0 bg-alert-red text-white font-mono text-[10px] font-bold px-2 py-0.5">ông Ngưỡng đến chơi</div>
+                    <div class="flex items-center gap-3 mb-3 mt-2">
+                        <div class="w-10 h-10 rounded bg-alert-red/10 border border-alert-red flex items-center justify-center text-alert-red">
+                            <i class="fas fa-bullhorn"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white text-sm group-hover:text-alert-red transition">BÙI ĐỨC ANH</h4>
+                            <p class="text-[11px] text-cyber-blue font-mono">MSV: B26DCGM001</p>
+                        </div>
+                    </div>
+                    <div class="text-[11px] text-gray-400 border-t border-gray-800/80 pt-2 flex justify-between">
+                        <span>ROLE: CORE MECHANIC </span>
+                        <span class="text-neon-lime">ONLINE</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-gray-800 flex justify-between items-center text-[11px] text-gray-500 font-mono">
+                <span>TAU CETI IV // EXPEDITION TEAM</span>
+                <span class="text-neon-lime">TOTAL MEMBERS: 05/05</span>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ================= HERO SCROLL SECTION ================= -->
+    <div id="scroll-hero" class="relative w-full bg-black" style="height: 250vh;">
+        <div class="sticky top-0 w-full h-screen overflow-hidden flex items-center justify-center bg-black">
+            
+            <!-- Closed Helmet (Fades out) -->
+            <img id="img-closed" src="closedrecon.png" onerror="this.src='https://placehold.co/1920x1080/0a0f18/00d0ff?text=CLOSED+RECON+HELMET'" alt="Recon Closed" class="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-100 ease-out z-20">
+            
+            <!-- Open Helmet (Fades in) -->
+            <img id="img-open" src="openrecon.png" onerror="this.src='https://placehold.co/1920x1080/0a0f18/ccff00?text=OPEN+RECON+HELMET'" alt="Recon Open" class="absolute inset-0 w-full h-full object-cover object-center opacity-0 transition-opacity duration-100 ease-out z-10">
+            
+            <!-- Vignette / Dark Overlay for readability -->
+            <div class="absolute inset-0 bg-gradient-to-t from-deep-blue via-transparent to-deep-blue opacity-80 z-30 pointer-events-none"></div>
+
+            <!-- HERO HUD AND 4 BANNER BUTTONS -->
+            <div id="hero-ui" class="absolute inset-0 z-40 flex items-center justify-between px-4 md:px-12 lg:px-28 opacity-0 pointer-events-none transition-opacity duration-300">
+                
+                <!-- Left Banner Buttons: CUTES1TG & MARATHON -->
+                <div class="flex flex-col gap-6 transform -translate-x-10 transition-transform duration-500" id="hud-left">
+                    <button type="button" onclick="openTeamModal()" class="hero-btn shadow-[0_0_15px_rgba(0,208,255,0.3)]">
+                        <i class="fas fa-users mr-2 text-xs"></i>5 CHÚ CHUỘT NHẮT
+                    </button>
+                    <a href="https://www.marathonthegame.com/" target="_blank" rel="noopener noreferrer" class="hero-btn shadow-[0_0_15px_rgba(0,208,255,0.3)]">
+                        <i class="fas fa-globe mr-2 text-xs"></i>MARATHON
+                    </a>
+                </div>
+
+                <!-- Center Iron Man HUD -->
+                <div class="relative w-[280px] h-[280px] md:w-[430px] md:h-[430px] flex items-center justify-center transform scale-90 transition-transform duration-500" id="hud-center">
+                    <!-- Concentric Rings -->
+                    <div class="absolute inset-0 rounded-full border-4 border-dashed border-cyber-blue opacity-30 animate-[spin_20s_linear_infinite]"></div>
+                    <div class="absolute inset-6 rounded-full border-2 border-solid border-neon-lime border-l-transparent border-r-transparent opacity-50 animate-[spin_12s_linear_infinite_reverse]"></div>
+                    <div class="absolute inset-16 rounded-full border border-dotted border-white opacity-20 animate-[spin_30s_linear_infinite]"></div>
+                    
+                    <!-- Crosshair -->
+                    <div class="absolute w-full h-[1px] bg-cyber-blue opacity-40"></div>
+                    <div class="absolute h-full w-[1px] bg-cyber-blue opacity-40"></div>
+                    
+                    <!-- Targeting Brackets -->
+                    <div class="hud-bracket bracket-tl"></div>
+                    <div class="hud-bracket bracket-tr"></div>
+                    <div class="hud-bracket bracket-bl"></div>
+                    <div class="hud-bracket bracket-br"></div>
+                    
+                    <!-- Telemetry Data -->
+                    <div class="absolute top-1/4 left-0 text-[10px] text-cyber-blue font-mono text-left bg-black/50 p-1 backdrop-blur-sm">
+                        <div>TRGT_LC: <span id="tel-1">839.22</span></div>
+                        <div>AZIMUTH: <span id="tel-2">12.4</span></div>
+                    </div>
+                    <div class="absolute bottom-1/4 right-0 text-[10px] text-neon-lime font-mono text-right bg-black/50 p-1 backdrop-blur-sm">
+                        <div>MEM_ALLOC: <span id="tel-3">0xFA2B</span></div>
+                        <div>SYS_TEMP: <span id="tel-4">42.0</span>°C</div>
+                    </div>
+                    <div class="absolute top-12 text-[10px] text-alert-red font-mono text-center tracking-widest animate-pulse bg-black/50 px-2 backdrop-blur-sm">
+                        REC_ACTIVE
+                    </div>
+                </div>
+
+                <!-- Right Banner Buttons: OVERVIEW & GALLERY -->
+                <div class="flex flex-col gap-6 transform translate-x-10 transition-transform duration-500" id="hud-right">
+                    <a href="#overview" class="hero-btn shadow-[0_0_15px_rgba(0,208,255,0.3)]">
+                        <i class="fas fa-terminal mr-2 text-xs"></i>OVERVIEW
+                    </a>
+                    <!-- Thay đường link của nhóm bạn vào thuộc tính href bên dưới -->
+                    <a href="https://l.facebook.com/l.php?u=https%3A%2F%2Fdrive.google.com%2Fdrive%2Ffolders%2F11ZsRigwUOBSQm6zZ2Ac8egpOlIQq9wCM%3Fusp%3Ddrive_link%26fbclid%3DIwZXh0bgNhZW0CMTAAcGRvZgVicmlkETFiaWN4emZtU3VPVzJpd2s1c3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABH9J7YtqpQc7B1dpZtoo4SNPGspHamh0BXALo-DzG7fW8PTJX-bFBTazF3r8t_aem_mqC-_OJChh1pUP7A16PkXA&h=AUDggNjiCSNlHPgXcTaCWdI2NMuquRLpNFCSdgW-rCQg7BUHlrpZxKd-13cVdtHsZsBMMBGRwvIIbpdEA4YeE5MI8HtcFWfNxEP0xH_mH6lEtlnmwqwFZ_CHdlorTBK4JTHlzBIOHdC83oE" target="_blank" rel="noopener noreferrer" class="hero-btn shadow-[0_0_15px_rgba(0,208,255,0.3)]">
+                        <i class="fas fa-images mr-2 text-xs"></i>GALLERY
+                    </a>
+                </div>
+            </div>
+
+            <!-- Scroll Down Indicator -->
+            <div id="scroll-prompt" class="absolute bottom-10 z-40 text-cyber-blue font-mono text-xs text-center animate-bounce">
+                [ INITIATE BOOT SEQUENCE ]<br>
+                <i class="fas fa-chevron-down mt-2"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MAIN LAYOUT ================= -->
+    <div class="flex flex-col md:flex-row min-h-screen relative z-40 bg-deep-blue shadow-[0_-20px_50px_rgba(0,0,0,1)]">
+        
+        <!-- Sticky Sidebar Navigation (6 Danh Mục Chính) -->
+        <aside class="w-full md:w-72 bg-panel-blue border-r border-gray-800 md:sticky md:top-0 md:h-screen flex flex-col p-6 shadow-2xl z-50">
+            <div class="mb-8">
+                <h1 class="text-3xl text-neon-lime font-black tracking-widest">[ M ]</h1>
+                <p class="text-[10px] text-cyber-blue mt-2 uppercase tracking-widest">Tau Ceti IV / GDD Master</p>
+                <div class="h-px w-full bg-gray-800 mt-4 relative">
+                    <div class="absolute left-0 top-0 h-full w-1/2 bg-gradient-to-r from-neon-lime to-transparent"></div>
+                </div>
+            </div>
+            
+            <nav class="flex flex-col space-y-2 flex-grow overflow-y-auto" id="navMenu">
+                <a href="#overview" class="nav-link block px-4 py-3 text-xs text-gray-400">01. OVERVIEW</a>
+                <a href="#concept" class="nav-link block px-4 py-3 text-xs text-gray-400">02. GAME CONCEPT & BACKGROUND</a>
+                <a href="#mechanics" class="nav-link block px-4 py-3 text-xs text-gray-400">03. CORE MECHANIC</a>
+                <a href="#ui-ux" class="nav-link block px-4 py-3 text-xs text-gray-400">04. UI/UX</a>
+                <a href="#art-sound" class="nav-link block px-4 py-3 text-xs text-gray-400">05. ART STYLE + SOUND</a>
+                <a href="#media" class="nav-link block px-4 py-3 text-xs text-gray-400">06. TRUYỀN THÔNG</a>
+            </nav>
+            
+            <div class="mt-auto pt-6 border-t border-gray-800 text-[10px] text-gray-500 font-mono">
+                <div class="flex justify-between mb-1">
+                    <span>SYS_STATUS:</span>
+                    <span class="text-neon-lime animate-pulse">ONLINE</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>SQUAD_ID:</span>
+                    <span class="text-cyber-blue">5 CHÚ CHUỘT NHẮT</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 p-6 md:p-12 lg:p-16 max-w-6xl mx-auto">
+            
+            <!-- ================= SECTION 01: OVERVIEW ================= -->
+            <section id="overview" class="mb-24 pt-8">
+                <h2 class="text-3xl md:text-4xl text-white mb-8 border-b border-gray-800 pb-4">
+                    <span class="text-neon-lime">01.</span> OVERVIEW
+                </h2>
+                <div class="terminal-panel p-8">
+                    <div class="absolute top-4 right-4 flex space-x-2">
+                        <div class="w-3 h-3 bg-alert-red animate-pulse"></div>
+                    </div>
+                    <h3 class="text-xl text-cyber-blue mb-4">TỔNG QUAN DỰ ÁN MARATHON</h3>
+                    <p class="text-gray-300 leading-relaxed mb-6">
+                        Tên dự án: Marathon (2026)<br>
+Nhà phát triển / Phát hành: Bungie<br>
+
+Thể loại (Genre): Sci-Fi PvPvE Extraction Shooter (Bắn súng góc nhìn thứ nhất kết hợp thu thập tài nguyên và sinh tồn thoát hiểm).<br>
+
+Nền tảng (Platforms): PC (Steam), PlayStation 5, Xbox Series X/S.<br>
+Engine phát triển: Tiger Engine (phiên bản nâng cấp hệ thống ánh sáng PBR và chất liệu thời gian thực).<br><br>
+High Concept : Một tựa game bắn súng Extraction PvPvE lấy bối cảnh năm 2893, nơi người chơi hóa thân thành các lính đánh thuê mang cơ thể tổng hợp (Runners) xâm nhập vào thuộc địa bỏ hoang trên hành tinh Tau Ceti IV để tranh giành cổ vật, dữ liệu và tài nguyên cho các siêu tập đoàn.<br><br>
+Nhóm thiết kế của Bungie nhắm tới 3 tệp khách hàng:
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 mb-8">
+                        <div class="bg-black/50 p-4 border-l-2 border-neon-lime">
+                            <h4 class="text-neon-lime text-sm mb-2">Nhóm Core Gamers</h4>
+                            <p class="text-xs text-gray-400">Những người chơi muốn tìm kiếm cảm giác hồi hộp, cược lớn (High-Risk, High-Reward) của Escape from Tarkov hoặc Hunt: Showdown, nhưng lại đòi hỏi cảm giác bắn (gunplay) mượt mà, tốc độ cao và giao diện UI/UX trực quan, hiện đại giống Apex Legends hay Destiny 2.</p>
+                        </div>
+                        <div class="bg-black/50 p-4 border-l-2 border-cyber-blue">
+                            <h4 class="text-cyber-blue text-sm mb-2">Nhóm Visual & Design Enthusiasts </h4>
+                            <p class="text-xs text-gray-400">Những người trẻ bị thu hút mạnh bởi thời trang Techwear/Streetwear, thiết kế đồ họa Swiss Grid, Acid Graphics, kiến trúc Brutalism và nghệ thuật Sci-Fi đương đại (tệp khán giả yêu thích Death Stranding, Cyberpunk 2077 hay series Love, Death + Robots).</p>
+                        </div>
+                         <div class="bg-black/50 p-4 border-l-2 border-cyber-blue">
+                            <h4 class="text-cyber-blue text-sm mb-2">Nhóm Sci-Fi Mystery & ARG Fans</h4>
+                            <p class="text-xs text-gray-400">Cộng đồng đam mê giải mã cốt truyện ẩn giấu qua môi trường (Environmental Storytelling), các máy trạm (Terminals) và các chiến dịch quảng cáo tương tác ngoài đời thực (ARG)</p>
+                        </div>
+                    </div>
+
+                    <!-- Button dẫn tới file HTML riêng của Overview -->
+                    <div class="pt-6 border-t border-gray-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                
+                        <a href="https://marathonthegame.com/" class="cyber-btn">
+                            <span>TRUY CẬP TRANG CHỦ MARATHON</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= SECTION 02: GAME CONCEPT & BACKGROUND ================= -->
+            <section id="concept" class="mb-24 pt-8">
+                <h2 class="text-3xl md:text-4xl text-white mb-8 border-b border-gray-800 pb-4">
+                    <span class="text-neon-lime">02.</span> GAME CONCEPT & BACKGROUND
+                </h2>
+                <div class="terminal-panel p-8">
+                    <div class="flex flex-col lg:flex-row gap-8">
+                        <div class="lg:w-2/3">
+                            <h3 class="text-xl text-cyber-blue mb-2">BỐI CẢNH TAU CETI IV & BIẾN CỐ THUỘC ĐỊA</h3>
+                            <p class="text-neon-lime font-mono text-xs mb-4">ARCHIVE LOG // YEAR 2850</p>
+                            <p class="text-gray-300 text-sm leading-relaxed mb-6">
+                                Con tàu thuộc địa khổng lồ UESC Marathon được chế tạo từ mặt trăng Deimos của Sao Hỏa đã đưa hàng ngàn cư dân tới hệ sao Tau Ceti. Tuy nhiên, một sự cố mất liên lạc bí ẩn đã biến toàn bộ khu định cư dưới bề mặt hành tinh thành vùng đất chết. Giờ đây, các tập đoàn vũ trụ thuê những "Runners" — những cá nhân đã từ bỏ cơ thể sinh học để chuyển ý thức vào vỏ bọc nhân tạo — xuống thu hồi công nghệ lõi.
+                            </p>
+                            <div class="bg-black/60 p-4 border border-gray-800 mb-6">
+                                <h4 class="text-white text-xs mb-2 text-neon-lime">THÔNG SỐ THẾ GIỚI TRONG GAME</h4>
+                                <ul class="text-xs font-mono space-y-2 text-gray-400">
+                                    <li><span class="text-cyber-blue">ĐỊA ĐIỂM:</span> Thuộc địa Tau Ceti IV / Khu cách ly Dire Marsh</li>
+                                    <li><span class="text-cyber-blue">LỰC LƯỢNG:</span> UESC, Cybernetic Runners, Hostile Alien AI</li>
+                                    <li><span class="text-cyber-blue">MỤC TIÊU:</span> Khai thác dữ liệu mật, cổ vật & sinh tồn trở về</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="lg:w-1/3 bg-black border border-gray-800 flex items-center justify-center p-4 relative">
+                            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-cyber-blue/20 to-transparent pointer-events-none"></div>
+                            <img src="gc.jpg" onerror="this.src='https://placehold.co/400x450/0a0f18/00d0ff?text=Concept+Archive'" class="w-full h-56 object-cover filter contrast-125">
+                            <div class="absolute top-2 right-2 text-[8px] text-cyber-blue font-mono border border-cyber-blue px-1">ARCHIVE_IMG</div>
+                        </div>
+                    </div>
+
+                    <!-- Button dẫn tới file HTML riêng của Game Concept & Background -->
+                    <div class="mt-6 pt-6 border-t border-gray-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+               
+                        <a href="concept-background.html" class="cyber-btn">
+                            <span>XEM TOÀN BỘ CONCEPT & BACKGROUND</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= SECTION 03: CORE MECHANIC ================= -->
+            <section id="mechanics" class="mb-24 pt-8">
+                <h2 class="text-3xl md:text-4xl text-white mb-8 border-b border-gray-800 pb-4">
+                    <span class="text-neon-lime">03.</span> CORE MECHANIC
+                </h2>
+                <p class="text-sm text-gray-400 mb-6">
+                    Hệ thống cơ chế cốt lõi điều khiển vòng lặp gameplay (Core Loop), sự liên kết chặt chẽ giữa chiến đấu, quản lý tài nguyên sinh tồn và tẩu thoát chiến thuật.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="terminal-panel p-6 hover:border-neon-lime transition duration-300 flex flex-col justify-between">
+                        <div>
+                            <i class="fas fa-satellite-dish text-3xl text-neon-lime mb-4"></i>
+                            <h3 class="text-lg text-white mb-2">CORE GAMEPLAY LOOP</h3>
+        
+                        </div>
+                    
+                    </div>
+
+                    <div class="terminal-panel p-6 hover:border-cyber-blue transition duration-300 flex flex-col justify-between">
+                        <div>
+                            <i class="fas fa-crosshairs text-3xl text-cyber-blue mb-4"></i>
+                            <h3 class="text-lg text-white mb-2">PLAYER MOVEMENT</h3>
+                           
+                        </div>
+                        
+
+                    <div class="terminal-panel p-6 hover:border-alert-red transition duration-300 flex flex-col justify-between">
+                        <div>
+                            <i class="fas fa-door-open text-3xl text-alert-red mb-4"></i>
+                            <h3 class="text-lg text-white mb-2">RUNNER SHELL SYSTEM</h3>
+                            
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <div class="terminal-panel p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="text-xs text-gray-300 font-mono">
+                        <i class="fas fa-microchip text-neon-lime mr-2"></i>TÀI LIỆU HỆ THỐNG
+                    </div>
+                    <a href="core-mechanic.html" class="cyber-btn">MỞ CORE MECHANIC <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </section>
+
+            <!-- ================= SECTION 04: UI/UX ================= -->
+            <section id="ui-ux" class="mb-24 pt-8">
+                <h2 class="text-3xl md:text-4xl text-white mb-8 border-b border-gray-800 pb-4">
+                    <span class="text-neon-lime">04.</span> UI/UX 
+                </h2>
+                <p class="text-sm text-gray-400 mb-6">
+                    Danh sách 7 phân mục thiết kế giao diện người dùng và trải nghiệm tương tác trong hệ thống. Bấm vào từng mục để truy cập trang tài liệu HTML riêng:
+                </p>
+
+                <!-- 7 Sub-folders của UI/UX -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    
+                    <!-- 4.1 Lobby -->
+                    <div class="terminal-panel p-5 hover:border-neon-lime transition flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center text-[10px] text-cyber-blue font-mono mb-2">
+                                <span>UI_MODULE // 01</span>
+                                <i class="fas fa-tv"></i>
+                            </div>
+                            <h3 class="text-base text-white mb-2">LOBBY</h3>
+                            <p class="text-xs text-gray-400 mb-5">Giao diện sảnh chờ chính, quản lý đội hình Runner và trạng thái kết nối trước trận đấu.</p>
+                        </div>
+                        <a href="ui-lobby.html" class="cyber-btn w-full">MỞ THƯ MỤC <i class="fas fa-arrow-right"></i></a>
+                    </div>
+
+                    <!-- 4.2 Giao diện nhiệm vụ -->
+                    <div class="terminal-panel p-5 hover:border-neon-lime transition flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center text-[10px] text-cyber-blue font-mono mb-2">
+                                <span>UI_MODULE // 02</span>
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                            <h3 class="text-base text-white mb-2">GIAO DIỆN NHIỆM VỤ</h3>
+                            <p class="text-xs text-gray-400 mb-5">Hệ thống hợp đồng (Contracts) từ các phe phái, tiến độ nhiệm vụ và phần thưởng.</p>
+                        </div>
+                        <a href="ui-quest.html" class="cyber-btn w-full">MỞ THƯ MỤC <i class="fas fa-arrow-right"></i></a>
+                    </div>
+
+                    <!-- 4.3 Armory (Cửa hàng) -->
+                    <div class="terminal-panel p-5 hover:border-neon-lime transition flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center text-[10px] text-cyber-blue font-mono mb-2">
+                                <span>UI_MODULE // 03</span>
+                                <i class="fas fa-shield-halved"></i>
+                            </div>
+                            <h3 class="text-base text-white mb-2">ARMORY (CỬA HÀNG)</h3>
+                            <p class="text-xs text-gray-400 mb-5">Kho vũ khí, trang bị chiến thuật, vật phẩm tiêu hao và giao diện trao đổi vật tư.</p>
+                        </div>
+                        <a href="ui-armory.html" class="cyber-btn w-full">MỞ THƯ MỤC <i class="fas fa-arrow-right"></i></a>
+                    </div>
+
+                    <!-- 4.4 Giao diện Map -->
+                    <div class="terminal-panel p-5 hover:border-neon-lime transition flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center text-[10px] text-cyber-blue font-mono mb-2">
+                                <span>UI_MODULE // 04</span>
+                                <i class="fas fa-map-location-dot"></i>
+                            </div>
+                            <h3 class="text-base text-white mb-2">GIAO DIỆN MAP</h3>
+                            <p class="text-xs text-gray-400 mb-5">Bản đồ chiến thuật 2D/3D, định vị điểm đáp, vùng nguy hiểm và trạm sơ tán.</p>
+                        </div>
+                        <a href="ui-map.html" class="cyber-btn w-full">MỞ THƯ MỤC <i class="fas fa-arrow-right"></i></a>
+                    </div>
+
+                    <!-- 4.5 Cửa hàng Skin / Cosmetics -->
+                    <div class="terminal-panel p-5 hover:border-neon-lime transition flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center text-[10px] text-cyber-blue font-mono mb-2">
+                                <span>UI_MODULE // 05</span>
+                                <i class="fas fa-wand-magic-sparkles"></i>
+                            </div>
+                            <h3 class="text-base text-white mb-2">CỬA HÀNG SKIN / COSMETICS</h3>
+                            <p class="text-xs text-gray-400 mb-5">Tùy chỉnh ngoại trang vỏ bọc Runner, skin vũ khí và hiệu ứng cá nhân hóa.</p>
+                        </div>
+                        <a href="ui-cosmetics.html" class="cyber-btn w-full">MỞ THƯ MỤC <i class="fas fa-arrow-right"></i></a>
+                    </div>
+
+                    <!-- 4.6 Giao diện Vào trận -->
+                    <div class="terminal-panel p-5 hover:border-neon-lime transition flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center text-[10px] text-cyber-blue font-mono mb-2">
+                                <span>UI_MODULE // 06</span>
+                                <i class="fas fa-shuttle-space"></i>
+                            </div>
+                            <h3 class="text-base text-white mb-2">GIAO DIỆN VÀO TRẬN</h3>
+                            <p class="text-xs text-gray-400 mb-5">Màn hình chuẩn bị Loadout cuối cùng, ghép trận và trình chiếu quá trình phóng xuống bề mặt.</p>
+                        </div>
+                        <a href="ui-matchmaking.html" class="cyber-btn w-full">MỞ THƯ MỤC <i class="fas fa-arrow-right"></i></a>
+                    </div>
+
+                    <!-- 4.7 Cốt truyện được mã hóa -->
+                    <div class="terminal-panel p-5 hover:border-neon-lime transition flex flex-col sm:flex-row items-start sm:items-center justify-between md:col-span-2 lg:col-span-3 gap-4">
+                        <div>
+                            <div class="flex items-center gap-2 text-[10px] text-neon-lime font-mono mb-1">
+                                <span>UI_MODULE // 07</span>
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <h3 class="text-base text-white mb-1">CỐT TRUYỆN ĐƯỢC MÃ HÓA (ENCRYPTED LORE)</h3>
+                            <p class="text-xs text-gray-400">Giao diện giải mã dữ liệu mật, nhật ký âm thanh và hồ sơ ẩn thu thập được từ Tau Ceti IV.</p>
+                        </div>
+                        <a href="ui-encrypted-lore.html" class="cyber-btn shrink-0">MỞ THƯ MỤC <i class="fas fa-arrow-right"></i></a>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ================= SECTION 05: ART STYLE + SOUND ================= -->
+            <section id="art-sound" class="mb-24 pt-8">
+                <h2 class="text-3xl md:text-4xl text-white mb-8 border-b border-gray-800 pb-4">
+                    <span class="text-neon-lime">05.</span> ART STYLE + SOUND
+                </h2>
+                <p class="mb-6 text-gray-400 text-sm">
+                    Định hướng nghệ thuật "Graphic Realism" kết hợp màu sắc tương phản mạnh và thiết kế âm thanh viễn tưởng đặc trưng.
+                </p>
+
+                <!-- Nhánh Graphic Realism (Chứa 5 thư mục con bên trong) -->
+                <div class="terminal-panel p-6 md:p-8 mb-6 border-l-4 border-l-neon-lime">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-gray-800 pb-4 mb-6 gap-4">
+                        <div>
+                            <span class="text-[10px] text-neon-lime font-mono uppercase tracking-widest">PRIMARY ART DIRECTION // SUB-TREE</span>
+                            <h3 class="text-2xl text-white mt-1">GRAPHIC REALISM</h3>
+                        </div>
+                        <a href="art-graphic-realism.html" class="cyber-btn">TỔNG QUAN GRAPHIC REALISM <i class="fas fa-folder-open"></i></a>
+                    </div>
+
+                    <!-- 5 Thư mục con của Graphic Realism -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+
+                        <div class="bg-black/60 border border-gray-800 hover:border-neon-lime p-4 flex flex-col justify-between transition">
+                            <div>
+                                <span class="text-[10px] text-cyber-blue font-mono">GR // 02</span>
+                                <h4 class="text-sm text-white mt-1 mb-2">WORLD SETTING</h4>
+                                <p class="text-[11px] text-gray-400 mb-4">Thiết kế cảnh quan hành tinh và hệ sinh thái ngoại lai.</p>
+                            </div>
+                            <a href="art-world-setting.html" class="cyber-btn w-full !text-[10px] !py-2">TRUY CẬP</a>
+                        </div>
+
+                        <div class="bg-black/60 border border-gray-800 hover:border-neon-lime p-4 flex flex-col justify-between transition">
+                            <div>
+                                <span class="text-[10px] text-cyber-blue font-mono">GR // 03</span>
+                                <h4 class="text-sm text-white mt-1 mb-2">ENVIRONMENTAL ARCHITECTURE</h4>
+                                <p class="text-[11px] text-gray-400 mb-4">Kiến trúc khu nghiên cứu và công trình thuộc địa.</p>
+                            </div>
+                            <a href="art-env-architecture.html" class="cyber-btn w-full !text-[10px] !py-2">TRUY CẬP</a>
+                        </div>
+
+                        <div class="bg-black/60 border border-gray-800 hover:border-neon-lime p-4 flex flex-col justify-between transition">
+                            <div>
+                                <span class="text-[10px] text-cyber-blue font-mono">GR // 04</span>
+                                <h4 class="text-sm text-white mt-1 mb-2">ENVIRONMENTAL STORYTELLING</h4>
+                                <p class="text-[11px] text-gray-400 mb-4">Kể chuyện qua hiện trường và dấu tích môi trường.</p>
+                            </div>
+                            <a href="art-env-storytelling.html" class="cyber-btn w-full !text-[10px] !py-2">TRUY CẬP</a>
+                        </div>
+
+                        <div class="bg-black/60 border border-gray-800 hover:border-neon-lime p-4 flex flex-col justify-between transition">
+                            <div>
+                                <span class="text-[10px] text-cyber-blue font-mono">GR // 05</span>
+                                <h4 class="text-sm text-white mt-1 mb-2">WEAPONS</h4>
+                                <p class="text-[11px] text-gray-400 mb-4">Ngôn ngữ thiết kế vũ khí mô-đun và trang bị.</p>
+                            </div>
+                            <a href="art-weapons.html" class="cyber-btn w-full !text-[10px] !py-2">TRUY CẬP</a>
+                        </div>
+
+                        <div class="bg-black/60 border border-gray-800 hover:border-neon-lime p-4 flex flex-col justify-between transition">
+                            <div>
+                                <span class="text-[10px] text-cyber-blue font-mono">GR // 06</span>
+                                <h4 class="text-sm text-white mt-1 mb-2">MAPS</h4>
+                                <p class="text-[11px] text-gray-400 mb-4">Thiết kế tổng thể các khu vực bản đồ và phân luồng di chuyển.</p>
+                            </div>
+                            <a href="art-map.html" class="cyber-btn w-full !text-[10px] !py-2">TRUY CẬP</a>
+                        </div>
+
+                        <div class="bg-black/60 border border-gray-800 hover:border-neon-lime p-4 flex flex-col justify-between transition">
+                            <div>
+                                <span class="text-[10px] text-cyber-blue font-mono">GR // 07</span>
+                                <h4 class="text-sm text-white mt-1 mb-2">ENEMIES</h4>
+                                <p class="text-[11px] text-gray-400 mb-4">Tạo hình kẻ địch AI, sinh vật ngoài hành tinh và lính gác cơ khí.</p>
+                            </div>
+                            <a href="art-enemies.html" class="cyber-btn w-full !text-[10px] !py-2">TRUY CẬP</a>
+                        </div>
+
+                         <div class="bg-black/60 border border-gray-800 hover:border-neon-lime p-4 flex flex-col justify-between transition">
+                            <div>
+                                <h4 class="text-sm text-white mt-1 mb-2">CHARACTERS<br>/SHELL</h4>
+                            <a href="characters.html" class="cyber-btn w-full !text-[10px] !py-2">TRUY CẬP</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4 Thư mục ngang hàng trong ART STYLE + SOUND: Influence, Sound Design, Maps, Enemies -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+                    <div class="terminal-panel p-5 hover:border-cyber-blue transition flex flex-col justify-between">
+                        <div>
+                            <i class="fas fa-eye text-2xl text-cyber-blue mb-3"></i>
+                            <h3 class="text-base text-white mb-2">GR // 01:<br>COLOR PALETTE</h3>
+                    
+                        </div>
+                        <a href="art-color-palette.html" class="cyber-btn w-full">MỞ THƯ MỤC <i class="fas fa-arrow-right"></i></a>
+                    </div>
+
+                    <div class="terminal-panel p-5 hover:border-cyber-blue transition flex flex-col justify-between">
+                        <div>
+                            <i class="fas fa-wave-square text-2xl text-neon-lime mb-3"></i>
+                            <h3 class="text-base text-white mb-2">SOUND DESIGN</h3>
+                            <p class="text-xs text-gray-400 mb-4">Âm thanh môi trường, tiếng súng, nhạc nền Synth điện tử và cảnh báo HUD.</p>
+                        </div>
+                        <a href="art-sound-design.html" class="cyber-btn w-full">MỞ THƯ MỤC <i class="fas fa-arrow-right"></i></a>
+                    </div>
+
+                </div>
+
+                <!-- Giữ lại lưới ảnh mẫu Environment Art từ template gốc để tăng tính thẩm mỹ -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="relative overflow-hidden group border border-gray-800 hover:border-neon-lime transition">
+                        <img src="g1.png" onerror="this.src='https://placehold.co/600x400/0a0f18/00d0ff?text=Quarantine+Zone+01'" class="w-full h-44 object-cover grayscale group-hover:grayscale-0 transition duration-500 transform group-hover:scale-110">
+                        <div class="absolute bottom-0 left-0 bg-black/80 w-full p-2 text-[10px] text-cyber-blue font-mono border-t border-gray-800">dire-marsh-quarantine01.jpg</div>
+                    </div>
+                    <div class="relative overflow-hidden group border border-gray-800 hover:border-neon-lime transition">
+                        <img src="g2.png" onerror="this.src='https://placehold.co/600x400/0a0f18/ccff00?text=Quarantine+Zone+04'" class="w-full h-44 object-cover grayscale group-hover:grayscale-0 transition duration-500 transform group-hover:scale-110">
+                        <div class="absolute bottom-0 left-0 bg-black/80 w-full p-2 text-[10px] text-cyber-blue font-mono border-t border-gray-800">dire-marsh-quarantine04.jpg</div>
+                    </div>
+                    <div class="relative overflow-hidden group border border-gray-800 hover:border-neon-lime transition">
+                        <img src="g3.png" onerror="this.src='https://placehold.co/600x400/0a0f18/ff3333?text=Quarantine+Zone+08'" class="w-full h-44 object-cover grayscale group-hover:grayscale-0 transition duration-500 transform group-hover:scale-110">
+                        <div class="absolute bottom-0 left-0 bg-black/80 w-full p-2 text-[10px] text-cyber-blue font-mono border-t border-gray-800">dire-marsh-quarantine08.jpg</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= SECTION 06: TRUYỀN THÔNG ================= -->
+            <section id="media" class="mb-24 pt-8">
+                <h2 class="text-3xl md:text-4xl text-white mb-8 border-b border-gray-800 pb-4">
+                    <span class="text-neon-lime">06.</span> TRUYỀN THÔNG
+                </h2>
+                <p class="mb-6 text-gray-400 text-sm">
+                    Tài nguyên ấn phẩm truyền thông, nhận diện thương hiệu và chiến dịch quảng bá hình ảnh của dự án.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    
+                    <!-- 6.1 Thumbnail -->
+                    <div class="terminal-panel p-8 hover:border-neon-lime transition flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-xs font-mono text-neon-lime border border-neon-lime px-2 py-0.5">MEDIA_ASSET // 01</span>
+                                <i class="fas fa-photo-film text-2xl text-gray-500"></i>
+                            </div>
+                            <h3 class="text-2xl text-white mb-3">THUMBNAIL</h3>
+                            <p class="text-sm text-gray-400 mb-6">
+                               video trailer, devlog và bài đăng giới thiệu dự án trên các nền tảng số.
+                            </p>
+                        </div>
+                        <a href="media-thumbnail.html" class="cyber-btn w-full">
+                            <span>MỞ THƯ MỤC THUMBNAIL</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                    <!-- 6.2 Poster quảng cáo -->
+                    <div class="terminal-panel p-8 hover:border-cyber-blue transition flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-xs font-mono text-cyber-blue border border-cyber-blue px-2 py-0.5">MEDIA_ASSET // 02</span>
+                                <i class="fas fa-bullhorn text-2xl text-gray-500"></i>
+                            </div>
+                            <h3 class="text-2xl text-white mb-3">POSTER QUẢNG CÁO</h3>
+                            <p class="text-sm text-gray-400 mb-6">
+                                Các thiết kế Key Visual, Poster khổ dọc/ngang phục vụ chiến dịch quảng bá hình ảnh các lớp nhân vật Runner và thế giới Tau Ceti IV.
+                            </p>
+                        </div>
+                        <a href="media-poster.html" class="cyber-btn w-full">
+                            <span>MỞ THƯ MỤC POSTER QUẢNG CÁO</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // 0. Modal CUTES1TG Logic
+        const teamModal = document.getElementById('team-modal');
+        function openTeamModal() {
+            teamModal.classList.remove('hidden');
+            teamModal.classList.add('flex');
+        }
+        function closeTeamModal() {
+            teamModal.classList.add('hidden');
+            teamModal.classList.remove('flex');
+        }
+        // Đóng modal khi click ra vùng nền đen bên ngoài hoặc nhấn phím ESC
+        teamModal.addEventListener('click', (e) => {
+            if (e.target === teamModal) closeTeamModal();
+        });
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeTeamModal();
+        });
+
+        // 1. Scroll-Triggered Hero Animation Logic
+        const heroSection = document.getElementById('scroll-hero');
+        const imgClosed = document.getElementById('img-closed');
+        const imgOpen = document.getElementById('img-open');
+        const heroUI = document.getElementById('hero-ui');
+        const hudLeft = document.getElementById('hud-left');
+        const hudCenter = document.getElementById('hud-center');
+        const hudRight = document.getElementById('hud-right');
+        const scrollPrompt = document.getElementById('scroll-prompt');
+
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const heroHeight = heroSection.offsetHeight;
+            const windowHeight = window.innerHeight;
+            const scrollRange = heroHeight - windowHeight;
+            
+            let progress = Math.max(0, Math.min(1, scrollTop / scrollRange));
+
+            imgClosed.style.opacity = 1 - progress;
+            imgOpen.style.opacity = progress;
+            scrollPrompt.style.opacity = 1 - (progress * 5);
+
+            if (progress > 0.8) {
+                const menuProgress = (progress - 0.8) * 5;
+                heroUI.style.opacity = menuProgress;
+                heroUI.style.pointerEvents = 'auto';
+                
+                hudLeft.style.transform = `translateX(${ (1 - menuProgress) * -50 }px)`;
+                hudRight.style.transform = `translateX(${ (1 - menuProgress) * 50 }px)`;
+                hudCenter.style.transform = `scale(${0.9 + (menuProgress * 0.1)})`;
+            } else {
+                heroUI.style.opacity = 0;
+                heroUI.style.pointerEvents = 'none';
+                
+                hudLeft.style.transform = 'translateX(-50px)';
+                hudRight.style.transform = 'translateX(50px)';
+                hudCenter.style.transform = 'scale(0.9)';
+            }
+        });
+
+        // 1.5 Telemetry Randomizer
+        setInterval(() => {
+            if(heroUI.style.opacity > 0) {
+                document.getElementById('tel-1').innerText = (Math.random() * 999).toFixed(2);
+                document.getElementById('tel-2').innerText = (Math.random() * 360).toFixed(1);
+                document.getElementById('tel-3').innerText = '0x' + Math.floor(Math.random()*65535).toString(16).toUpperCase().padStart(4, '0');
+                document.getElementById('tel-4').innerText = (30 + Math.random() * 20).toFixed(1);
+            }
+        }, 150);
+
+        // 2. Sidebar ScrollSpy Logic
+        const sections = document.querySelectorAll("section");
+        const navLinks = document.querySelectorAll(".nav-link");
+
+        window.addEventListener("scroll", () => {
+            let current = "";
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop + heroSection.offsetHeight; 
+                if (window.scrollY >= (sectionTop - 350)) {
+                    current = section.getAttribute("id");
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove("active");
+                if (link.getAttribute("href").includes(current) && current !== "") {
+                    link.classList.add("active");
+                }
+            });
+        });
+
+        // 3. Global Click-Triggered Glitch Effect
+        document.body.addEventListener('click', (e) => {
+            if(e.target.closest('nav') || e.target.closest('a') || e.target.closest('button') || e.target.closest('#team-modal')) return;
+
+            document.body.classList.add('glitch-effect');
+            
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(200, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(50, ctx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.05, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.1);
+            } catch(err) {}
+
+            setTimeout(() => {
+                document.body.classList.remove('glitch-effect');
+            }, 300);
+        });
+    </script>
+</body>
+</html>

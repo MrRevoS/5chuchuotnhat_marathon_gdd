@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UI/UX - Lobby | Marathon GDD - CUTES1TG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Liên kết tới file CSS dùng chung -->
+    <link rel="stylesheet" href="style.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Orbitron', 'sans-serif'],
+                        mono: ['Share Tech Mono', 'monospace'],
+                    },
+                    colors: {
+                        'deep-blue': '#0a0f18',
+                        'panel-blue': '#121a28',
+                        'neon-lime': '#ccff00',
+                        'alert-red': '#ff3333',
+                        'cyber-blue': '#00d0ff'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Scanline Overlay -->
+    <div class="scanline"></div>
+
+    <!-- ================= TOP BAR / HEADER ================= -->
+    <header class="sticky top-0 z-50 bg-panel-blue/90 backdrop-blur-md border-b border-gray-800 px-6 py-4 shadow-lg">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <a href="main.html#ui-ux" class="cyber-btn !py-2 !px-4">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>QUAY LẠI TRANG CHÍNH</span>
+                </a>
+                <div class="hidden md:block h-6 w-px bg-gray-700"></div>
+                <div class="hidden md:block">
+                    <span class="text-[10px] text-cyber-blue font-mono block tracking-widest">SECTION 04 // UI_MODULE 01</span>
+                    <span class="text-xs text-white font-heading font-bold tracking-wider">LOBBY & MAIN HUB</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 text-[11px] font-mono">
+                <span class="text-gray-400">MODULE: <strong class="text-neon-lime">MAIN_HUB_UI</strong></span>
+                <span class="text-gray-600">|</span>
+                <span class="text-gray-400">THEME: <strong class="text-cyber-blue">MINIMALIST NEON</strong></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-neon-lime animate-pulse"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= MAIN LAYOUT ================= -->
+    <div class="flex-1 max-w-6xl w-full mx-auto p-6 md:p-12 lg:p-16">
+
+        <!-- Page Title Banner -->
+        <div class="mb-12 border-b border-gray-800 pb-6 relative">
+            <div class="flex items-center gap-2 text-xs text-cyber-blue font-mono mb-2 tracking-widest">
+                <i class="fas fa-tv"></i>
+                <span>UI/UX ARCHITECTURE // SUB-MODULE 01</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl text-white font-black tracking-wider">
+                <span class="text-neon-lime">01.</span> LOBBY (MAIN HUB)
+            </h1>
+        </div>
+
+        <!-- ================= PHẦN 1: BỐ CỤC MAIN HUB & NÚT PREPARE ================= -->
+        <section id="lobby-layout" class="mb-20">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[01]</span>
+                    <span>CẤU TRÚC GIAO DIỆN MAIN HUB & CTA</span>
+                </h2>
+                <span class="text-xs font-mono text-neon-lime border border-neon-lime/40 bg-neon-lime/10 px-3 py-1">
+                    PRIMARY CTA: "PREPARE"
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 mb-8 border-l-4 border-l-neon-lime">
+                <div class="space-y-4 text-gray-200 text-sm md:text-base leading-relaxed mb-8">
+                    <p>
+                        <strong class="text-cyber-blue">Main Hub của Marathon</strong> với giao diện là một nhân vật đứng giữa bố cục lobby, bên phải là <span class="text-white font-bold">Menu</span>, bên trên có một <span class="text-white font-bold">thanh trạng thái</span> mô tả account của người chơi. Giao diện thoáng mắt và tối giản, tập trung vào các yếu tố chính.
+                    </p>
+                    <p>
+                        Ở giữa Lobby, được bố trí một nút <span class="text-neon-lime font-bold px-2 py-0.5 bg-neon-lime/10 border border-neon-lime/40">“Prepare”</span> nổi bật, nhằm kích thích người chơi bắt đầu một ván chơi, với gam màu chủ đạo <strong class="text-neon-lime">Neon</strong>.
+                    </p>
+                </div>
+
+                <!-- 4 Thành phần bố cục chính của Lobby -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-6 border-t border-gray-800 mb-8">
+                    <div class="bg-black/60 border border-gray-800 hover:border-cyber-blue p-4 transition">
+                        <div class="text-[10px] text-cyber-blue font-mono mb-1 flex justify-between">
+                            <span>TOP BAR</span>
+                            <i class="fas fa-id-card"></i>
+                        </div>
+                        <h3 class="text-sm text-white mb-1">THANH TRẠNG THÁI</h3>
+                        <p class="text-xs text-gray-400">Đặt phía trên cùng, hiển thị thông tin Account, cấp độ và tài nguyên của người chơi.</p>
+                    </div>
+
+                    <div class="bg-black/60 border border-gray-800 hover:border-cyber-blue p-4 transition">
+                        <div class="text-[10px] text-cyber-blue font-mono mb-1 flex justify-between">
+                            <span>CENTER STAGE</span>
+                            <i class="fas fa-user-astronaut"></i>
+                        </div>
+                        <h3 class="text-sm text-white mb-1">NHÂN VẬT TRUNG TÂM</h3>
+                        <p class="text-xs text-gray-400">Nhân vật Runner đứng giữa bố cục Lobby, tạo điểm nhấn thị giác thoáng mắt và tối giản.</p>
+                    </div>
+
+                    <div class="bg-black/60 border border-gray-800 hover:border-cyber-blue p-4 transition">
+                        <div class="text-[10px] text-cyber-blue font-mono mb-1 flex justify-between">
+                            <span>RIGHT PANEL</span>
+                            <i class="fas fa-bars-staggered"></i>
+                        </div>
+                        <h3 class="text-sm text-white mb-1">HỆ THỐNG MENU</h3>
+                        <p class="text-xs text-gray-400">Bố trí gọn ở cạnh phải màn hình, giúp điều hướng nhanh mà không che khuất nhân vật.</p>
+                    </div>
+
+                    <div class="bg-neon-lime/10 border border-neon-lime/60 p-4 transition shadow-[0_0_15px_rgba(204,255,0,0.15)]">
+                        <div class="text-[10px] text-neon-lime font-mono mb-1 flex justify-between">
+                            <span>CENTER CTA</span>
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3 class="text-sm text-neon-lime mb-1">NÚT "PREPARE"</h3>
+                        <p class="text-xs text-gray-300">Đặt ở vị trí trung tâm với gam màu Neon nổi bật, kích thích người chơi bắt đầu trận đấu.</p>
+                    </div>
+                </div>
+
+                <!-- KHUNG ẢNH 1 -->
+                <div class="bg-black border border-gray-800 p-3 relative group overflow-hidden">
+                    <div class="flex items-center justify-between text-[11px] font-mono text-gray-400 mb-2 px-2">
+                        <span><i class="fas fa-image text-neon-lime mr-2"></i>VISUAL REFERENCE // ẢNH 1: GIAO DIỆN MAIN HUB & NÚT PREPARE</span>
+                        <span class="text-cyber-blue">FILE: lobby1.png</span>
+                    </div>
+                    <!-- Đổi tên file trong src="lobby1.png" nếu ảnh của bạn có tên khác -->
+                    <div class="overflow-hidden border border-gray-800/80 bg-deep-blue">
+                        <img src="lobby1.png" onerror="this.src='https://placehold.co/1200x675/0a0f18/ccff00?text=ANH+1+-+MAIN+HUB+LOBBY+%26+PREPARE+BUTTON+(lobby1.png)'" alt="Ảnh 1 - Giao diện Lobby Marathon" class="w-full max-h-[540px] object-cover group-hover:scale-[1.02] transition duration-500">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PHẦN 2: CÁ NHÂN HÓA & CUSTOMIZE NHÂN VẬT ================= -->
+        <section id="lobby-customization" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[02]</span>
+                    <span>CÁ NHÂN HÓA & CUSTOMIZE NHÂN VẬT</span>
+                </h2>
+                <span class="text-xs font-mono text-cyber-blue border border-cyber-blue/40 bg-cyber-blue/10 px-3 py-1">
+                    UX STRATEGY: PERSONALIZATION
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 border-l-4 border-l-cyber-blue">
+                <p class="text-gray-200 text-sm md:text-base leading-relaxed mb-8">
+                    Lobby của Marathon áp dụng phương pháp thu hút người chơi phổ biến là: Cho phép người chơi được quyền <span class="text-neon-lime font-bold">Customize nhân vật chính ở Lobby</span>. Người chơi chọn 1 trong các <strong class="text-white">Characters</strong> và <strong class="text-white">Skins</strong> để hiển thị ở màn hình chính. Điều này làm cho màn hình Lobby có tính <span class="text-cyber-blue font-bold">Cá nhân hóa</span> hơn, tạo trải nghiệm tốt khi log in vào game.
+                </p>
+
+                <!-- 3 Điểm nhấn UX của tính năng Customize -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 pt-6 border-t border-gray-800">
+                    <div class="bg-black/50 p-4 border-l-2 border-neon-lime">
+                        <div class="text-[10px] text-neon-lime font-mono mb-1">FEATURE // 01</div>
+                        <h4 class="text-white text-sm mb-2">LỰA CHỌN CHARACTERS & SKINS</h4>
+                        <p class="text-xs text-gray-400">Người chơi tự do chọn Runner Shell và trang phục (Skin) yêu thích để trưng bày trực tiếp ngay tại sảnh chính.</p>
+                    </div>
+
+                    <div class="bg-black/50 p-4 border-l-2 border-cyber-blue">
+                        <div class="text-[10px] text-cyber-blue font-mono mb-1">FEATURE // 02</div>
+                        <h4 class="text-white text-sm mb-2">TÍNH CÁ NHÂN HÓA CAO</h4>
+                        <p class="text-xs text-gray-400">Biến không gian Main Hub thành dấu ấn riêng của từng người chơi thay vì một màn hình chờ tĩnh giống nhau.</p>
+                    </div>
+
+                    <div class="bg-black/50 p-4 border-l-2 border-neon-lime">
+                        <div class="text-[10px] text-neon-lime font-mono mb-1">FEATURE // 03</div>
+                        <h4 class="text-white text-sm mb-2">TRẢI NGHIỆM LOG IN ẤN TƯỢNG</h4>
+                        <p class="text-xs text-gray-400">Tạo cảm giác hứng khởi và gắn kết với nhân vật ngay từ khoảnh khắc đầu tiên đăng nhập vào game.</p>
+                    </div>
+                </div>
+
+                <!-- KHUNG ẢNH 2 -->
+                <div class="bg-black border border-gray-800 p-3 relative group overflow-hidden">
+                    <div class="flex items-center justify-between text-[11px] font-mono text-gray-400 mb-2 px-2">
+                        <span><i class="fas fa-Sliders text-cyber-blue mr-2"></i>VISUAL REFERENCE // ẢNH 2: TÙY CHỈNH CHARACTERS & SKINS TẠI LOBBY</span>
+                        <span class="text-cyber-blue">FILE: lobby2.png</span>
+                    </div>
+                    <!-- Đổi tên file trong src="lobby2.png" nếu ảnh của bạn có tên khác -->
+                    <div class="overflow-hidden border border-gray-800/80 bg-deep-blue">
+                        <img src="lobby2.png" onerror="this.src='https://placehold.co/1200x675/0a0f18/00d0ff?text=ANH+2+-+CHARACTER+%26+SKIN+CUSTOMIZATION+IN+LOBBY+(lobby2.png)'" alt="Ảnh 2 - Customize nhân vật ở Lobby" class="w-full max-h-[540px] object-cover group-hover:scale-[1.02] transition duration-500">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom Navigation Footer (Chuyển nhanh sang mục UI tiếp theo hoặc về Main) -->
+        <footer class="mt-16 pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="main.html#ui-ux" class="cyber-btn">
+                <i class="fas fa-chevron-left"></i>
+                <span>QUAY VỀ MỤC 04 (UI/UX) TRÊN TRANG CHÍNH</span>
+            </a>
+            <div class="flex items-center gap-4">
+                <span class="text-xs font-mono text-gray-500 hidden md:inline">TIẾP THEO TRONG UI/UX:</span>
+                <a href="ui-quest.html" class="cyber-btn">
+                    <span>02. GIAO DIỆN NHIỆM VỤ</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Hiệu ứng Glitch khi click giống trang main.html
+        document.body.addEventListener('click', (e) => {
+            if (e.target.closest('a') || e.target.closest('button')) return;
+
+            document.body.classList.add('glitch-effect');
+            setTimeout(() => {
+                document.body.classList.remove('glitch-effect');
+            }, 300);
+        });
+    </script>
+</body>
+</html>

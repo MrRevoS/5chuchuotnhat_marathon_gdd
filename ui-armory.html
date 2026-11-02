@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UI/UX - Armory & Kho Lưu Trữ | Marathon GDD - CUTES1TG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Liên kết tới file CSS dùng chung -->
+    <link rel="stylesheet" href="style.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Orbitron', 'sans-serif'],
+                        mono: ['Share Tech Mono', 'monospace'],
+                    },
+                    colors: {
+                        'deep-blue': '#0a0f18',
+                        'panel-blue': '#121a28',
+                        'neon-lime': '#ccff00',
+                        'alert-red': '#ff3333',
+                        'cyber-blue': '#00d0ff'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Scanline Overlay -->
+    <div class="scanline"></div>
+
+    <!-- ================= TOP BAR / HEADER ================= -->
+    <header class="sticky top-0 z-50 bg-panel-blue/90 backdrop-blur-md border-b border-gray-800 px-6 py-4 shadow-lg">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <a href="main.html#ui-ux" class="cyber-btn !py-2 !px-4">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>QUAY LẠI TRANG CHÍNH</span>
+                </a>
+                <div class="hidden md:block h-6 w-px bg-gray-700"></div>
+                <div class="hidden md:block">
+                    <span class="text-[10px] text-cyber-blue font-mono block tracking-widest">SECTION 04 // UI_MODULE 03</span>
+                    <span class="text-xs text-white font-heading font-bold tracking-wider">ARMORY & INVENTORY ARCHITECTURE</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 text-[11px] font-mono">
+                <span class="text-gray-400">MODULE: <strong class="text-neon-lime">ARMORY_VAULT</strong></span>
+                <span class="text-gray-600">|</span>
+                <span class="text-gray-400">HIERARCHY: <strong class="text-cyber-blue">FACTION LORE + 6 TIERS</strong></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-neon-lime animate-pulse"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= MAIN LAYOUT ================= -->
+    <div class="flex-1 max-w-6xl w-full mx-auto p-6 md:p-12 lg:p-16">
+
+        <!-- Page Title Banner -->
+        <div class="mb-12 border-b border-gray-800 pb-6 relative">
+            <div class="flex items-center gap-2 text-xs text-cyber-blue font-mono mb-2 tracking-widest">
+                <i class="fas fa-shield-halved"></i>
+                <span>UI/UX ARCHITECTURE // SUB-MODULE 03</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl text-white font-black tracking-wider">
+                <span class="text-neon-lime">03.</span> ARMORY (CỬA HÀNG & KHO ĐỒ)
+            </h1>
+        </div>
+
+        <!-- ================= PHẦN 1: BỐ CỤC 3 KHU VỰC CHÍNH & LORE-BASED FACTIONS ================= -->
+        <section id="armory-layout" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[01]</span>
+                    <span>BỐ CỤC GIAO DIỆN & TỔ CHỨC THEO LORE</span>
+                </h2>
+                <span class="text-xs font-mono text-neon-lime border border-neon-lime/40 bg-neon-lime/10 px-3 py-1">
+                    LAYOUT: 3-PANE INVENTORY HUB
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 mb-8 border-l-4 border-l-neon-lime">
+                <div class="space-y-4 text-gray-200 text-sm md:text-base leading-relaxed mb-8">
+                    <p>
+                        Màn hình chia tách rõ ràng giữa bên trái là các <strong class="text-white">ô trang bị trên cơ thể Runner</strong> (2 ô Vũ khí, ô Giáp Shield, các ô gắn Lõi nâng cấp Cores/Implants), ở giữa là <strong class="text-white">Balo mang theo (Backpack)</strong>, và bên phải là <strong class="text-white">Kho lưu trữ tổng (Vault)</strong> hoặc danh mục hàng hóa của Armory.
+                    </p>
+                    <p>
+                        Cách tổ chức thông tin tại Armory ưu tiên <span class="text-cyber-blue font-bold">"cốt truyện" (lore)</span> hơn trải nghiệm. Thay vì phân loại theo chức năng quen thuộc (Vũ khí, Đạn, Phụ kiện), game lại phân loại hàng hóa theo <span class="text-neon-lime font-bold">"Phe phái"</span> (như Traxus, NuCaloric, Cyber Acme).
+                    </p>
+                    <p class="text-xs text-gray-400 font-mono bg-black/50 p-3 border border-gray-800">
+                        ⚠ <strong class="text-white">Đánh giá UX:</strong> Đây vừa là tính độc bản của trò chơi khi không tuân theo lối cũ, vừa là sự khó khăn khi những người chơi thuộc tệp Bắn súng FPS khó làm quen với danh mục và loại hàng để mua.
+                    </p>
+                </div>
+
+                <!-- 3 Cột bố cục chính -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 border-t border-gray-800 mb-8">
+                    <div class="bg-black/60 border border-gray-800 hover:border-cyber-blue p-5 transition">
+                        <div class="text-[10px] text-cyber-blue font-mono mb-2 flex justify-between">
+                            <span>LEFT PANE</span>
+                            <i class="fas fa-user-gear"></i>
+                        </div>
+                        <h3 class="text-base text-white mb-2">TRANG BỊ CƠ THỂ</h3>
+                        <p class="text-xs text-gray-300">Gồm 2 ô Vũ khí, ô Giáp Shield và các ô gắn Lõi nâng cấp (Cores/Implants) trực tiếp trên Runner.</p>
+                    </div>
+
+                    <div class="bg-black/60 border border-gray-800 hover:border-neon-lime p-5 transition">
+                        <div class="text-[10px] text-neon-lime font-mono mb-2 flex justify-between">
+                            <span>CENTER PANE</span>
+                            <i class="fas fa-suitcase-rolling"></i>
+                        </div>
+                        <h3 class="text-base text-white mb-2">BALO MANG THEO (BACKPACK)</h3>
+                        <p class="text-xs text-gray-300">Không gian chứa đồ dã chiến, vật phẩm cứu thương, đạn dược và chiến lợi phẩm trong trận.</p>
+                    </div>
+
+                    <div class="bg-black/60 border border-gray-800 hover:border-cyber-blue p-5 transition">
+                        <div class="text-[10px] text-cyber-blue font-mono mb-2 flex justify-between">
+                            <span>RIGHT PANE</span>
+                            <i class="fas fa-vault"></i>
+                        </div>
+                        <h3 class="text-base text-white mb-2">VAULT & FACTION STORE</h3>
+                        <p class="text-xs text-gray-300">Kho lưu trữ tổng của tài khoản và danh mục hàng hóa phân loại theo phe phái (Traxus, NuCaloric, Cyber Acme).</p>
+                    </div>
+                </div>
+
+                <!-- KHUNG ẢNH 1 -->
+                <div class="bg-black border border-gray-800 p-3 relative group overflow-hidden">
+                    <div class="flex items-center justify-between text-[11px] font-mono text-gray-400 mb-2 px-2">
+                        <span><i class="fas fa-image text-neon-lime mr-2"></i>VISUAL REFERENCE // ẢNH 1: GIAO DIỆN ARMORY & PHÂN LOẠI THEO PHE PHÁI</span>
+                        <span class="text-cyber-blue">FILE: armory1.png</span>
+                    </div>
+                    <div class="overflow-hidden border border-gray-800/80 bg-deep-blue">
+                        <img src="armory1.png" onerror="this.src='https://placehold.co/1200x675/0a0f18/ccff00?text=ANH+1+-+Armory+Layout+%26+Faction+Store+(armory1.png)'" alt="Ảnh 1 - Giao diện Armory và Phân loại theo phe phái" class="w-full max-h-[540px] object-cover group-hover:scale-[1.02] transition duration-500">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PHẦN 2: KHÔNG GIAN KIỂM TRA 3D & STATS HOVER ================= -->
+        <section id="armory-3d-inspection" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[02]</span>
+                    <span>KIỂM TRA 3D VÀ THAY ĐỔI CHỈ SỐ THỜI GIAN THỰC</span>
+                </h2>
+                <span class="text-xs font-mono text-cyber-blue border border-cyber-blue/40 bg-cyber-blue/10 px-3 py-1">
+                    INTERACTION: 3D WEAPON INSPECT
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 border-l-4 border-l-cyber-blue">
+                <p class="text-gray-200 text-sm md:text-base leading-relaxed mb-6">
+                    Khi bấm vào chi tiết một khẩu súng, màn hình chuyển sang <span class="text-cyber-blue font-bold">không gian kiểm tra 3D</span>. Bảng thông số kỹ thuật góc dưới dùng font <span class="font-mono text-neon-lime">PP Fraktion Mono</span> hiển thị sự thay đổi chỉ số (<span class="text-neon-lime font-bold">tăng/giảm bằng màu xanh/đỏ</span>) ngay khi người chơi di chuột qua từng linh kiện.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 border-t border-gray-800">
+                    <div class="bg-black/50 p-4 border-l-2 border-cyber-blue">
+                        <div class="text-[10px] text-cyber-blue font-mono mb-1">INSPECTION // 01</div>
+                        <h4 class="text-white text-sm mb-2">KHÔNG GIAN 3D CHI TIẾT</h4>
+                        <p class="text-xs text-gray-400">Xoay, phóng đại và quan sát trực quan từng bộ phận cơ khí trên vũ khí.</p>
+                    </div>
+
+                    <div class="bg-black/50 p-4 border-l-2 border-neon-lime">
+                        <div class="text-[10px] text-neon-lime font-mono mb-1">INSPECTION // 02</div>
+                        <h4 class="text-white text-sm mb-2">FONT PP FRACTION MONO</h4>
+                        <p class="text-xs text-gray-400">Bảng thông số kỹ thuật mang phong cách bảng điều khiển quân sự tương lai.</p>
+                    </div>
+
+                    <div class="bg-black/50 p-4 border-l-2 border-alert-red">
+                        <div class="text-[10px] text-alert-red font-mono mb-1">INSPECTION // 03</div>
+                        <h4 class="text-white text-sm mb-2">LIVE STATS HOVER</h4>
+                        <p class="text-xs text-gray-400">Chỉ số tự động đổi màu xanh (tăng) hoặc đỏ (giảm) khi rê chuột qua các tùy chọn linh kiện.</p>
+                    </div>
+                </div>
+            </div>
+      
+                 <!-- Khung chứa Video alpha.mp4 -->
+                <div class="relative bg-black border border-gray-800 overflow-hidden shadow-[0_0_30px_rgba(0,208,255,0.15)]">
+                    <video id="thaotac" class="w-full max-h-[580px] object-contain bg-black" controls preload="metadata">
+                        <source src="short1.mp4" type="video/mp4">
+                       
+                    </video>
+                </div>
+
+                <!-- Video Controls & Status Footer -->
+                <div class="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-2 text-xs font-mono text-gray-400">
+                    <div>
+                        STATUS: <span id="video-status" class="text-neon-lime">STANDBY // CLICK PLAY TO INITIATE</span>
+                    </div>
+                    <div class="flex gap-3">
+                        <button type="button" onclick="togglePlay()" class="cyber-btn !py-1.5 !px-4 !text-[11px]">
+                            <i class="fas fa-play" id="play-icon"></i>
+                            <span id="play-text">PHÁT / TẠM DỪNG</span>
+                        </button>
+                        <button type="button" onclick="restartVideo()" class="cyber-btn !py-1.5 !px-4 !text-[11px]">
+                            <i class="fas fa-rotate-left"></i>
+                            <span>PHÁT LẠI</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PHẦN 3: MÃ HÓA MÀU SẮC PHÂN CẤP (6 TIERS) ================= -->
+        <section id="item-rarity-tiers" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[03]</span>
+                    <span>MÃ HÓA MÀU SẮC PHÂN CẤP (6 CẤP ĐỘ GIÁ TRỊ)</span>
+                </h2>
+                <span class="text-xs font-mono text-neon-lime border border-neon-lime/40 bg-neon-lime/10 px-3 py-1">
+                    RARITY: 6-TIER CODING SYSTEM
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 mb-8 border-l-4 border-l-neon-lime">
+                <p class="text-gray-200 text-sm md:text-base leading-relaxed mb-6">
+                    Mỗi ô vật phẩm trong hòm đồ được gán một mảng màu nền hoặc viền có độ tương phản cao, đại diện cho <strong class="text-white">6 cấp độ giá trị</strong>:
+                </p>
+
+                <!-- Bảng 6 Cấp độ giá trị vật phẩm -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                    
+                    <!-- 1. Standard -->
+                    <div class="bg-black/60 border-l-4 border-l-gray-400 p-4">
+                        <div class="flex items-center justify-between text-xs font-mono text-gray-300 mb-1">
+                            <span>TIER 01</span>
+                            <span class="text-gray-400 font-bold">TRẮNG / XÁM</span>
+                        </div>
+                        <h3 class="text-sm text-white font-heading mb-1">STANDARD</h3>
+                        <p class="text-xs text-gray-400">Vật phẩm cơ bản, phổ biến rộng rãi trong các khu vực đầu trận.</p>
+                    </div>
+
+                    <!-- 2. Enhanced -->
+                    <div class="bg-black/60 border-l-4 border-l-green-500 p-4">
+                        <div class="flex items-center justify-between text-xs font-mono text-green-400 mb-1">
+                            <span>TIER 02</span>
+                            <span class="text-green-400 font-bold">XANH LÁ</span>
+                        </div>
+                        <h3 class="text-sm text-white font-heading mb-1">ENHANCED</h3>
+                        <p class="text-xs text-gray-400">Vật phẩm nâng cao với các chỉ số cải thiện so với bản tiêu chuẩn.</p>
+                    </div>
+
+                    <!-- 3. Deluxe -->
+                    <div class="bg-black/60 border-l-4 border-l-blue-400 p-4">
+                        <div class="flex items-center justify-between text-xs font-mono text-blue-400 mb-1">
+                            <span>TIER 03</span>
+                            <span class="text-blue-400 font-bold">XANH LAM</span>
+                        </div>
+                        <h3 class="text-sm text-white font-heading mb-1">DELUXE</h3>
+                        <p class="text-xs text-gray-400">Trang bị cấp trung, độ bền và hiệu năng ổn định trong giao tranh.</p>
+                    </div>
+
+                    <!-- 4. Superior -->
+                    <div class="bg-black/60 border-l-4 border-l-purple-500 p-4">
+                        <div class="flex items-center justify-between text-xs font-mono text-purple-400 mb-1">
+                            <span>TIER 04</span>
+                            <span class="text-purple-400 font-bold">TÍM</span>
+                        </div>
+                        <h3 class="text-sm text-white font-heading mb-1">SUPERIOR</h3>
+                        <p class="text-xs text-gray-400">Trang bị hiếm, sở hữu các thông số vượt trội và hiệu ứng hỗ trợ đặc biệt.</p>
+                    </div>
+
+                    <!-- 5. Prestige -->
+                    <div class="bg-black/60 border-l-4 border-l-yellow-400 p-4">
+                        <div class="flex items-center justify-between text-xs font-mono text-yellow-400 mb-1">
+                            <span>TIER 05</span>
+                            <span class="text-yellow-400 font-bold">VÀNG</span>
+                        </div>
+                        <h3 class="text-sm text-white font-heading mb-1">PRESTIGE</h3>
+                        <p class="text-xs text-gray-400">Trang bị cấp cao nhất, thường gắn liền với các phòng khóa bảo mật cao.</p>
+                    </div>
+
+                    <!-- 6. Contraband -->
+                    <div class="bg-black/60 border-l-4 border-l-red-500 p-4">
+                        <div class="flex items-center justify-between text-xs font-mono text-red-400 mb-1">
+                            <span>TIER 06</span>
+                            <span class="text-red-400 font-bold">ĐỎ</span>
+                        </div>
+                        <h3 class="text-sm text-white font-heading mb-1">CONTRABAND</h3>
+                        <p class="text-xs text-gray-400">Vật phẩm lậu hoặc nhiệm vụ đặc biệt đi kèm rủi ro cực cao khi vận chuyển.</p>
+                    </div>
+
+                </div>
+
+                <!-- Hiệu quả UX thực tế -->
+                <div class="bg-cyber-blue/10 border-l-4 border-cyber-blue p-5 mb-8">
+                    <h4 class="text-cyber-blue text-sm mb-2 flex items-center gap-2">
+                        <i class="fas fa-bolt"></i>
+                        <span>HIỆU QUẢ UX THỰC TẾ TRÊN CHIẾN TRƯỜNG</span>
+                    </h4>
+                    <p class="text-gray-200 text-xs md:text-sm leading-relaxed">
+                        Khi mở một thùng đồ (<strong class="text-white">Loot Container</strong>) hoặc lục soát xác của Runner khác giữa lúc đang có nguy cơ bị tập kích, người chơi chỉ mất khoảng <span class="text-neon-lime font-bold">0.2 đến 0.5 giây</span> quét mắt qua màu sắc và hình khối icon để quyết định vật phẩm nào cần ưu tiên nhặt vào balo, giảm thiểu thời gian đứng yên trên chiến trường.
+                    </p>
+                </div>
+
+                <!-- KHUNG ẢNH 2 -->
+                <div class="bg-black border border-gray-800 p-3 relative group overflow-hidden">
+                    <div class="flex items-center justify-between text-[11px] font-mono text-gray-400 mb-2 px-2">
+                        <span><i class="fas fa-image text-cyber-blue mr-2"></i>VISUAL REFERENCE // ẢNH 2: HỆ THỐNG MÃ HÓA MÀU SẮC PHÂN CẤP VẬT PHẨM</span>
+                        <span class="text-cyber-blue">FILE: armory2.png</span>
+                    </div>
+                    <div class="overflow-hidden border border-gray-800/80 bg-deep-blue">
+                        <img src="armory2.png" onerror="this.src='https://placehold.co/1200x675/0a0f18/00d0ff?text=ANH+2+-+Item+Rarity+Color+Coding+(armory2.png)'" alt="Ảnh 2 - Hệ thống màu sắc phân cấp vật phẩm" class="w-full max-h-[540px] object-cover group-hover:scale-[1.02] transition duration-500">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom Navigation Footer -->
+        <footer class="mt-16 pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="ui-quest.html" class="cyber-btn">
+                <i class="fas fa-chevron-left"></i>
+                <span>02. GIAO DIỆN NHIỆM VỤ</span>
+            </a>
+            <div class="flex items-center gap-4">
+                <span class="text-xs font-mono text-gray-500 hidden md:inline">TIẾP THEO TRONG UI/UX:</span>
+                <a href="ui-map.html" class="cyber-btn">
+                    <span>04. GIAO DIỆN MAP</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Hiệu ứng Glitch khi click giống trang main.html
+        document.body.addEventListener('click', (e) => {
+            if (e.target.closest('a') || e.target.closest('button')) return;
+
+            document.body.classList.add('glitch-effect');
+            setTimeout(() => {
+                document.body.classList.remove('glitch-effect');
+            }, 300);
+        });
+    </script>
+</body>
+</html>

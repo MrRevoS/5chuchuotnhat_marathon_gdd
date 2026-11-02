@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Style - Môi trường kiến trúc (Environmental Architecture) | Marathon GDD - CUTES1TG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Liên kết tới file CSS dùng chung -->
+    <link rel="stylesheet" href="style.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Orbitron', 'sans-serif'],
+                        mono: ['Share Tech Mono', 'monospace'],
+                    },
+                    colors: {
+                        'deep-blue': '#0a0f18',
+                        'panel-blue': '#121a28',
+                        'neon-lime': '#ccff00',
+                        'alert-red': '#ff3333',
+                        'cyber-blue': '#00d0ff'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Scanline Overlay -->
+    <div class="scanline"></div>
+
+    <!-- ================= TOP BAR / HEADER ================= -->
+    <header class="sticky top-0 z-50 bg-panel-blue/90 backdrop-blur-md border-b border-gray-800 px-6 py-4 shadow-lg">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <a href="main.html#art-sound" class="cyber-btn !py-2 !px-4">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>QUAY LẠI TRANG CHÍNH</span>
+                </a>
+                <div class="hidden md:block h-6 w-px bg-gray-700"></div>
+                <div class="hidden md:block">
+                    <span class="text-[10px] text-cyber-blue font-mono block tracking-widest">SECTION 05 // GRAPHIC REALISM</span>
+                    <span class="text-xs text-white font-heading font-bold tracking-wider">ENVIRONMENTAL ARCHITECTURE</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 text-[11px] font-mono">
+                <span class="text-gray-400">MODULE: <strong class="text-neon-lime">ENV_ARCHITECTURE</strong></span>
+                <span class="text-gray-600">|</span>
+                <span class="text-gray-400">STYLE: <strong class="text-cyber-blue">INDUSTRIAL SCI-FI</strong></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-neon-lime animate-pulse"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= MAIN LAYOUT ================= -->
+    <div class="flex-1 max-w-6xl w-full mx-auto p-6 md:p-12 lg:p-16">
+
+        <!-- Page Title Banner -->
+        <div class="mb-12 border-b border-gray-800 pb-6 relative">
+            <div class="flex items-center gap-2 text-xs text-cyber-blue font-mono mb-2 tracking-widest">
+                <i class="fas fa-mountain-city"></i>
+                <span>ART DIRECTION // GRAPHIC REALISM SUB-TREE</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl text-white font-black tracking-wider">
+                <span class="text-neon-lime">GR // 03.</span> ENVIRONMENTAL ARCHITECTURE
+            </h1>
+        </div>
+
+        <!-- ================= 1.1 KIẾN TRÚC CÔNG NGHIỆP VÀ KHOA HỌC VIỄN TƯỞNG ================= -->
+        <section id="industrial-sci-fi" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[1.1]</span>
+                    <span>KIẾN TRÚC CÔNG NGHIỆP VÀ KHOA HỌC VIỄN TƯỞNG</span>
+                </h2>
+                <span class="text-xs font-mono text-neon-lime border border-neon-lime/40 bg-neon-lime/10 px-3 py-1">
+                    INDUSTRIAL SCI-FI ARCHITECTURE
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 mb-8 border-l-4 border-l-neon-lime">
+                <p class="text-gray-200 text-sm md:text-base leading-relaxed mb-6">
+                    Kiến trúc Marathon có thể được đặt trong nhóm <strong class="text-white">Industrial Sci-Fi Architecture</strong> – kiến trúc công nghiệp khoa học viễn tưởng.
+                </p>
+
+                <!-- Các đặc điểm nổi bật -->
+                <h3 class="text-sm text-cyber-blue mb-4 tracking-wider">CÁC ĐẶC ĐIỂM NỔI BẬT:</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                    <div class="bg-black/60 border border-gray-800 hover:border-cyber-blue p-5 transition">
+                        <div class="text-[10px] text-cyber-blue font-mono mb-2 flex justify-between">
+                            <span>SCALE // 01</span>
+                            <i class="fas fa-building text-sm"></i>
+                        </div>
+                        <h4 class="text-sm text-white font-heading mb-1">QUY MÔ LỚN</h4>
+                        <p class="text-xs text-gray-400">Công trình có quy mô khổng lồ, tạo cảm giác áp bức con người trước những khối kiến trúc vĩ đại.</p>
+                    </div>
+
+                    <div class="bg-black/60 border border-gray-800 hover:border-neon-lime p-5 transition">
+                        <div class="text-[10px] text-neon-lime font-mono mb-2 flex justify-between">
+                            <span>LAYOUT // 02</span>
+                            <i class="fas fa-network-wired text-sm"></i>
+                        </div>
+                        <h4 class="text-sm text-white font-heading mb-1">PHÂN CHIA KHÔNG GIAN</h4>
+                        <p class="text-xs text-gray-400">Sự phân chia rõ rệt giữa khu vực chức năng vận hành và khu vực lưu thông huyết mạch.</p>
+                    </div>
+
+                    <div class="bg-black/60 border border-gray-800 hover:border-alert-red p-5 transition">
+                        <div class="text-[10px] text-alert-red font-mono mb-2 flex justify-between">
+                            <span>CONTRAST // 03</span>
+                            <i class="fas fa-globe text-sm"></i>
+                        </div>
+                        <h4 class="text-sm text-white font-heading mb-1">ĐỐI LẬP MÔI TRƯỜNG</h4>
+                        <p class="text-xs text-gray-400">Công trình nhân tạo tạo nên sự đối lập mạnh mẽ với bầu khí quyển và môi trường hành tinh.</p>
+                    </div>
+                </div>
+
+                <div class="bg-black/50 p-4 border border-gray-800 text-xs text-gray-300 font-mono mb-8 leading-relaxed">
+                    <span class="text-neon-lime font-bold">LỜI GIẢI THÍCH LOGIC:</span> Đây là cách xây dựng một thế giới có tính logic: Công trình không đơn thuần là phông nền mà còn đang gợi ra mục đích tồn tại của chính nó.
+                </div>
+
+                <!-- KHUNG ẢNH 1 -->
+                <div class="bg-black border border-gray-800 p-3 relative group overflow-hidden">
+                    <div class="flex items-center justify-between text-[11px] font-mono text-gray-400 mb-2 px-2">
+                        <span><i class="fas fa-image text-neon-lime mr-2"></i>VISUAL REFERENCE // ẢNH 1: KIẾN TRÚC CÔNG NGHIỆP QUY MÔ LỚN</span>
+                        <span class="text-cyber-blue">FILE: arch1.png</span>
+                    </div>
+                    <div class="overflow-hidden border border-gray-800/80 bg-deep-blue">
+                        <img src="arch1.png" onerror="this.src='https://placehold.co/1200x675/0a0f18/ccff00?text=INDUSTRIAL+SCI-FI+ARCHITECTURE+(arch1.png)'" alt="Ảnh 1 - Kiến trúc công nghiệp quy mô lớn" class="w-full max-h-[500px] object-cover group-hover:scale-[1.02] transition duration-500">
+                    </div>
+                </div>
+            </div>
+    <div class="max-w-6xl mx-auto">
+
+        <!-- Tiêu đề -->
+        <div class="text-center mb-8">
+            <h2 class="text-2xl md:text-3xl font-bold text-purple-400 tracking-widest">
+                GALLERY
+            </h2>
+            <p class="text-gray-400 text-xs mt-2 font-mono">
+                // COLLECTION OF ART ENVIROMENT
+            </p>
+            <div class="w-24 h-1 bg-purple-500 mx-auto mt-4"></div>
+        </div>
+
+        <!-- Danh sách ảnh -->
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+
+            <div class="group overflow-hidden border border-purple-900 hover:border-pink-500 transition">
+                <img src="images/anh1.png" alt="Ảnh 1"
+                     class="w-full h-40 object-cover group-hover:scale-110 transition duration-500">
+            </div>
+
+            <div class="group overflow-hidden border border-purple-900 hover:border-pink-500 transition">
+                <img src="images/anh2.png" alt="Ảnh 2"
+                     class="w-full h-40 object-cover group-hover:scale-110 transition duration-500">
+            </div>
+
+            <div class="group overflow-hidden border border-purple-900 hover:border-pink-500 transition">
+                <img src="images/anh3.png" alt="Ảnh 3"
+                     class="w-full h-40 object-cover group-hover:scale-110 transition duration-500">
+            </div>
+
+            <div class="group overflow-hidden border border-purple-900 hover:border-pink-500 transition">
+                <img src="images/anh4.png" alt="Ảnh 4"
+                     class="w-full h-40 object-cover group-hover:scale-110 transition duration-500">
+            </div>
+
+            <div class="group overflow-hidden border border-purple-900 hover:border-pink-500 transition">
+                <img src="images/anh5.png" alt="Ảnh 5"
+                     class="w-full h-40 object-cover group-hover:scale-110 transition duration-500">
+            </div>
+
+            <div class="group overflow-hidden border border-purple-900 hover:border-pink-500 transition">
+                <img src="images/anh6.png" alt="Ảnh 6"
+                     class="w-full h-40 object-cover group-hover:scale-110 transition duration-500">
+            </div>
+
+            <div class="group overflow-hidden border border-purple-900 hover:border-pink-500 transition">
+                <img src="images/anh7.png" alt="Ảnh 7"
+                     class="w-full h-40 object-cover group-hover:scale-110 transition duration-500">
+            </div>
+
+            <div class="group overflow-hidden border border-purple-900 hover:border-pink-500 transition">
+                <img src="images/anh8.png" alt="Ảnh 8"
+                     class="w-full h-40 object-cover group-hover:scale-110 transition duration-500">
+            </div>
+
+            <div class="group overflow-hidden border border-purple-900 hover:border-pink-500 transition">
+                <img src="images/anh9.png" alt="Ảnh 9"
+                     class="w-full h-40 object-cover group-hover:scale-110 transition duration-500">
+            </div>
+
+            <div class="group overflow-hidden border border-purple-900 hover:border-pink-500 transition">
+                <img src="images/anh10.png" alt="Ảnh 10"
+                     class="w-full h-40 object-cover group-hover:scale-110 transition duration-500">
+            </div>
+
+        </div>
+    </div>
+</section>
+
+        <!-- ================= 1.2 MỐI QUAN HỆ GIỮA KIẾN TRÚC VÀ MÔI TRƯỜNG TỰ NHIÊN ================= -->
+        <section id="nature-vs-architecture" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[1.2]</span>
+                    <span>MỐI QUAN HỆ GIỮA KIẾN TRÚC VÀ MÔI TRƯỜNG TỰ NHIÊN</span>
+                </h2>
+                <span class="text-xs font-mono text-cyber-blue border border-cyber-blue/40 bg-cyber-blue/10 px-3 py-1">
+                    SYNTHESIS: ARCHITECTURE & NATURE
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 mb-8 border-l-4 border-l-cyber-blue">
+                <div class="space-y-4 text-gray-200 text-sm md:text-base leading-relaxed mb-6">
+                    <p>
+                        Những công trình có đường nét rõ ràng và cấu trúc hình khối trở thành điểm nhấn giữa cảnh quan tự nhiên rộng lớn, đồng thời nhấn mạnh sự hiện diện của con người trong một môi trường không thuộc về Trái Đất. Kiến trúc ở đây không chỉ thể hiện khả năng công nghệ vượt trội của con người trong tương lai mà còn phản ánh nỗ lực khai phá, tổ chức và kiểm soát không gian trước một hệ sinh thái xa lạ.
+                    </p>
+                    <p>
+                        Bên cạnh sự đối lập, yếu tố tự nhiên còn có khả năng liên kết các bối cảnh trò chơi với nhau, tạo trải nghiệm game chân thực, gần gũi, không bị quá xa lạ trong một môi trường mới. Qua đó, môi trường tự nhiên không chỉ đóng vai trò trang trí mà trở thành một thành phần có ảnh hưởng đến cấu trúc và trải nghiệm không gian trong game.
+                    </p>
+                </div>
+
+                <!-- Bảng tổng hợp không gian, đặc điểm tạo hình và vai trò đồ họa -->
+                <div class="overflow-x-auto mb-8">
+                    <table class="w-full text-left border-collapse text-xs md:text-sm font-mono">
+                        <thead>
+                            <tr class="bg-black text-cyber-blue border-b border-gray-800">
+                                <th class="p-3 border-r border-gray-800">KHÔNG GIAN</th>
+                                <th class="p-3 border-r border-gray-800">ĐẶC ĐIỂM TẠO HÌNH</th>
+                                <th class="p-3">VAI TRÒ ĐỒ HỌA</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-300 divide-y divide-gray-800 bg-panel-blue/40">
+                            <tr>
+                                <td class="p-3 border-r border-gray-800 font-bold text-white">Môi trường tự nhiên</td>
+                                <td class="p-3 border-r border-gray-800">Địa hình ngoài hành tinh, thảm thực vật và hệ sinh thái lạ</td>
+                                <td class="p-3 text-neon-lime">Tạo cảm giác xa lạ</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 border-r border-gray-800 font-bold text-white">Môi trường nhân tạo</td>
+                                <td class="p-3 border-r border-gray-800">Công trình công nghiệp, cơ sở nghiên cứu, khu khai thác</td>
+                                <td class="p-3 text-cyber-blue">Thể hiện dấu ấn con người</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 border-r border-gray-800 font-bold text-white">Không gian nối tiếp</td>
+                                <td class="p-3 border-r border-gray-800">Hành lang, khu vực kết nối, vùng giao thoa giữa tự nhiên và nhân tạo</td>
+                                <td class="p-3 text-purple-400">Tạo chiều sâu và dẫn dắt người chơi</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="bg-cyber-blue/10 border-l-4 border-cyber-blue p-5 mb-8 text-xs md:text-sm text-gray-200 leading-relaxed">
+                    <span class="text-cyber-blue font-bold mr-1">→</span> Sự kết hợp giữa kiến trúc nhân tạo và môi trường tự nhiên trong Marathon tạo nên một thế giới khoa học viễn tưởng có chiều sâu về mặt hình thức lẫn bối cảnh. Đây là cách thiết kế Environment Art có thể sử dụng sự tương phản hình thái, chất liệu và không gian để xây dựng bản sắc thế giới, truyền tải câu chuyện và hỗ trợ trải nghiệm của người chơi.
+                </div>
+
+                <!-- KHUNG ẢNH 2 -->
+                <div class="bg-black border border-gray-800 p-3 relative group overflow-hidden">
+                    <div class="flex items-center justify-between text-[11px] font-mono text-gray-400 mb-2 px-2">
+                        <span><i class="fas fa-image text-cyber-blue mr-2"></i>VISUAL REFERENCE // ẢNH 2: SỰ KẾT HỢP GIỮA TỰ NHIÊN VÀ KIẾN TRÚC NHÂN TẠO</span>
+                        <span class="text-cyber-blue">FILE: arch2.png</span>
+                    </div>
+                    <div class="overflow-hidden border border-gray-800/80 bg-deep-blue">
+                        <img src="arch2.png" onerror="this.src='https://placehold.co/1200x675/0a0f18/00d0ff?text=ARCHITECTURE+VS+NATURE+SYNTHESIS+(arch2.png)'" alt="Ảnh 2 - Sự kết hợp giữa tự nhiên và kiến trúc nhân tạo" class="w-full max-h-[500px] object-cover group-hover:scale-[1.02] transition duration-500">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom Navigation Footer -->
+        <footer class="mt-16 pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="main.html#art-sound" class="cyber-btn">
+                <i class="fas fa-chevron-left"></i>
+                <span>QUAY VỀ MỤC 05 TRÊN TRANG CHÍNH</span>
+            </a>
+            <div class="text-xs font-mono text-gray-500">
+                SQUAD: <span class="text-neon-lime">CUTES1TG</span> // MARATHON 2026 GDD
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Hiệu ứng Glitch khi click giống trang main.html
+        document.body.addEventListener('click', (e) => {
+            if (e.target.closest('a') || e.target.closest('button')) return;
+
+            document.body.classList.add('glitch-effect');
+            setTimeout(() => {
+                document.body.classList.remove('glitch-effect');
+            }, 300);
+        });
+    </script>
+</body>
+</html>

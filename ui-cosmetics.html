@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UI/UX - Cửa hàng Skin / Cosmetics | Marathon GDD - CUTES1TG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Liên kết tới file CSS dùng chung -->
+    <link rel="stylesheet" href="style.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Orbitron', 'sans-serif'],
+                        mono: ['Share Tech Mono', 'monospace'],
+                    },
+                    colors: {
+                        'deep-blue': '#0a0f18',
+                        'panel-blue': '#121a28',
+                        'neon-lime': '#ccff00',
+                        'alert-red': '#ff3333',
+                        'cyber-blue': '#00d0ff'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Scanline Overlay -->
+    <div class="scanline"></div>
+
+    <!-- ================= TOP BAR / HEADER ================= -->
+    <header class="sticky top-0 z-50 bg-panel-blue/90 backdrop-blur-md border-b border-gray-800 px-6 py-4 shadow-lg">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <a href="main.html#ui-ux" class="cyber-btn !py-2 !px-4">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>QUAY LẠI TRANG CHÍNH</span>
+                </a>
+                <div class="hidden md:block h-6 w-px bg-gray-700"></div>
+                <div class="hidden md:block">
+                    <span class="text-[10px] text-cyber-blue font-mono block tracking-widest">SECTION 04 // UI_MODULE 05</span>
+                    <span class="text-xs text-white font-heading font-bold tracking-wider">SKIN & COSMETICS STORE ARCHITECTURE</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 text-[11px] font-mono">
+                <span class="text-gray-400">MODULE: <strong class="text-neon-lime">COSMETICS_STORE</strong></span>
+                <span class="text-gray-600">|</span>
+                <span class="text-gray-400">STYLE: <strong class="text-cyber-blue">TECHWEAR FASHION MAGAZINE</strong></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-neon-lime animate-pulse"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= MAIN LAYOUT ================= -->
+    <div class="flex-1 max-w-6xl w-full mx-auto p-6 md:p-12 lg:p-16">
+
+        <!-- Page Title Banner -->
+        <div class="mb-12 border-b border-gray-800 pb-6 relative">
+            <div class="flex items-center gap-2 text-xs text-cyber-blue font-mono mb-2 tracking-widest">
+                <i class="fas fa-wand-magic-sparkles"></i>
+                <span>UI/UX ARCHITECTURE // SUB-MODULE 05</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl text-white font-black tracking-wider">
+                <span class="text-neon-lime">05.</span> CỬA HÀNG SKIN / COSMETICS
+            </h1>
+        </div>
+
+        <!-- ================= PHẦN 1: SO SÁNH VỚI ARMORY & NGÔN NGỮ ẤN PHẨM THỜI TRANG ================= -->
+        <section id="cosmetics-overview" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[01]</span>
+                    <span>NGÔN NGỮ TRÌNH BÀY DẠNG ẤN PHẨM THỜI TRANG</span>
+                </h2>
+                <span class="text-xs font-mono text-neon-lime border border-neon-lime/40 bg-neon-lime/10 px-3 py-1">
+                    DESIGN: TECHWEAR FASHION CATALOG
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 mb-8 border-l-4 border-l-neon-lime">
+                <div class="space-y-4 text-gray-200 text-sm md:text-base leading-relaxed mb-8">
+                    <p>
+                        Khác với cửa hàng Armory bán vật phẩm ảnh hưởng đến sức mạnh trong trận đấu, <strong class="text-white">cửa hàng Cosmetics</strong> tập trung vào việc trình diễn thẩm mỹ thông qua các gói skin cho Runner Shell và vũ khí.
+                    </p>
+                    <p>
+                        Thay vì xếp các ô vật phẩm dày đặc như chợ truyền thống, giao diện cửa hàng Skin sử dụng bố cục giống <span class="text-cyber-blue font-bold">tạp chí thiết kế công nghiệp hoặc danh mục thời trang Techwear</span>. Các gói ngoại trang (Bundles) được trình bày trong các khung hình lớn, kết hợp giữa hình ảnh render 3D của nhân vật với các mảng chữ lớn chạy dọc/ngang màn hình.
+                    </p>
+                </div>
+
+                <!-- 2 Đặc điểm cốt lõi của Cửa hàng Skin -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-gray-800">
+                    <div class="bg-black/60 border border-gray-800 hover:border-neon-lime p-5 transition">
+                        <div class="text-[10px] text-neon-lime font-mono mb-2 flex justify-between">
+                            <span>CATALOG ARCHITECTURE // 01</span>
+                            <i class="fas fa-book-open text-sm"></i>
+                        </div>
+                        <h3 class="text-base text-white mb-2">ẤN PHẨM THỜI TRANG TECHWEAR</h3>
+                        <p class="text-xs text-gray-300 leading-relaxed">
+                            Bố cục mở rộng với các khung hình render 3D nghệ thuật, typography mạnh mẽ mang lại cảm giác cao cấp như một tạp chí thời trang viễn tưởng thay vì giao diện hòm đồ thông thường.
+                        </p>
+                    </div>
+
+                    <div class="bg-black/60 border border-gray-800 hover:border-cyber-blue p-5 transition">
+                        <div class="text-[10px] text-cyber-blue font-mono mb-2 flex justify-between">
+                            <span>INSPECTION 360 // 02</span>
+                            <i class="fas fa-circle-notch text-sm"></i>
+                        </div>
+                        <h3 class="text-base text-white mb-2">ZOOM & XOAY 360 ĐỘ CHI TIẾT</h3>
+                        <p class="text-xs text-gray-300 leading-relaxed">
+                            Giao diện cho phép người chơi xoay 360 độ và phóng to cận cảnh vào từng bộ phận của lớp vỏ Biomata hoặc khẩu súng để quan sát chất liệu bề mặt và tem nhãn nhà tài trợ.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PHẦN 2: TRẢI NGHIỆM QUAN SÁT CHẤT LIỆU VẬT LIỆU & SPONSOR LOGOS ================= -->
+        <section id="material-inspection" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[02]</span>
+                    <span>CHI TIẾT CHẤT LIỆU & HỆ THỐNG TEM NHÃN</span>
+                </h2>
+                <span class="text-xs font-mono text-cyber-blue border border-cyber-blue/40 bg-cyber-blue/10 px-3 py-1">
+                    SURFACE FINISHES & DECALS
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 border-l-4 border-l-cyber-blue">
+                <p class="text-gray-200 text-sm md:text-base leading-relaxed mb-6">
+                    Tính năng xoay và zoom phục vụ trực tiếp cho việc quan sát sự thay đổi về chất liệu bề mặt (<span class="text-neon-lime font-bold">nhựa nhám, sợi carbon, gốm sứ, vải chống thấm</span>) và hệ thống tem nhãn nhà tài trợ, giúp các skin hiện lên <span class="text-cyber-blue font-bold">bắt mắt, sang trọng và phá cách</span>.
+                </p>
+
+                <!-- Bảng các loại chất liệu bề mặt -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+                    <div class="bg-black/50 border border-gray-800 p-4 text-center">
+                        <i class="fas fa-cube text-neon-lime text-xl mb-2"></i>
+                        <h4 class="text-xs text-white font-heading">NHỰA NHÁM</h4>
+                        <p class="text-[10px] text-gray-400 mt-1">Industrial Matte Finish</p>
+                    </div>
+                    <div class="bg-black/50 border border-gray-800 p-4 text-center">
+                        <i class="fas fa-vest-patches text-cyber-blue text-xl mb-2"></i>
+                        <h4 class="text-xs text-white font-heading">SỢI CARBON</h4>
+                        <p class="text-[10px] text-gray-400 mt-1">Reinforced Carbon Woven</p>
+                    </div>
+                    <div class="bg-black/50 border border-gray-800 p-4 text-center">
+                        <i class="fas fa-shield text-purple-400 text-xl mb-2"></i>
+                        <h4 class="text-xs text-white font-heading">GỐM SỨ</h4>
+                        <p class="text-[10px] text-gray-400 mt-1">High-Temp Ceramic Armor</p>
+                    </div>
+                    <div class="bg-black/50 border border-gray-800 p-4 text-center">
+                        <i class="fas fa-shirt text-yellow-400 text-xl mb-2"></i>
+                        <h4 class="text-xs text-white font-heading">VẢI CHỐNG THẤM</h4>
+                        <p class="text-[10px] text-gray-400 mt-1">Hydrophobic Tech-Fabric</p>
+                    </div>
+                </div>
+
+                <!-- KHUNG ẢNH MINH HỌA CỬA HÀNG SKIN -->
+                <div class="bg-black border border-gray-800 p-3 relative group overflow-hidden">
+                    <div class="flex items-center justify-between text-[11px] font-mono text-gray-400 mb-2 px-2">
+                        <span><i class="fas fa-image text-neon-lime mr-2"></i>VISUAL REFERENCE // CỬA HÀNG SKIN & THỜI TRANG TECHWEAR</span>
+                        <span class="text-cyber-blue">FILE: skin.png</span>
+                    </div>
+                    <div class="overflow-hidden border border-gray-800/80 bg-deep-blue">
+                        <img src="skin.png" onerror="this.src='https://placehold.co/1200x675/0a0f18/00d0ff?text=COSMETICS+STORE+-+TECHWEAR+FASHION+CATALOG+(skin.png)'" alt="Ảnh Cửa hàng Skin Cosmetics" class="w-full max-h-[540px] object-cover group-hover:scale-[1.02] transition duration-500">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom Navigation Footer -->
+        <footer class="mt-16 pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="ui-map.html" class="cyber-btn">
+                <i class="fas fa-chevron-left"></i>
+                <span>04. GIAO DIỆN MAP</span>
+            </a>
+            <div class="flex items-center gap-4">
+                <span class="text-xs font-mono text-gray-500 hidden md:inline">TIẾP THEO TRONG UI/UX:</span>
+                <a href="ui-matchmaking.html" class="cyber-btn">
+                    <span>06. GIAO DIỆN VÀO TRẬN</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Hiệu ứng Glitch khi click giống trang main.html
+        document.body.addEventListener('click', (e) => {
+            if (e.target.closest('a') || e.target.closest('button')) return;
+
+            document.body.classList.add('glitch-effect');
+            setTimeout(() => {
+                document.body.classList.remove('glitch-effect');
+            }, 300);
+        });
+    </script>
+</body>
+</html>

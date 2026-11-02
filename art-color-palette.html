@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Style - Color Palette & Typography | Marathon GDD - CUTES1TG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Liên kết tới file CSS dùng chung -->
+    <link rel="stylesheet" href="style.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Orbitron', 'sans-serif'],
+                        mono: ['Share Tech Mono', 'monospace'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        'deep-blue': '#0a0f18',
+                        'panel-blue': '#121a28',
+                        'neon-lime': '#ccff00',
+                        'volt-yellow': '#dfff00',
+                        'hazard-orange': '#ff3300',
+                        'alert-red': '#ff3333',
+                        'cyber-blue': '#00d0ff',
+                        'electric-cyan': '#00f0ff',
+                        'hyper-magenta': '#ff0055'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .swatch-card {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .swatch-card:hover {
+            transform: translateY(-4px);
+        }
+        .wide-grotesque {
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 0.18em;
+            transform: scaleX(1.12);
+            transform-origin: left center;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Scanline Overlay -->
+    <div class="scanline"></div>
+
+    <!-- Thông báo copy mã màu HEX -->
+    <div id="copy-toast" class="fixed bottom-6 right-6 z-[9999] hidden bg-neon-lime text-black font-mono text-xs font-bold px-4 py-2.5 shadow-[0_0_20px_rgba(204,255,0,0.6)] border border-white">
+        <i class="fas fa-check-circle mr-1.5"></i>ĐÃ SAO CHÉP MÃ MÀU: <span id="copied-hex">#CCFF00</span>
+    </div>
+
+    <!-- ================= TOP BAR / HEADER ================= -->
+    <header class="sticky top-0 z-50 bg-panel-blue/95 backdrop-blur-md border-b border-gray-800 px-6 py-4 shadow-lg">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <a href="main.html#art-sound" class="cyber-btn !py-2 !px-4">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>QUAY LẠI TRANG CHÍNH</span>
+                </a>
+                <div class="hidden md:block h-6 w-px bg-gray-700"></div>
+                <div class="hidden md:block">
+                    <span class="text-[10px] text-cyber-blue font-mono block tracking-widest">SECTION 05 // GRAPHIC REALISM // GR_01</span>
+                    <span class="text-xs text-white font-heading font-bold tracking-wider">COLOR PALETTE & TYPOGRAPHY</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 text-[11px] font-mono">
+                <span class="text-gray-400">PALETTE: <strong class="text-neon-lime">HIGH-CONTRAST ACID</strong></span>
+                <span class="text-gray-600">|</span>
+                <span class="text-gray-400">TYPEFACES: <strong class="text-cyber-blue">5 OFFICIAL FONTS</strong></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-neon-lime animate-pulse"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= MAIN LAYOUT ================= -->
+    <div class="flex-1 max-w-6xl w-full mx-auto p-6 md:p-12 lg:p-16">
+
+        <!-- Page Title Banner -->
+        <div class="mb-12 border-b border-gray-800 pb-6 relative">
+            <div class="flex items-center gap-2 text-xs text-cyber-blue font-mono mb-2 tracking-widest">
+                <i class="fas fa-palette"></i>
+                <span>ART DIRECTION // GRAPHIC REALISM SUB-TREE // GR_01</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl text-white font-black tracking-wider">
+                <span class="text-neon-lime">GR // 01.</span> COLOR PALETTE & TYPOGRAPHY
+            </h1>
+        </div>
+
+        <!-- ================= PHẦN A: BẢNG MÀU (HIGH-CONTRAST ACID & INDUSTRIAL HAZARD) ================= -->
+        <section id="color-palette" class="mb-20">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[A]</span>
+                    <span>BẢNG MÀU: HIGH-CONTRAST ACID & INDUSTRIAL HAZARD</span>
+                </h2>
+                <span class="text-xs font-mono text-neon-lime border border-neon-lime/40 bg-neon-lime/10 px-3 py-1">
+                    CLICK SWATCH TO COPY HEX
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 mb-10 border-l-4 border-l-neon-lime">
+                <!-- 4 Đặc điểm bảng màu -->
+                <h3 class="text-sm text-cyber-blue mb-4 tracking-wider flex items-center gap-2">
+                    <i class="fas fa-sliders"></i>
+                    <span>ĐẶC ĐIỂM BẢNG MÀU CỐT LÕI:</span>
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+                    <div class="bg-black/60 border border-gray-800 hover:border-neon-lime p-4 transition">
+                        <div class="text-[10px] text-neon-lime font-mono mb-1">TRAIT // 01</div>
+                        <p class="text-xs md:text-sm text-white leading-relaxed">Sử dụng các màu nền có tính bão hòa.</p>
+                    </div>
+                    <div class="bg-black/60 border border-gray-800 hover:border-cyber-blue p-4 transition">
+                        <div class="text-[10px] text-cyber-blue font-mono mb-1">TRAIT // 02</div>
+                        <p class="text-xs md:text-sm text-white leading-relaxed">Đưa những màu sắc nổi bật vào các khu vực hoặc chi tiết cần thu hút chú ý.</p>
+                    </div>
+                    <div class="bg-black/60 border border-gray-800 hover:border-neon-lime p-4 transition">
+                        <div class="text-[10px] text-neon-lime font-mono mb-1">TRAIT // 03</div>
+                        <p class="text-xs md:text-sm text-white leading-relaxed">Tạo sự tương phản giữa các bề mặt kiến trúc.</p>
+                    </div>
+                    <div class="bg-black/60 border border-gray-800 hover:border-cyber-blue p-4 transition">
+                        <div class="text-[10px] text-cyber-blue font-mono mb-1">TRAIT // 04</div>
+                        <p class="text-xs md:text-sm text-white leading-relaxed">Sử dụng màu sắc như một công cụ phân cấp vật phẩm.</p>
+                    </div>
+                </div>
+
+                <!-- 1. NHÓM MÀU NỀN (BASE / ARCHITECTURAL SURFACES) -->
+                <div class="mb-10 pt-6 border-t border-gray-800">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-4">
+                        <h3 class="text-lg text-white font-heading">1. NHÓM MÀU NỀN (ARCHITECTURAL BASE PALETTE)</h3>
+                        <span class="text-xs font-mono text-gray-400">CLINICAL WHITE // CONCRETE GREY // CARBON BLACK</span>
+                    </div>
+                    <p class="text-gray-300 text-sm leading-relaxed mb-6">
+                        Bao gồm <strong class="text-white">Trắng phòng thí nghiệm (Clinical White)</strong>, <strong class="text-gray-300">Xám bê tông (Brutalist Concrete Grey)</strong>, và <strong class="text-gray-400">Đen carbon nhám (Matte Carbon Black)</strong>.
+                    </p>
+
+                    <!-- 3 Base Color Swatches -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
+                        <!-- Clinical White -->
+                        <div onclick="copyHex('#F4F6F8')" class="swatch-card bg-black/70 border border-gray-700 hover:border-white cursor-pointer overflow-hidden">
+                            <div class="h-24 w-full bg-[#F4F6F8] flex items-end justify-between p-3 text-black font-mono text-xs font-bold">
+                                <span>CLINICAL WHITE</span>
+                                <span>#F4F6F8</span>
+                            </div>
+                            <div class="p-4">
+                                <h4 class="text-sm text-white mb-1">TRẮNG PHÒNG THÍ NGHIỆM</h4>
+                                <p class="text-xs text-gray-400">Bề mặt vỏ nhựa vô trùng, hành lang phòng nghiên cứu và container UESC.</p>
+                            </div>
+                        </div>
+
+                        <!-- Brutalist Concrete Grey -->
+                        <div onclick="copyHex('#7A8288')" class="swatch-card bg-black/70 border border-gray-700 hover:border-gray-400 cursor-pointer overflow-hidden">
+                            <div class="h-24 w-full bg-[#7A8288] flex items-end justify-between p-3 text-black font-mono text-xs font-bold">
+                                <span>BRUTALIST CONCRETE</span>
+                                <span>#7A8288</span>
+                            </div>
+                            <div class="p-4">
+                                <h4 class="text-sm text-white mb-1">XÁM BÊ TÔNG</h4>
+                                <p class="text-xs text-gray-400">Khối tường kiến trúc Brutalist, bệ phóng công nghiệp và kết cấu hạ tầng.</p>
+                            </div>
+                        </div>
+
+                        <!-- Matte Carbon Black -->
+                        <div onclick="copyHex('#11151C')" class="swatch-card bg-black/70 border border-gray-700 hover:border-cyber-blue cursor-pointer overflow-hidden">
+                            <div class="h-24 w-full bg-[#11151C] border-b border-gray-800 flex items-end justify-between p-3 text-gray-300 font-mono text-xs font-bold">
+                                <span>MATTE CARBON BLACK</span>
+                                <span>#11151C</span>
+                            </div>
+                            <div class="p-4">
+                                <h4 class="text-sm text-white mb-1">ĐEN CARBON NHÁM</h4>
+                                <p class="text-xs text-gray-400">Nền giao diện Terminal, sợi carbon vũ khí và vùng tối tương phản sâu.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-cyber-blue/10 border-l-4 border-cyber-blue p-4 text-xs md:text-sm text-gray-200">
+                        <span class="text-cyber-blue font-bold mr-1">→ VAI TRÒ THỊ GIÁC:</span> Nhóm màu này giúp mắt người chơi được nghỉ ngơi khi di chuyển, đồng thời làm phông nền trung tính để các tín hiệu cảnh báo và mục tiêu phát sáng nổi bật tức thì.
+                    </div>
+                </div>
+
+                <!-- 2. NHÓM MÀU ĐIỂM NHẤN & CẢNH BÁO (ACCENT & HAZARD PALETTE) -->
+                <div class="pt-6 border-t border-gray-800">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-6">
+                        <h3 class="text-lg text-white font-heading">2. NHÓM MÀU ĐIỂM NHẤN & CẢNH BÁO (ACID & HAZARD ACCENTS)</h3>
+                        <span class="text-xs font-mono text-neon-lime">BRAND IDENTITY // HAZARD // RUNNER SHELLS & RARITY</span>
+                    </div>
+
+                    <!-- 4 Accent Color Swatches -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        
+                        <!-- Acid Lime / Volt Yellow -->
+                        <div onclick="copyHex('#CCFF00')" class="swatch-card bg-black/70 border border-neon-lime/60 hover:border-neon-lime cursor-pointer overflow-hidden shadow-[0_0_20px_rgba(204,255,0,0.1)]">
+                            <div class="h-28 w-full flex">
+                                <div class="w-1/2 h-full bg-[#CCFF00] p-3 flex flex-col justify-between text-black font-mono text-xs font-bold">
+                                    <span>ACID LIME</span>
+                                    <span>#CCFF00</span>
+                                </div>
+                                <div class="w-1/2 h-full bg-[#DFFF00] p-3 flex flex-col justify-between text-black font-mono text-xs font-bold border-l border-black/20">
+                                    <span>VOLT YELLOW</span>
+                                    <span>#DFFF00</span>
+                                </div>
+                            </div>
+                            <div class="p-5">
+                                <h4 class="text-base text-neon-lime mb-2">ACID LIME / VOLT YELLOW (#CCFF00 / #DFFF00)</h4>
+                                <p class="text-xs text-gray-300 leading-relaxed">
+                                    <span class="text-neon-lime font-bold">→</span> Màu nhận diện thương hiệu chủ đạo của Marathon, dùng cho các điểm tương tác quan trọng, chất lỏng sinh học và ấn phẩm quảng cáo.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- International Orange / Crimson -->
+                        <div onclick="copyHex('#FF3300')" class="swatch-card bg-black/70 border border-[#FF3300]/60 hover:border-[#FF3300] cursor-pointer overflow-hidden shadow-[0_0_20px_rgba(255,51,0,0.1)]">
+                            <div class="h-28 w-full bg-[#FF3300] p-3 flex flex-col justify-between text-white font-mono text-xs font-bold">
+                                <span>INTERNATIONAL ORANGE / CRIMSON</span>
+                                <span class="text-sm">#FF3300</span>
+                            </div>
+                            <div class="p-5">
+                                <h4 class="text-base text-[#FF3300] mb-2">INTERNATIONAL ORANGE / CRIMSON (#FF3300)</h4>
+                                <p class="text-xs text-gray-300 leading-relaxed">
+                                    <span class="text-[#FF3300] font-bold">→</span> Màu cảnh báo nguy hiểm, khu vực cấm (<strong class="text-white">Hazard Rooms</strong>) và điểm nhấn trên giáp nhân vật.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Electric Cyan -->
+                        <div onclick="copyHex('#00F0FF')" class="swatch-card bg-black/70 border border-[#00F0FF]/60 hover:border-[#00F0FF] cursor-pointer overflow-hidden">
+                            <div class="h-24 w-full bg-[#00F0FF] p-3 flex flex-col justify-between text-black font-mono text-xs font-bold">
+                                <span>ELECTRIC CYAN</span>
+                                <span class="text-sm">#00F0FF</span>
+                            </div>
+                            <div class="p-5">
+                                <h4 class="text-base text-[#00F0FF] mb-2">ELECTRIC CYAN (#00F0FF)</h4>
+                                <p class="text-xs text-gray-300 leading-relaxed">
+                                    Kết hợp cùng Hyper Magenta dùng để phân tách các lớp vỏ Runner (như <strong class="text-white">Glitch, Blackbird</strong>), giao diện dữ liệu HUD và hệ thống phân cấp độ hiếm của vật phẩm (<strong class="text-white">Loot Rarity</strong>).
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Hyper Magenta -->
+                        <div onclick="copyHex('#FF0055')" class="swatch-card bg-black/70 border border-[#FF0055]/60 hover:border-[#FF0055] cursor-pointer overflow-hidden">
+                            <div class="h-24 w-full bg-[#FF0055] p-3 flex flex-col justify-between text-white font-mono text-xs font-bold">
+                                <span>HYPER MAGENTA</span>
+                                <span class="text-sm">#FF0055</span>
+                            </div>
+                            <div class="p-5">
+                                <h4 class="text-base text-[#FF0055] mb-2">HYPER MAGENTA (#FF0055)</h4>
+                                <p class="text-xs text-gray-300 leading-relaxed">
+                                    Tạo điểm nhấn thị giác cường độ cao cho các lớp vỏ Runner đặc biệt, hiệu ứng năng lượng dị thường và phân tách cấp bậc trang bị trong kho đồ.
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Khung minh họa trực quan: Phân cấp độ hiếm của vật phẩm + Ảnh Reference -->
+                    <div class="bg-black border border-gray-800 p-4 md:p-6">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px] font-mono text-gray-400 mb-4 pb-2 border-b border-gray-800">
+                            <span><i class="fas fa-layer-group text-neon-lime mr-2"></i>VISUAL REFERENCE // ỨNG DỤNG MÀU SẮC TRONG PHÂN CẤP ĐỘ HIẾM CỦA VẬT PHẨM (LOOT RARITY)</span>
+                            <span class="text-cyber-blue">FILE: color-rarity.png</span>
+                        </div>
+
+                        <!-- Thanh dải màu 6 cấp độ hiếm trực quan -->
+                        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 mb-5 font-mono text-[10px]">
+                            <div class="bg-gray-800/80 border-t-4 border-gray-400 p-2.5 text-center">
+                                <span class="text-gray-300 font-bold block">STANDARD</span>
+                                <span class="text-gray-500">Trắng / Xám</span>
+                            </div>
+                            <div class="bg-green-950/40 border-t-4 border-green-400 p-2.5 text-center">
+                                <span class="text-green-400 font-bold block">ENHANCED</span>
+                                <span class="text-gray-400">Xanh lá</span>
+                            </div>
+                            <div class="bg-cyan-950/40 border-t-4 border-[#00F0FF] p-2.5 text-center">
+                                <span class="text-[#00F0FF] font-bold block">DELUXE</span>
+                                <span class="text-gray-400">Xanh lam / Cyan</span>
+                            </div>
+                            <div class="bg-purple-950/40 border-t-4 border-purple-400 p-2.5 text-center">
+                                <span class="text-purple-300 font-bold block">SUPERIOR</span>
+                                <span class="text-gray-400">Tím</span>
+                            </div>
+                            <div class="bg-yellow-950/40 border-t-4 border-[#DFFF00] p-2.5 text-center">
+                                <span class="text-[#DFFF00] font-bold block">PRESTIGE</span>
+                                <span class="text-gray-400">Vàng / Volt</span>
+                            </div>
+                            <div class="bg-red-950/40 border-t-4 border-[#FF3300] p-2.5 text-center">
+                                <span class="text-[#FF3300] font-bold block">CONTRABAND</span>
+                                <span class="text-gray-400">Đỏ / Crimson</span>
+                            </div>
+                        </div>
+
+                        <!-- Khung Ảnh Reference Phân cấp độ hiếm của vật phẩm -->
+                        <div class="overflow-hidden border border-gray-800/80 bg-deep-blue relative group">
+                            <img src="color-rarity.png" onerror="this.src='https://placehold.co/1200x550/0a0f18/ccff00?text=REF+IMAGE:+PHAN+CAP+DO+HIEM+CUA+VAT+PHAM+(color-rarity.png)'" alt="Phân cấp độ hiếm của vật phẩm" class="w-full max-h-[480px] object-cover group-hover:scale-[1.02] transition duration-500">
+                            <div class="bg-black/85 px-4 py-2 text-center text-xs font-mono text-neon-lime border-t border-gray-800">
+                                (Phân cấp độ hiếm của vật phẩm thông qua mã hóa màu sắc tương phản cao)
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PHẦN B: HỆ THỐNG TYPOGRAPHY CHÍNH THỨC ================= -->
+        <section id="typography-system" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[B]</span>
+                    <span>HỆ THỐNG TYPOGRAPHY (KIỂU CHỮ) CHÍNH THỨC</span>
+                </h2>
+                <span class="text-xs font-mono text-cyber-blue border border-cyber-blue/40 bg-cyber-blue/10 px-3 py-1">
+                    SOURCE: FONTS IN USE & GAME FILES
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 border-l-4 border-l-cyber-blue">
+                <p class="text-gray-200 text-sm md:text-base leading-relaxed mb-8">
+                    Theo hồ sơ lưu trữ chuyên ngành trên <strong class="text-neon-lime">Fonts In Use</strong> và dữ liệu trích xuất từ bộ cài game, hệ thống Typography của <strong class="text-white">Marathon (2026)</strong> là sự pha trộn táo bạo giữa các font chữ kỹ thuật công nghiệp (<span class="text-cyber-blue font-bold">Sans-serif / Monospace</span>) và một font chữ có chân (<span class="text-[#FF0055] font-bold">Serif</span>) mang tính biên tập thời trang:
+                </p>
+
+                <!-- Bảng Tổng Hợp 5 Font Chữ Chính Thức -->
+                <div class="overflow-x-auto mb-10 border border-gray-800">
+                    <table class="w-full text-left border-collapse text-xs md:text-sm">
+                        <thead>
+                            <tr class="bg-black text-neon-lime font-heading text-xs border-b border-gray-800">
+                                <th class="p-4 border-r border-gray-800 w-1/5">TÊN TYPEFACE (FONT CHỮ)</th>
+                                <th class="p-4 border-r border-gray-800 w-1/5">ĐƠN VỊ THIẾT KẾ / FOUNDRY</th>
+                                <th class="p-4 border-r border-gray-800 w-3/10">VAI TRÒ CỤ THỂ TRONG MARATHON (2026)</th>
+                                <th class="p-4 w-3/10">ĐẶC ĐIỂM THỊ GIÁC</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-800 bg-black/50 text-gray-300">
+                            <!-- 1. KH Interference -->
+                            <tr class="hover:bg-panel-blue/60 transition">
+                                <td class="p-4 border-r border-gray-800 font-bold text-white">
+                                    <span class="text-neon-lime font-mono block text-[10px]">01 // DISPLAY SANS</span>
+                                    1. KH Interference<br>
+                                    <span class="text-xs font-normal text-gray-400">(Regular / Light)</span>
+                                </td>
+                                <td class="p-4 border-r border-gray-800 font-mono text-xs text-cyber-blue">
+                                    Kurppa Hosk<br>
+                                    <span class="text-gray-400">(Thiết kế độc quyền cho dự án)</span>
+                                </td>
+                                <td class="p-4 border-r border-gray-800 leading-relaxed">
+                                    <strong class="text-white">Primary Headline & Display:</strong> Tiêu đề chính trên các Poster quảng cáo, màn hình chờ, giao diện HUD và website của tập đoàn Traxus Global.
+                                </td>
+                                <td class="p-4 leading-relaxed">
+                                    Font chữ không chân mang cấu trúc hình học vuông vức, cắt góc kỹ thuật số, tạo cảm giác máy móc tương lai sắc lạnh.
+                                </td>
+                            </tr>
+
+                            <!-- 2. Marathon Shapiro 65 -->
+                            <tr class="hover:bg-panel-blue/60 transition">
+                                <td class="p-4 border-r border-gray-800 font-bold text-white">
+                                    <span class="text-cyber-blue font-mono block text-[10px]">02 // WIDE GROTESQUE</span>
+                                    2. Marathon Shapiro 65<br>
+                                    <span class="text-xs font-normal text-gray-400">(Custom Shapiro Wide 65)</span>
+                                </td>
+                                <td class="p-4 border-r border-gray-800 font-mono text-xs text-cyber-blue">
+                                    OGJ Type Design<br>
+                                    <span class="text-gray-400">(Bungie/Kurppa Hosk tùy biến riêng)</span>
+                                </td>
+                                <td class="p-4 border-r border-gray-800 leading-relaxed">
+                                    <strong class="text-white">Secondary Heading & Subtitles:</strong> Tiêu đề phụ trong menu game, tên khu vực (Sector) và nhãn lớn trên vũ khí/công trình.
+                                </td>
+                                <td class="p-4 leading-relaxed">
+                                    Dáng chữ bè ngang (Wide Grotesque) cực kỳ vững chãi; bản custom của Marathon có thêm chân ngang ở chữ I hoa, chân cong ở chữ R và chân đế ở số 1.
+                                </td>
+                            </tr>
+
+                            <!-- 3. PP Fraktion Mono -->
+                            <tr class="hover:bg-panel-blue/60 transition">
+                                <td class="p-4 border-r border-gray-800 font-bold text-white">
+                                    <span class="text-neon-lime font-mono block text-[10px]">03 // TELEMETRY MONO</span>
+                                    3. PP Fraktion Mono<br>
+                                    <span class="text-xs font-normal text-gray-400">(Regular / Medium)</span>
+                                </td>
+                                <td class="p-4 border-r border-gray-800 font-mono text-xs text-cyber-blue">
+                                    Pangram Pangram
+                                </td>
+                                <td class="p-4 border-r border-gray-800 leading-relaxed">
+                                    <strong class="text-white">Body Text, HUD & Micro-Typography:</strong> Toàn bộ văn bản mô tả vật phẩm, thông số kỹ thuật, dòng lệnh trên Terminal (như <span class="text-neon-lime font-mono">"INITIATE CONSCIOUSNESS LINK"</span>) và các cụm chữ nhỏ trang trí trên súng/poster.
+                                </td>
+                                <td class="p-4 leading-relaxed">
+                                    Font chữ đơn cách (Monospace) hiện đại, dễ đọc ở kích thước siêu nhỏ, mang đậm hơi thở dữ liệu máy tính (Telemetry data).
+                                </td>
+                            </tr>
+
+                            <!-- 4. IvyPresto Headline -->
+                            <tr class="hover:bg-panel-blue/60 transition">
+                                <td class="p-4 border-r border-gray-800 font-bold text-white">
+                                    <span class="text-[#FF0055] font-mono block text-[10px]">04 // EDITORIAL SERIF</span>
+                                    4. IvyPresto Headline<br>
+                                    <span class="text-xs font-normal text-gray-400">(Regular)</span>
+                                </td>
+                                <td class="p-4 border-r border-gray-800 font-mono text-xs text-cyber-blue">
+                                    The Ivy Foundry<br>
+                                    <span class="text-gray-400">(Jan Maack)</span>
+                                </td>
+                                <td class="p-4 border-r border-gray-800 leading-relaxed">
+                                    <strong class="text-white">In-Game Character & High-Fashion Accents:</strong> Chỉ xuất hiện trong game tại màn hình giới thiệu tên các Runner và các danh hiệu cao cấp.
+                                </td>
+                                <td class="p-4 leading-relaxed">
+                                    <strong class="text-[#FF0055]">Điểm phá cách đắt giá nhất:</strong> Là một font chữ có chân (High-contrast Serif) thanh lịch kiểu tạp chí thời trang Vogue, tạo sự đối lập đầy nghệ thuật khi đặt cạnh các font chữ kỹ thuật khô khan bên trên.
+                                </td>
+                            </tr>
+
+                            <!-- 5. Goliath Beta Encrypted & Shorai Sans StdN -->
+                            <tr class="hover:bg-panel-blue/60 transition">
+                                <td class="p-4 border-r border-gray-800 font-bold text-white">
+                                    <span class="text-purple-400 font-mono block text-[10px]">05 // DIEGETIC GLYPHS</span>
+                                    5. Goliath Beta Encrypted & Shorai Sans StdN
+                                </td>
+                                <td class="p-4 border-r border-gray-800 font-mono text-xs text-cyber-blue">
+                                    Custom / Monotype
+                                </td>
+                                <td class="p-4 border-r border-gray-800 leading-relaxed">
+                                    <strong class="text-white">Worldbuilding & Glyphs:</strong> Dùng cho hệ thống ký hiệu mã hóa ẩn (ARG) và các dòng chữ công nghiệp đa ngôn ngữ trên bề mặt trang bị.
+                                </td>
+                                <td class="p-4 leading-relaxed">
+                                    Tăng độ tin cậy cho thế giới giả tưởng (<strong class="text-white">Diegetic realism</strong>).
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- BẢNG MÔ PHỎNG THỊ GIÁC 5 KIỂU CHỮ (LIVE TYPOGRAPHY SPECIMEN) -->
+                <div class="mb-10">
+                    <h3 class="text-sm text-neon-lime mb-4 tracking-wider flex items-center gap-2">
+                        <i class="fas fa-font"></i>
+                        <span>TRÌNH DIỄN ĐỐI LẬP THỊ GIÁC GIỮA CÁC KIỂU CHỮ (VISUAL SPECIMEN):</span>
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-black/80 border border-gray-800 p-5">
+                            <span class="text-[10px] font-mono text-neon-lime block mb-1">01 & 02 // KH INTERFERENCE & MARATHON SHAPIRO 65</span>
+                            <div class="text-2xl text-white font-heading font-black tracking-widest mb-1">TRAXUS GLOBAL // SECTOR 01</div>
+                            <p class="text-xs text-gray-400">Cấu trúc vuông vức, bè ngang vững chãi dùng cho biển hiệu khu vực và tiêu đề công nghiệp.</p>
+                        </div>
+
+                        <div class="bg-black/80 border border-gray-800 p-5">
+                            <span class="text-[10px] font-mono text-[#FF0055] block mb-1">04 // IVYPRESTO HEADLINE (HIGH-CONTRAST SERIF)</span>
+                            <div class="text-2xl text-white font-serif italic tracking-wide mb-1">Runner Shell — Blackbird & Glitch</div>
+                            <p class="text-xs text-gray-400">Chữ có chân thanh lịch kiểu tạp chí thời trang Vogue đối lập hoàn toàn với nét chữ máy móc.</p>
+                        </div>
+
+                        <div class="bg-black/80 border border-gray-800 p-5 md:col-span-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div>
+                                <span class="text-[10px] font-mono text-cyber-blue block mb-1">03 & 05 // PP FRAKTION MONO & GOLIATH ENCRYPTED GLYPHS</span>
+                                <div class="text-sm text-neon-lime font-mono tracking-widest">INITIATE CONSCIOUSNESS LINK // UESC_2893 // 軌道コロニー // 0xFA2B</div>
+                            </div>
+                            <span class="text-[10px] font-mono text-gray-500 border border-gray-800 px-3 py-1 shrink-0">DIEGETIC MICRO-TYPOGRAPHY</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KHUNG ẢNH MINH HỌA TYPOGRAPHY (CHỮ NHƯ MỘT DẠNG TRANG TRÍ) -->
+                <div class="bg-black border border-gray-800 p-4 md:p-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px] font-mono text-gray-400 mb-4 pb-2 border-b border-gray-800">
+                        <span><i class="fas fa-image text-cyber-blue mr-2"></i>VISUAL REFERENCE // TYPOGRAPHY TRÊN VŨ KHÍ, GIÁP NHÂN VẬT & ẤN PHẨM</span>
+                        <span class="text-cyber-blue">FILE: typo1.png</span>
+                    </div>
+                    <div class="overflow-hidden border border-gray-800/80 bg-deep-blue relative group">
+                        <img src="typo1.png" onerror="this.src='https://placehold.co/1200x550/0a0f18/00d0ff?text=REF+IMAGE:+TYPOGRAPHY+AS+GRAPHICAL+DECORATION+(typo1.png)'" alt="Chữ được sử dụng như một dạng trang trí" class="w-full max-h-[500px] object-cover group-hover:scale-[1.02] transition duration-500">
+                        <div class="bg-black/85 px-4 py-2.5 text-center text-xs font-mono text-cyber-blue border-t border-gray-800">
+                            (Chữ được sử dụng như một dạng trang trí trên bề mặt vũ khí, công trình kiến trúc và giao diện)
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Bottom Navigation Footer -->
+        <footer class="mt-16 pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="main.html#art-sound" class="cyber-btn">
+                <i class="fas fa-chevron-left"></i>
+                <span>QUAY VỀ MỤC 05 TRÊN TRANG CHÍNH</span>
+            </a>
+            <div class="flex items-center gap-4">
+                <span class="text-xs font-mono text-gray-500 hidden md:inline">TIẾP THEO TRONG GRAPHIC REALISM:</span>
+                <a href="art-world-setting.html" class="cyber-btn">
+                    <span>02. WORLD SETTING</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // 1. Copy mã màu HEX khi click vào ô màu
+        const copyToast = document.getElementById('copy-toast');
+        const copiedHex = document.getElementById('copied-hex');
+        let toastTimer = null;
+
+        function copyHex(hexCode) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(hexCode).catch(() => {});
+            }
+            copiedHex.innerText = hexCode;
+            copyToast.classList.remove('hidden');
+            if (toastTimer) clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                copyToast.classList.add('hidden');
+            }, 2000);
+        }
+
+        // 2. Hiệu ứng Glitch khi click giống trang main.html
+        document.body.addEventListener('click', (e) => {
+            if (e.target.closest('a') || e.target.closest('button') || e.target.closest('.swatch-card')) return;
+
+            document.body.classList.add('glitch-effect');
+            setTimeout(() => {
+                document.body.classList.remove('glitch-effect');
+            }, 300);
+        });
+    </script>
+</body>
+</html>

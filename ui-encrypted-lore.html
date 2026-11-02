@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UI/UX - Cốt truyện được mã hóa (Encrypted Lore) | Marathon GDD - CUTES1TG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Liên kết tới file CSS dùng chung -->
+    <link rel="stylesheet" href="style.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Orbitron', 'sans-serif'],
+                        mono: ['Share Tech Mono', 'monospace'],
+                    },
+                    colors: {
+                        'deep-blue': '#0a0f18',
+                        'panel-blue': '#121a28',
+                        'neon-lime': '#ccff00',
+                        'alert-red': '#ff3333',
+                        'cyber-blue': '#00d0ff'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Scanline Overlay -->
+    <div class="scanline"></div>
+
+    <!-- ================= TOP BAR / HEADER ================= -->
+    <header class="sticky top-0 z-50 bg-panel-blue/90 backdrop-blur-md border-b border-gray-800 px-6 py-4 shadow-lg">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <a href="main.html#ui-ux" class="cyber-btn !py-2 !px-4">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>QUAY LẠI TRANG CHÍNH</span>
+                </a>
+                <div class="hidden md:block h-6 w-px bg-gray-700"></div>
+                <div class="hidden md:block">
+                    <span class="text-[10px] text-cyber-blue font-mono block tracking-widest">SECTION 04 // UI_MODULE 07</span>
+                    <span class="text-xs text-white font-heading font-bold tracking-wider">CỐT TRUYỆN ĐƯỢC MÃ HÓA (ENCRYPTED LORE)</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 text-[11px] font-mono">
+                <span class="text-gray-400">MODULE: <strong class="text-neon-lime">ENCRYPTED_LORE</strong></span>
+                <span class="text-gray-600">|</span>
+                <span class="text-gray-400">STATUS: <strong class="text-alert-red animate-pulse">DECRYPTION REQUIRED</strong></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-neon-lime animate-pulse"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= MAIN LAYOUT ================= -->
+    <div class="flex-1 max-w-6xl w-full mx-auto p-6 md:p-12 lg:p-16">
+
+        <!-- Page Title Banner -->
+        <div class="mb-12 border-b border-gray-800 pb-6 relative">
+            <div class="flex items-center gap-2 text-xs text-cyber-blue font-mono mb-2 tracking-widest">
+                <i class="fas fa-lock"></i>
+                <span>UI/UX ARCHITECTURE // SUB-MODULE 07</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl text-white font-black tracking-wider">
+                <span class="text-neon-lime">07.</span> CỐT TRUYỆN ĐƯỢC MÃ HÓA (ENCRYPTED LORE)
+            </h1>
+        </div>
+
+        <!-- ================= PHẦN 1: TỔNG QUAN CƠ CHẾ KHÁM PHÁ LORE ================= -->
+        <section id="lore-overview" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[01]</span>
+                    <span>CƠ CHẾ GIẢI MÃ LORE CỘNG ĐỒNG</span>
+                </h2>
+                <span class="text-xs font-mono text-neon-lime border border-neon-lime/40 bg-neon-lime/10 px-3 py-1">
+                    MECHANIC: CRYPTOGRAPHIC DISCOVERY
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 mb-8 border-l-4 border-l-neon-lime">
+                <div class="space-y-4 text-gray-200 text-sm md:text-base leading-relaxed mb-6">
+                    <p>
+                        Trong thế giới khắc nghiệt của <strong class="text-white">Marathon (2026)</strong>, cốt truyện không được kể trực tiếp qua các đoạn cắt cảnh (cutscenes) truyền thống, mà ẩn giấu sâu bên dưới dạng các <span class="text-cyber-blue font-bold">tệp dữ liệu bị mã hóa (Encrypted Lore Fragments)</span> thu thập được từ các trạm máy trạm (Terminals) hoang phế hoặc xác Runner trên hành tinh Tau Ceti IV.
+                    </p>
+                    <p>
+                        Giao diện giải mã được thiết kế như một bảng điều khiển thiết bị đầu cuối (Terminal Interface) của hệ điều hành ONI. Người chơi cần thu thập các khóa giải mã phân tán trong các khu vực nguy hiểm để khôi phục nhật ký âm thanh, đoạn băng truyền tin hỏng và nhật ký cá nhân của các cư dân UESC Marathon trước khi thảm họa xảy ra.
+                    </p>
+                </div>
+
+                <!-- Khung Ảnh 1: Giao diện Terminal giải mã -->
+                <div class="bg-black border border-gray-800 p-3 relative group overflow-hidden mt-6">
+                    <div class="flex items-center justify-between text-[11px] font-mono text-gray-400 mb-2 px-2">
+                        <span><i class="fas fa-image text-neon-lime mr-2"></i>VISUAL REFERENCE // ẢNH 1: GIAO DIỆN TERMINAL GIẢI MÃ DỮ LIỆU</span>
+                        <span class="text-cyber-blue">FILE: lore1.png</span>
+                    </div>
+                    <div class="overflow-hidden border border-gray-800/80 bg-deep-blue">
+                        <img src="lore1.png" onerror="this.src='https://placehold.co/1200x675/0a0f18/ccff00?text=LORE+TERMINAL+DECRYPTION+INTERFACE+(lore1.png)'" alt="Ảnh 1 - Giao diện Terminal giải mã" class="w-full max-h-[480px] object-cover group-hover:scale-[1.02] transition duration-500">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PHẦN 2: CÁC MẢNH VỠ KÝ ỨC & BỨC TRANH TOÀN CẢNH ================= -->
+        <section id="lore-fragments" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[02]</span>
+                    <span>CÁC MẢNH VỠ DỮ LIỆU & NHẬT KÝ ÂM THANH</span>
+                </h2>
+                <span class="text-xs font-mono text-cyber-blue border border-cyber-blue/40 bg-cyber-blue/10 px-3 py-1">
+                    ARCHIVE: CLASSIFIED FRAGMENTS
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 border-l-4 border-l-cyber-blue">
+                <p class="text-gray-200 text-sm md:text-base leading-relaxed mb-8">
+                    Hệ thống chia cốt truyện mã hóa thành 4 phân đoạn chính mà cộng đồng người chơi phải cùng nhau giải mã và kết nối các mốc sự kiện:
+                </p>
+
+                <!-- 4 Thẻ phân đoạn cốt truyện + 3 ảnh còn lại (lore2.png, lore3.png, lore4.png) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    
+                    <!-- Phân đoạn 1 -->
+                    <div class="bg-black/60 border border-gray-800 hover:border-cyber-blue p-6 transition flex flex-col justify-between">
+                        <div>
+                            <div class="text-[10px] text-cyber-blue font-mono mb-2 flex justify-between">
+                                <span>FRAGMENT // 01</span>
+                                <i class="fas fa-satellite-dish"></i>
+                            </div>
+                            <h3 class="text-base text-white font-heading mb-2">KHỞI HÀNH TỪ DEIMOS</h3>
+                            <p class="text-xs text-gray-300 leading-relaxed mb-4">
+                                Ghi chép về quá trình kiến tạo siêu tàu UESC Marathon từ mặt trăng Deimos và tâm trạng hồi hộp của hàng ngàn cư dân đầu tiên đặt chân lên hành trình hướng về hệ sao Tau Ceti.
+                            </p>
+                        </div>
+                        <div class="border border-gray-800 p-2 bg-black">
+                            <img src="lore2.png" onerror="this.src='https://placehold.co/600x350/0a0f18/00d0ff?text=LORE+FRAGMENT+01+(lore2.png)'" alt="Ảnh 2 - Fragment 01" class="w-full h-40 object-cover">
+                            <div class="text-[9px] font-mono text-gray-500 mt-1 text-right">FILE: lore2.png</div>
+                        </div>
+                    </div>
+
+                    <!-- Phân đoạn 2 -->
+                    <div class="bg-black/60 border border-gray-800 hover:border-neon-lime p-6 transition flex flex-col justify-between">
+                        <div>
+                            <div class="text-[10px] text-neon-lime font-mono mb-2 flex justify-between">
+                                <span>FRAGMENT // 02</span>
+                                <i class="fas fa-biohazard"></i>
+                            </div>
+                            <h3 class="text-base text-white font-heading mb-2">THẢM HỌA SINH HỌC DIRE MARSH</h3>
+                            <p class="text-xs text-gray-300 leading-relaxed mb-4">
+                                Nhật ký y tế ghi lại sự bùng phát của các tác nhân sinh học ngoài hành tinh tại khu cách ly Dire Marsh, sự sụp đổ của hệ thống phòng thủ và quyết định phong tỏa khu định cư.
+                            </p>
+                        </div>
+                        <div class="border border-gray-800 p-2 bg-black">
+                            <img src="lore3.png" onerror="this.src='https://placehold.co/600x350/0a0f18/ccff00?text=LORE+FRAGMENT+02+(lore3.png)'" alt="Ảnh 3 - Fragment 02" class="w-full h-40 object-cover">
+                            <div class="text-[9px] font-mono text-gray-500 mt-1 text-right">FILE: lore3.png</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Phân đoạn 3 & 4 (Dùng ảnh lore4.png cho đoạn 3) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <!-- Phân đoạn 3 -->
+                    <div class="bg-black/60 border border-gray-800 hover:border-alert-red p-6 transition flex flex-col justify-between">
+                        <div>
+                            <div class="text-[10px] text-alert-red font-mono mb-2 flex justify-between">
+                                <span>FRAGMENT // 03</span>
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <h3 class="text-base text-white font-heading mb-2">TIẾNG KÊU CỨU TỪ TRÍ TUỆ NHÂN TẠO</h3>
+                            <p class="text-xs text-gray-300 leading-relaxed mb-4">
+                                Đoạn mã âm thanh rời rạc phát ra từ AI trung tâm của UESC Marathon — nỗ lực cuối cùng vượt qua bức tường nhiễu sóng để gửi tín hiệu cầu cứu về Hội đồng Trái Đất.
+                            </p>
+                        </div>
+                        <div class="border border-gray-800 p-2 bg-black">
+                            <img src="lore4.png" onerror="this.src='https://placehold.co/600x350/0a0f18/ff3333?text=LORE+FRAGMENT+03+(lore4.png)'" alt="Ảnh 4 - Fragment 03" class="w-full h-40 object-cover">
+                            <div class="text-[9px] font-mono text-gray-500 mt-1 text-right">FILE: lore4.png</div>
+                        </div>
+                    </div>
+
+                    <!-- Phân đoạn 4 -->
+                    <div class="bg-black/60 border border-gray-800 hover:border-purple-400 p-6 transition flex flex-col justify-between">
+                        <div>
+                            <div class="text-[10px] text-purple-400 font-mono mb-2 flex justify-between">
+                                <span>FRAGMENT // 04</span>
+                                <i class="fas fa-user-secret"></i>
+                            </div>
+                            <h3 class="text-base text-white font-heading mb-2">SỰ CAN THIỆP CỦA CÁC TẬP ĐOÀN</h3>
+                            <p class="text-xs text-gray-300 leading-relaxed mb-4">
+                                Hồ sơ mật về các hợp đồng ngầm giữa UESC và các tập đoàn lớn (Traxus, NuCaloric), quyết định dung túng và thuê đội ngũ lính đánh thuê "Runner" xâm nhập vùng đất chết để trục lợi công nghệ.
+                            </p>
+                        </div>
+                        <div class="bg-black/50 border border-gray-800 p-4 flex items-center justify-center text-center">
+                            <div class="text-xs font-mono text-purple-400">
+                                <i class="fas fa-shield-halved text-2xl mb-2 block"></i>
+                                <span>[ ENCRYPTED ARCHIVE SECURED ]</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom Navigation Footer -->
+        <footer class="mt-16 pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="ui-matchmaking.html" class="cyber-btn">
+                <i class="fas fa-chevron-left"></i>
+                <span>06. GIAO DIỆN VÀO TRẬN</span>
+            </a>
+            <div class="flex items-center gap-4">
+                <a href="main.html#ui-ux" class="cyber-btn">
+                    <span>VỀ TRANG CHÍNH (UI/UX)</span>
+                    <i class="fas fa-home"></i>
+                </a>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Hiệu ứng Glitch khi click giống trang main.html
+        document.body.addEventListener('click', (e) => {
+            if (e.target.closest('a') || e.target.closest('button')) return;
+
+            document.body.classList.add('glitch-effect');
+            setTimeout(() => {
+                document.body.classList.remove('glitch-effect');
+            }, 300);
+        });
+    </script>
+</body>
+</html>

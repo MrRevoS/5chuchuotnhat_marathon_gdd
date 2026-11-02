@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Concept & Background | Marathon GDD - CUTES1TG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Liên kết tới file CSS dùng chung -->
+    <link rel="stylesheet" href="style.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Orbitron', 'sans-serif'],
+                        mono: ['Share Tech Mono', 'monospace'],
+                    },
+                    colors: {
+                        'deep-blue': '#0a0f18',
+                        'panel-blue': '#121a28',
+                        'neon-lime': '#ccff00',
+                        'alert-red': '#ff3333',
+                        'cyber-blue': '#00d0ff'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Scanline Overlay -->
+    <div class="scanline"></div>
+
+    <!-- ================= TOP BAR / HEADER ================= -->
+    <header class="sticky top-0 z-50 bg-panel-blue/90 backdrop-blur-md border-b border-gray-800 px-6 py-4 shadow-lg">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <a href="main.html#concept" class="cyber-btn !py-2 !px-4">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>QUAY LẠI TRANG CHÍNH</span>
+                </a>
+                <div class="hidden md:block h-6 w-px bg-gray-700"></div>
+                <div class="hidden md:block">
+                    <span class="text-[10px] text-cyber-blue font-mono block tracking-widest">SECTION // 02</span>
+                    <span class="text-xs text-white font-heading font-bold tracking-wider">GAME CONCEPT & BACKGROUND</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 text-[11px] font-mono">
+                <span class="text-gray-400">TIMELINE: <strong class="text-neon-lime">2893 CE</strong></span>
+                <span class="text-gray-600">|</span>
+                <span class="text-gray-400">SECTOR: <strong class="text-cyber-blue">TAU CETI IV</strong></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-neon-lime animate-pulse"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= MAIN LAYOUT ================= -->
+    <div class="flex-1 max-w-6xl w-full mx-auto p-6 md:p-12 lg:p-16">
+
+        <!-- Page Title Banner -->
+        <div class="mb-12 border-b border-gray-800 pb-6 relative">
+            <div class="flex items-center gap-2 text-xs text-cyber-blue font-mono mb-2 tracking-widest">
+                <i class="fas fa-database"></i>
+                <span>TAU CETI IV ARCHIVE // CLASSIFIED BRIEFING</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl text-white font-black tracking-wider">
+                <span class="text-neon-lime">02.</span> GAME CONCEPT & BACKGROUND
+            </h1>
+        </div>
+
+        <!-- ================= 1. GAME CONCEPT ================= -->
+        <section id="game-concept" class="mb-16">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[01]</span>
+                    <span>GAME CONCEPT</span>
+                </h2>
+                <span class="text-xs font-mono text-cyber-blue border border-cyber-blue/40 bg-cyber-blue/10 px-3 py-1">
+                    MODE: SOLO / 3-PLAYER SQUAD
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 border-l-4 border-l-neon-lime">
+                <div class="absolute top-4 right-4 flex items-center gap-2 text-[10px] font-mono text-neon-lime">
+                    <span>CORE_LOOP_ACTIVE</span>
+                    <span class="w-2 h-2 bg-neon-lime animate-ping rounded-full"></span>
+                </div>
+
+                <p class="text-gray-200 text-base md:text-lg leading-relaxed mb-8">
+                    Trong tựa game này, người chơi sẽ hóa thân thành các <span class="text-neon-lime font-bold">Runner</span> xuống các zone trên <span class="text-cyber-blue font-bold">Tau Ceti IV</span> theo đội 3 người hoặc solo, cướp vật phẩm, chiến đấu với những Runner khác và AI, sau đó rút lui một cách an toàn.
+                </p>
+
+                <!-- 4 Bước Trực Quan Hóa Concept -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-6 border-t border-gray-800">
+                    <div class="bg-black/60 border border-gray-800 hover:border-cyber-blue p-4 transition group">
+                        <div class="flex justify-between items-center text-[10px] text-cyber-blue font-mono mb-2">
+                            <span>STEP 01 // DEPLOY</span>
+                            <i class="fas fa-parachute-box text-sm group-hover:scale-110 transition"></i>
+                        </div>
+                        <h3 class="text-sm text-white mb-1">HÓA THÂN RUNNER</h3>
+                        <p class="text-xs text-gray-400">Triển khai xuống các Zone trên Tau Ceti IV theo đội hình 3 người hoặc hoạt động đơn độc (Solo).</p>
+                    </div>
+
+                    <div class="bg-black/60 border border-gray-800 hover:border-neon-lime p-4 transition group">
+                        <div class="flex justify-between items-center text-[10px] text-neon-lime font-mono mb-2">
+                            <span>STEP 02 // SCAVENGE</span>
+                            <i class="fas fa-box-open text-sm group-hover:scale-110 transition"></i>
+                        </div>
+                        <h3 class="text-sm text-white mb-1">CƯỚP VẬT PHẨM</h3>
+                        <p class="text-xs text-gray-400">Thu thập cổ vật, tài nguyên công nghệ và thông tin tình báo giá trị trong khu vực.</p>
+                    </div>
+
+                    <div class="bg-black/60 border border-gray-800 hover:border-alert-red p-4 transition group">
+                        <div class="flex justify-between items-center text-[10px] text-alert-red font-mono mb-2">
+                            <span>STEP 03 // ENGAGE</span>
+                            <i class="fas fa-crosshairs text-sm group-hover:scale-110 transition"></i>
+                        </div>
+                        <h3 class="text-sm text-white mb-1">CHIẾN ĐẤU PvPvE</h3>
+                        <p class="text-xs text-gray-400">Đụng độ trực diện với các đội Runner đối địch cùng lực lượng AI phòng thủ trên hành tinh.</p>
+                    </div>
+
+                    <div class="bg-black/60 border border-gray-800 hover:border-neon-lime p-4 transition group">
+                        <div class="flex justify-between items-center text-[10px] text-neon-lime font-mono mb-2">
+                            <span>STEP 04 // EXTRACT</span>
+                            <i class="fas fa-shuttle-space text-sm group-hover:scale-110 transition"></i>
+                        </div>
+                        <h3 class="text-sm text-white mb-1">RÚT LUI AN TOÀN</h3>
+                        <p class="text-xs text-gray-400">Bảo toàn mạng sống và rút lui thành công khỏi Zone để giữ lại toàn bộ chiến lợi phẩm.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 2. BACKGROUND ================= -->
+        <section id="game-background" class="mb-16">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[02]</span>
+                    <span>BACKGROUND</span>
+                </h2>
+                <span class="text-xs font-mono text-alert-red border border-alert-red/40 bg-alert-red/10 px-3 py-1 animate-pulse">
+                    SIGNAL: DISTRESS CALL DETECTED
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10">
+                <!-- Metadata Header inside Terminal -->
+                <div class="flex flex-wrap items-center justify-between gap-4 border-b border-gray-800 pb-4 mb-6 text-xs font-mono">
+                    <div class="text-cyber-blue">
+                        <i class="fas fa-satellite mr-2"></i>ORIGIN: DEIMOS (MARS MOON) <i class="fas fa-long-arrow-alt-right mx-2 text-gray-600"></i> DESTINATION: TAU CETI IV
+                    </div>
+                    <div class="text-neon-lime">
+                        VESSEL: UESC MARATHON // YEAR: 2893
+                    </div>
+                </div>
+
+                <!-- Nội dung Background chia đoạn rõ ràng, giữ nguyên văn bản gốc -->
+                <div class="space-y-6 text-gray-300 text-sm md:text-base leading-relaxed">
+                    <p>
+                        <strong class="text-white">Marathon 2026</strong> là một tựa game lấy bối cảnh là trên hành tinh <span class="text-cyber-blue">Tau Ceti IV</span> vào năm <span class="text-neon-lime font-bold">2893</span>. Ở đây, con người từ <strong class="text-white">UESC Marathon</strong> – một con tàu thuộc địa được xây dựng từ Deimos, mặt trăng của sao Hỏa – đã thiết lập một khu định cư. Sau nhiều năm hứng chịu các cuộc tấn công từ lực lượng ngoài hành tinh cùng những tác nhân sinh học tàn khốc, khu định cư và con tàu này đã hoàn toàn mất liên lạc.
+                    </p>
+
+                    <p>
+                        Một tín hiệu cầu cứu từ một trong các trí tuệ nhân tạo (AI) của Marathon cuối cùng đã đến được <strong class="text-cyber-blue">Hội đồng Không gian Trái Đất Thống nhất (UESC)</strong>. Việc khu định cư rơi vào tình trạng mất liên lạc hoàn toàn đã khiến UESC cùng nhiều phe phái và tập đoàn lớn có lợi ích liên quan phải bất ngờ; phía UESC đã thiết lập các biện pháp an ninh nghiêm ngặt đối với các hoạt động cứu hộ và trục vớt.
+                    </p>
+
+                    <p>
+                        Đáp lại, các phe phái và tập đoàn này đã thuê những <strong class="text-neon-lime">"Runner"</strong> – các lính đánh thuê đã từ bỏ cơ thể tự nhiên để chuyển sang sử dụng những <span class="text-white italic">"vỏ bọc" (shell)</span> – nhằm thâm nhập vào khu định cư và con tàu Marathon đang bay trên quỹ đạo. Tại đây, họ phải chiến đấu chống lại lực lượng của UESC, các Runner đối địch cùng những thực thể ngoài hành tinh, đồng thời thu hồi các cổ vật, tài nguyên và thông tin tình báo giá trị.
+                    </p>
+                </div>
+
+                <!-- Tóm tắt dữ liệu Lore (Data Cards) -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 pt-6 border-t border-gray-800">
+                    <div class="bg-black/50 p-4 border-l-2 border-cyber-blue">
+                        <div class="text-[10px] text-cyber-blue font-mono mb-1">ENTITY // 01</div>
+                        <h4 class="text-white text-sm mb-2">UESC & TÀU MARATHON</h4>
+                        <p class="text-xs text-gray-400">Tàu thuộc địa xây dựng từ mặt trăng Deimos của sao Hỏa. Sau thảm họa sinh học và tấn công ngoại lai, UESC phong tỏa nghiêm ngặt mọi hoạt động trục vớt.</p>
+                    </div>
+
+                    <div class="bg-black/50 p-4 border-l-2 border-neon-lime">
+                        <div class="text-[10px] text-neon-lime font-mono mb-1">ENTITY // 02</div>
+                        <h4 class="text-white text-sm mb-2">RUNNER & VỎ BỌC (SHELL)</h4>
+                        <p class="text-xs text-gray-400">Lính đánh thuê do các phe phái và tập đoàn lớn thuê, đã từ bỏ cơ thể tự nhiên để chuyển ý thức sang vỏ bọc công nghệ sinh học.</p>
+                    </div>
+
+                    <div class="bg-black/50 p-4 border-l-2 border-alert-red">
+                        <div class="text-[10px] text-alert-red font-mono mb-1">ENTITY // 03</div>
+                        <h4 class="text-white text-sm mb-2">MỐI ĐE DỌA BA CHIỀU</h4>
+                        <p class="text-xs text-gray-400">Lực lượng an ninh UESC, các đội Runner đối địch và những thực thể ngoài hành tinh tại khu định cư lẫn trên tàu quỹ đạo.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 3. VIDEO ARCHIVE (alpha.mp4) ================= -->
+        <section id="alpha-video" class="mb-12">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[03]</span>
+                    <span>VISUAL TELEMETRY // ALPHA FOOTAGE</span>
+                </h2>
+                <div class="flex items-center gap-2 text-xs font-mono text-alert-red">
+                    <span class="w-2.5 h-2.5 rounded-full bg-alert-red animate-ping"></span>
+                    <span>FILE: alpha.mp4</span>
+                </div>
+            </div>
+
+            <div class="terminal-panel p-4 md:p-6">
+                <!-- Video HUD Top Bar -->
+                <div class="flex items-center justify-between text-[11px] font-mono text-gray-400 mb-3 px-2">
+                    <div>
+                        <i class="fas fa-film text-neon-lime mr-2"></i>STREAM_SOURCE: <span class="text-white">LOCAL_ARCHIVE / alpha.mp4</span>
+                    </div>
+                    <div class="text-cyber-blue">
+                        CODEC: H.264 // TRANSMISSION_READY
+                    </div>
+                </div>
+
+                <!-- Khung chứa Video alpha.mp4 -->
+                <div class="relative bg-black border border-gray-800 overflow-hidden shadow-[0_0_30px_rgba(0,208,255,0.15)]">
+                    <video id="alphaPlayer" class="w-full max-h-[580px] object-contain bg-black" controls preload="metadata">
+                        <source src="alpha.mp4" type="video/mp4">
+                        Trình duyệt của bạn không hỗ trợ thẻ video HTML5.
+                    </video>
+                </div>
+
+                <!-- Video Controls & Status Footer -->
+                <div class="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-2 text-xs font-mono text-gray-400">
+                    <div>
+                        STATUS: <span id="video-status" class="text-neon-lime">STANDBY // CLICK PLAY TO INITIATE</span>
+                    </div>
+                    <div class="flex gap-3">
+                        <button type="button" onclick="togglePlay()" class="cyber-btn !py-1.5 !px-4 !text-[11px]">
+                            <i class="fas fa-play" id="play-icon"></i>
+                            <span id="play-text">PHÁT / TẠM DỪNG</span>
+                        </button>
+                        <button type="button" onclick="restartVideo()" class="cyber-btn !py-1.5 !px-4 !text-[11px]">
+                            <i class="fas fa-rotate-left"></i>
+                            <span>PHÁT LẠI</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom Navigation Footer -->
+        <footer class="mt-16 pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="main.html#concept" class="cyber-btn">
+                <i class="fas fa-chevron-left"></i>
+                <span>QUAY VỀ MỤC 02 TRÊN TRANG CHÍNH</span>
+            </a>
+            <div class="text-xs font-mono text-gray-500">
+                SQUAD: <span class="text-neon-lime">CUTES1TG</span> // MARATHON 2026 GDD
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Điều khiển nhanh trình phát video alpha.mp4
+        const video = document.getElementById('alphaPlayer');
+        const videoStatus = document.getElementById('video-status');
+        const playIcon = document.getElementById('play-icon');
+
+        function togglePlay() {
+            if (video.paused) {
+                video.play();
+            } else {
+                video.pause();
+            }
+        }
+
+        function restartVideo() {
+            video.currentTime = 0;
+            video.play();
+        }
+
+        video.addEventListener('play', () => {
+            videoStatus.innerText = 'STREAMING //PLAYBACK ACTIVE';
+            videoStatus.className = 'text-cyber-blue animate-pulse';
+            playIcon.className = 'fas fa-pause';
+        });
+
+        video.addEventListener('pause', () => {
+            videoStatus.innerText = 'PAUSED // AWAITING INPUT';
+            videoStatus.className = 'text-neon-lime';
+            playIcon.className = 'fas fa-play';
+        });
+
+        video.addEventListener('ended', () => {
+            videoStatus.innerText = 'TRANSMISSION COMPLETE';
+            videoStatus.className = 'text-alert-red';
+            playIcon.className = 'fas fa-play';
+        });
+
+        // Hiệu ứng Glitch khi click giống trang main.html
+        document.body.addEventListener('click', (e) => {
+            if (e.target.closest('a') || e.target.closest('button') || e.target.closest('video')) return;
+
+            document.body.classList.add('glitch-effect');
+            setTimeout(() => {
+                document.body.classList.remove('glitch-effect');
+            }, 300);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1647 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Runner Shells & Hồ Sơ Nhân Vật (Characters) | Marathon GDD - CUTES1TG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Liên kết tới file CSS dùng chung -->
+    <link rel="stylesheet" href="style.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Orbitron', 'sans-serif'],
+                        mono: ['Share Tech Mono', 'monospace'],
+                    },
+                    colors: {
+                        'deep-blue': '#0a0f18',
+                        'panel-blue': '#121a28',
+                        'neon-lime': '#ccff00',
+                        'alert-red': '#ff3333',
+                        'cyber-blue': '#00d0ff'
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        .char-tab.active {
+            background-color: #ccff00;
+            border-color: #ccff00;
+            color: #0a0f18;
+            box-shadow: 0 0 15px rgba(204, 255, 0, 0.45);
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Scanline Overlay -->
+    <div class="scanline"></div>
+
+    <!-- ================= MODAL PHÓNG TO ẢNH (CHARACTER 3D INSPECTOR) ================= -->
+    <div id="inspect-modal" class="fixed inset-0 z-[9999] hidden items-center justify-center bg-black/85 backdrop-blur-md p-4">
+        <div class="terminal-panel max-w-4xl w-full p-6 md:p-8 border border-neon-lime shadow-[0_0_50px_rgba(204,255,0,0.25)] relative">
+            <button onclick="closeInspectModal()" class="absolute top-4 right-4 text-gray-400 hover:text-alert-red font-mono text-xs border border-gray-700 hover:border-alert-red px-3 py-1 transition">
+                [ X ] ĐÓNG
+            </button>
+            <div class="text-xs font-mono text-cyber-blue mb-1" id="modal-role">RUNNER SHELL // 3D RENDER INSPECT</div>
+            <h3 class="text-2xl md:text-3xl text-white font-heading mb-4" id="modal-title">CHARACTER NAME</h3>
+            
+            <div class="bg-black border border-gray-800 p-4 flex items-center justify-center h-[420px] mb-4 relative overflow-hidden">
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(204,255,0,0.1),transparent_70%)] pointer-events-none"></div>
+                <img id="modal-img" src="" alt="Inspect Render" class="max-h-[390px] w-auto object-contain">
+            </div>
+
+            <div class="bg-black/70 border-l-2 border-neon-lime p-3.5 text-xs md:text-sm text-gray-200 leading-relaxed" id="modal-desc"></div>
+        </div>
+    </div>
+
+    <!-- ================= TOP BAR / HEADER ================= -->
+    <header class="sticky top-0 z-50 bg-panel-blue/95 backdrop-blur-md border-b border-gray-800 px-6 py-4 shadow-lg">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <a href="main.html" class="cyber-btn !py-2 !px-4">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>QUAY LẠI TRANG CHÍNH</span>
+                </a>
+                <a href="core-mechanic.html" class="cyber-btn !py-2 !px-4 hidden md:inline-flex">
+                    <i class="fas fa-cogs"></i>
+                    <span>CORE MECHANICS</span>
+                </a>
+                <div class="hidden lg:block h-6 w-px bg-gray-700"></div>
+                <div class="hidden lg:block">
+                    <span class="text-[10px] text-cyber-blue font-mono block tracking-widest">SECTION 3.1 & 2.2 // RUNNER SHELLS ARCHIVE</span>
+                    <span class="text-xs text-white font-heading font-bold tracking-wider">CHARACTERS: EMBLEMS, FRONT/BACK & 4 PREVIEWS</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 text-[11px] font-mono">
+                <span class="text-gray-400">BIOMATA SHELLS: <strong class="text-neon-lime">07 CLASSES</strong></span>
+                <span class="text-gray-600">|</span>
+                <span class="text-gray-400">ASSETS: <strong class="text-cyber-blue">ICON + FRONT/BACK + 4 PREVIEWS</strong></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-neon-lime animate-ping"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= MAIN LAYOUT ================= -->
+    <div class="flex-1 max-w-7xl w-full mx-auto p-6 md:p-10 lg:p-12">
+
+        <!-- Page Title Banner -->
+        <div class="mb-10 border-b border-gray-800 pb-6 relative">
+            <h1 class="text-3xl md:text-5xl text-white font-black tracking-wider mb-3">
+                <span class="text-neon-lime">GR:</span> TỔNG QUAN CÁC SHELL & TẠO HÌNH NHÂN VẬT
+            </h1>
+        </div>
+
+        <!-- ================= BẢNG TÓM TẮT NHANH PHÂN CẤP VAI TRÒ (QUICK MATRIX) ================= -->
+        <section id="shell-matrix" class="mb-14">
+            <div class="terminal-panel p-6 md:p-8 border-l-4 border-l-cyber-blue">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6 border-b border-gray-800 pb-4">
+                    <div>
+                        <span class="text-[10px] font-mono text-cyber-blue tracking-widest uppercase">TACTICAL & AESTHETIC MATRIX // 7 RUNNER SHELLS</span>
+                        <h2 class="text-xl md:text-2xl text-white mt-1">BẢNG ĐỐI CHIẾU NHANH CHỨC NĂNG & ĐẶC ĐIỂM NHẬN DIỆN</h2>
+                    </div>
+                    <a href="#full-roster" class="text-xs font-mono text-neon-lime hover:underline">
+                        [ CUỘN XUỐNG XEM TOÀN BỘ 7 HỒ SƠ ↓ ]
+                    </a>
+                </div>
+
+                <div class="overflow-x-auto border border-gray-800">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="bg-black text-neon-lime font-heading border-b border-gray-800">
+                                <th class="p-3.5 border-r border-gray-800">SHELL</th>
+                                <th class="p-3.5 border-r border-gray-800">VAI TRÒ (ROLE)</th>
+                                <th class="p-3.5 border-r border-gray-800">BỘ KỸ NĂNG & TRANG BỊ CỐT LÕI</th>
+                                <th class="p-3.5 border-r border-gray-800">PHONG CÁCH CHIẾN ĐẤU</th>
+                                <th class="p-3.5">ẤN TƯỢNG TẠO HÌNH NỔI BẬT</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-800 bg-black/50 text-gray-300">
+                            <tr class="hover:bg-panel-blue/60 cursor-pointer transition" onclick="switchCharacter(0)">
+                                <td class="p-3.5 border-r border-gray-800 font-bold text-neon-lime font-mono">01. Destroyer</td>
+                                <td class="p-3.5 border-r border-gray-800 font-bold text-white">Combat Specialist</td>
+                                <td class="p-3.5 border-r border-gray-800">Khiên chắn Riot Barricade, hệ thống tên lửa, Thruster di chuyển</td>
+                                <td class="p-3.5 border-r border-gray-800">Chủ động đối đầu, bảo vệ vị trí, tạo áp lực tuyến đầu</td>
+                                <td class="p-3.5">Giáp đồ sộ góc cạnh hơi hướng Halo, mũ che kín mặt vô cảm</td>
+                            </tr>
+                            <tr class="hover:bg-panel-blue/60 cursor-pointer transition" onclick="switchCharacter(1)">
+                                <td class="p-3.5 border-r border-gray-800 font-bold text-purple-400 font-mono">02. Assassin</td>
+                                <td class="p-3.5 border-r border-gray-800 font-bold text-white">Shadow Agent</td>
+                                <td class="p-3.5 border-r border-gray-800">Khói nhân tạo (Smoke) & Công nghệ ngụy trang tàng hình</td>
+                                <td class="p-3.5 border-r border-gray-800">Ẩn mình, đánh lạc hướng và thay đổi vị trí</td>
+                                <td class="p-3.5">Mũ trùm đầu che nửa trên khuôn mặt, dáng vẻ kẻ săn mồi bóng tối</td>
+                            </tr>
+                            <tr class="hover:bg-panel-blue/60 cursor-pointer transition" onclick="switchCharacter(2)">
+                                <td class="p-3.5 border-r border-gray-800 font-bold text-cyber-blue font-mono">03. Recon</td>
+                                <td class="p-3.5 border-r border-gray-800 font-bold text-white">Intel Specialist</td>
+                                <td class="p-3.5 border-r border-gray-800">Echo Pulse, Tracker Drone và dấu chân Hologram</td>
+                                <td class="p-3.5 border-r border-gray-800">Nhận biết tình huống, thu thập thông tin, hỗ trợ đội</td>
+                                <td class="p-3.5">Suit liền thân, mũ bao quanh đầu như thiết bị VR quá khổ</td>
+                            </tr>
+                            <tr class="hover:bg-panel-blue/60 cursor-pointer transition" onclick="switchCharacter(3)">
+                                <td class="p-3.5 border-r border-gray-800 font-bold text-pink-400 font-mono">04. Vandal</td>
+                                <td class="p-3.5 border-r border-gray-800 font-bold text-white">Combat Anarchist</td>
+                                <td class="p-3.5 border-r border-gray-800">Nhảy kép (Double Jump), Power Slide và Disrupt Cannon đẩy lùi</td>
+                                <td class="p-3.5 border-r border-gray-800">Cơ động, thay đổi vị trí nhanh và tạo đột biến</td>
+                                <td class="p-3.5">Áo phông rộng thả ống tay áo sau lưng, tóc gai nhọn phá cách</td>
+                            </tr>
+                            <tr class="hover:bg-panel-blue/60 cursor-pointer transition" onclick="switchCharacter(4)">
+                                <td class="p-3.5 border-r border-gray-800 font-bold text-white font-mono">05. Thief</td>
+                                <td class="p-3.5 border-r border-gray-800 font-bold text-white">Covert Acquisitions</td>
+                                <td class="p-3.5 border-r border-gray-800">X-Ray Visor, Pickpocket Drone và Grapple Device</td>
+                                <td class="p-3.5 border-r border-gray-800">Khám phá tài nguyên, cơ động, tối ưu hóa thu thập</td>
+                                <td class="p-3.5">Armor trắng tinh khiết, thân hình mảnh khảnh cuốn hút và bí ẩn</td>
+                            </tr>
+                            <tr class="hover:bg-panel-blue/60 cursor-pointer transition" onclick="switchCharacter(5)">
+                                <td class="p-3.5 border-r border-gray-800 font-bold text-amber-400 font-mono">06. Triage</td>
+                                <td class="p-3.5 border-r border-gray-800 font-bold text-white">Field Medic</td>
+                                <td class="p-3.5 border-r border-gray-800">Med-Drone, hỗ trợ hồi sinh từ xa và hiệu ứng hỗ trợ đồng đội</td>
+                                <td class="p-3.5 border-r border-gray-800">Hỗ trợ sinh tồn, duy trì khả năng hoạt động của nhóm</td>
+                                <td class="p-3.5">Thân hình đồ sộ kín kẽ, biểu tượng chữ thập vàng y tế trước ngực</td>
+                            </tr>
+                            <tr class="hover:bg-panel-blue/60 cursor-pointer transition" onclick="switchCharacter(6)">
+                                <td class="p-3.5 border-r border-gray-800 font-bold text-alert-red font-mono">07. Sentinel</td>
+                                <td class="p-3.5 border-r border-gray-800 font-bold text-white">Defensive Specialist</td>
+                                <td class="p-3.5 border-r border-gray-800">Thiết bị phòng ngự khu vực & Giáp mô-đun hộp góc cạnh</td>
+                                <td class="p-3.5 border-r border-gray-800">Kiểm soát khu vực, phòng thủ kiên cố và cảnh báo</td>
+                                <td class="p-3.5">Màu đỏ cam cảnh báo chủ đạo, mũ ôm trọn đầu và khối hộp gai góc</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TRẠM TRÌNH CHIẾU TƯƠNG TÁC (BIỂU TƯỢNG SHELL & 4 ẢNH PREVIEW) ================= -->
+        <section id="interactive-spotlight" class="mb-20">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+                <div>
+                    <h2 class="text-2xl md:text-3xl text-white mt-0.5"> PREVIEW</h2>
+                </div>
+                <span class="text-xs font-mono text-cyber-blue border border-cyber-blue/40 bg-cyber-blue/10 px-3 py-1">
+                    CHỌN TAB ĐỂ CHUYỂN ĐỔI NHÂN VẬT
+                </span>
+            </div>
+
+            <!-- Thanh Tab Chọn Nhân Vật -->
+            <div class="terminal-panel p-4 mb-6 border-t-2 border-t-neon-lime">
+                <div class="flex flex-wrap gap-2" id="char-tabs-container">
+                    <!-- Sẽ được render bằng JS -->
+                </div>
+            </div>
+
+            <!-- Khung Hiển Thị Nhân Vật Đang Chọn (Hiển thị Ảnh Biểu Tượng + 4 Ảnh Preview) -->
+            <div id="character-display-arena">
+                <!-- Sẽ được render bằng JS -->
+            </div>
+        </section>
+
+        <!-- ================= DANH SÁCH HỒ SƠ ĐẦY ĐỦ 7 RUNNER SHELLS (FRONT/BACK & 4 PREVIEWS) ================= -->
+        <section id="full-roster" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-8 border-b border-gray-800 pb-4">
+                <div>
+                    <h2 class="text-2xl md:text-4xl text-white font-black mt-1">
+                        HỒ SƠ CHI TIẾT TOÀN BỘ 7 RUNNER SHELLS
+                    </h2>
+                </div>
+                <span class="text-xs font-mono text-neon-lime border border-neon-lime/40 bg-neon-lime/10 px-3 py-1">
+                    SRC: shell/[id]-front, [id]-back, [id]-icon & [id]1..4.png
+                </span>
+            </div>
+
+            <div class="space-y-12">
+                
+    <article id="shell-destroyer" class="terminal-panel p-6 md:p-8 border-l-4 border-neon-lime hover:shadow-[0_0_30px_rgba(0,208,255,0.12)] transition duration-300">
+        <!-- Card Top Header -->
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-gray-800 pb-4 mb-6">
+            <div class="flex items-center gap-4">
+                <!-- Mini Shell Emblem Icon -->
+                <div class="w-12 h-12 bg-black border border-neon-lime p-1.5 flex items-center justify-center shrink-0">
+                    <img src="shell/destroyer-icon.png" 
+                         onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='destroyer-icon.png';}else{this.onerror=null;this.src='https://placehold.co/200x200/0a0f18/ccff00?text=DESTROYER+ICON';}"
+                         alt="Destroyer Icon" class="w-full h-full object-contain">
+                </div>
+                <div>
+                    <span class="text-[10px] font-mono text-gray-400 block tracking-widest">RUNNER SHELL // 3.1.1 // 2.2.7</span>
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-xl md:text-2xl font-heading font-black text-neon-lime">[01]</span>
+                        <h3 class="text-2xl md:text-3xl text-white font-heading font-black tracking-wider">DESTROYER</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="px-3 py-1 border text-xs font-mono font-bold uppercase tracking-wider bg-neon-lime/15 text-neon-lime border-neon-lime/50">
+                    <i class="fas fa-crosshairs mr-1.5"></i>VAI TRÒ: Combat Specialist
+                </span>
+            </div>
+        </div>
+
+        <!-- Main Content Grid: Left (Front & Back 3D Renders) | Right (Function, Playstyle & Visual Impression) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch mb-6">
+            
+            <!-- Left: Dual 3D Render Stage (Front & Back from shell/<id>-front.png & shell/<id>-back.png) -->
+            <div class="lg:col-span-5 grid grid-cols-2 gap-3">
+                <!-- Front View -->
+                <div class="bg-black/90 border border-gray-800 hover:border-neon-lime p-2.5 flex flex-col justify-between group cursor-pointer transition"
+                     onclick='openInspectModal("Destroyer \u2014 G\u00f3c nh\u00ecn M\u1eb7t tr\u01b0\u1edbc (Front View)", "Combat Specialist // Chuy\u00ean gia Giao tranh Tuy\u1ebfn \u0111\u1ea7u", "M\u1ed9t b\u1ed9 gi\u00e1p \u0111\u1ed3 s\u1ed9, ki\u00ean c\u1ed1 \u0111\u01b0\u1ee3c t\u1ea1o b\u1edfi c\u00e1c h\u00ecnh kh\u1ed1i g\u00f3c c\u1ea1nh mang h\u01a1i h\u01b0\u1edbng Halo t\u1ea1o cho Destroyer m\u1ed9t c\u1ea3m gi\u00e1c to l\u1edbn v\u00e0 nguy hi\u1ec3m. Chi\u1ebfc m\u0169 che m\u1eb7t khi\u1ebfn nh\u00e2n v\u1eadt thi\u1ebfu \u0111i n\u00e9t con ng\u01b0\u1eddi, tr\u1edf n\u00ean v\u00f4 c\u1ea3m.", this.querySelector("img").src)'>
+                    <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1.5 mb-2">
+                        <span class="text-neon-lime font-bold">MẶT TRƯỚC (FRONT)</span>
+                        <span>[ ZOOM ]</span>
+                    </div>
+                    <div class="h-64 flex items-center justify-center overflow-hidden relative">
+                        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,208,255,0.08),transparent_70%)] pointer-events-none"></div>
+                        <img src="shell/destroyer-front.png" 
+                             onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='destroyer-front.png';}else{this.onerror=null;this.src='https://placehold.co/500x700/0a0f18/ccff00?text=DESTROYER+FRONT+(destroyer-front.png)';}"
+                             alt="Destroyer Front" class="max-h-60 w-auto object-contain group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="text-[9px] font-mono text-gray-500 text-center mt-1.5 truncate">shell/destroyer-front.png</div>
+                </div>
+
+                <!-- Back View -->
+                <div class="bg-black/90 border border-gray-800 hover:border-neon-lime p-2.5 flex flex-col justify-between group cursor-pointer transition"
+                     onclick='openInspectModal("Destroyer \u2014 G\u00f3c nh\u00ecn M\u1eb7t sau (Back View)", "Combat Specialist // Chuy\u00ean gia Giao tranh Tuy\u1ebfn \u0111\u1ea7u", "M\u1ed9t b\u1ed9 gi\u00e1p \u0111\u1ed3 s\u1ed9, ki\u00ean c\u1ed1 \u0111\u01b0\u1ee3c t\u1ea1o b\u1edfi c\u00e1c h\u00ecnh kh\u1ed1i g\u00f3c c\u1ea1nh mang h\u01a1i h\u01b0\u1edbng Halo t\u1ea1o cho Destroyer m\u1ed9t c\u1ea3m gi\u00e1c to l\u1edbn v\u00e0 nguy hi\u1ec3m. Chi\u1ebfc m\u0169 che m\u1eb7t khi\u1ebfn nh\u00e2n v\u1eadt thi\u1ebfu \u0111i n\u00e9t con ng\u01b0\u1eddi, tr\u1edf n\u00ean v\u00f4 c\u1ea3m.", this.querySelector("img").src)'>
+                    <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1.5 mb-2">
+                        <span class="text-purple-400 font-bold">MẶT SAU (BACK)</span>
+                        <span>[ ZOOM ]</span>
+                    </div>
+                    <div class="h-64 flex items-center justify-center overflow-hidden relative">
+                        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(168,85,247,0.08),transparent_70%)] pointer-events-none"></div>
+                        <img src="shell/destroyer-back.png" 
+                             onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='destroyer-back.png';}else{this.onerror=null;this.src='https://placehold.co/500x700/0a0f18/00d0ff?text=DESTROYER+BACK+(destroyer-back.png)';}"
+                             alt="Destroyer Back" class="max-h-60 w-auto object-contain group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="text-[9px] font-mono text-gray-500 text-center mt-1.5 truncate">shell/destroyer-back.png</div>
+                </div>
+            </div>
+
+            <!-- Right: Functional & Visual Breakdown -->
+            <div class="lg:col-span-7 flex flex-col justify-between space-y-4">
+                
+                <!-- 1. Chức năng & Cơ chế Gameplay (3.1) -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-neon-lime font-bold mb-1.5">
+                        <span><i class="fas fa-bolt mr-1.5"></i>CHỨC NĂNG & CƠ CHẾ CHIẾN ĐẤU:</span>
+                        <span>CHUYÊN GIA GIAO TRANH TUYẾN ĐẦU</span>
+                    </div>
+                    <p class="text-xs md:text-sm text-gray-200 leading-relaxed mb-3">
+                        Shell thiên về giao tranh trực diện và giữ tuyến đầu. Bộ kỹ năng nổi bật gồm khiên chắn Riot Barricade, hệ thống tên lửa và Thruster hỗ trợ di chuyển.
+                    </p>
+                    <div class="bg-panel-blue/80 border-l-2 border-neon-lime px-3 py-2 text-xs text-gray-300">
+                        <strong class="text-white font-mono">→ PHONG CÁCH:</strong> Chủ động đối đầu, bảo vệ vị trí và tạo áp lực trong giao tranh.
+                    </div>
+                </div>
+
+                <!-- 2. Ấn tượng Tạo hình & Thiết kế Ngoại trang (2.2) -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-cyber-blue font-bold mb-1.5">
+                        <span><i class="fas fa-eye mr-1.5"></i>ẤN TƯỢNG NGOẠI HÌNH & NGÔN NGỮ TẠO HÌNH :</span>
+                        <span>VISUAL IDENTITY</span>
+                    </div>
+                    <p class="text-xs md:text-sm text-gray-200 leading-relaxed mb-3 italic border-l-2 border-cyber-blue pl-3">
+                        "Một bộ giáp đồ sộ, kiên cố được tạo bởi các hình khối góc cạnh mang hơi hướng Halo tạo cho Destroyer một cảm giác to lớn và nguy hiểm. Chiếc mũ che mặt khiến nhân vật thiếu đi nét con người, trở nên vô cảm."
+                    </p>
+                    <ul class="space-y-1">
+                        <li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-neon-lime font-bold">▹</span><span>Khung giáp hạng nặng màu xanh ngọc nhạt (Mint/Sage Tactical) phối các điểm nhấn cảnh báo màu cam đỏ.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-neon-lime font-bold">▹</span><span>Mũ bảo hiểm kín mặt với kính chắn phản quang đỏ-tím tạo vẻ lạnh lùng, phi nhân tính.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-neon-lime font-bold">▹</span><span>Hai cụm bệ phóng và giáp vai vươn cao kiểu chiến binh không gian cổ điển.</span></li>
+                    </ul>
+                </div>
+
+                <!-- 3. Bộ Kỹ năng & Thiết bị Đặc trưng -->
+                <div class="pt-2 flex flex-wrap items-center gap-2">
+                    <span class="text-[10px] font-mono text-gray-400 mr-1">TRANG BỊ & KỸ NĂNG:</span>
+                    <span class="px-3 py-1 bg-black/80 border border-gray-700 text-xs font-mono text-gray-200 flex items-center gap-1.5"><i class="fas fa-microchip text-neon-lime text-[10px]"></i>Riot Barricade (Khiên chắn)</span><span class="px-3 py-1 bg-black/80 border border-gray-700 text-xs font-mono text-gray-200 flex items-center gap-1.5"><i class="fas fa-microchip text-neon-lime text-[10px]"></i>Missile System (Hệ thống tên lửa)</span><span class="px-3 py-1 bg-black/80 border border-gray-700 text-xs font-mono text-gray-200 flex items-center gap-1.5"><i class="fas fa-microchip text-neon-lime text-[10px]"></i>Thruster (Động cơ đẩy di chuyển)</span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- 4 Ảnh Preview Thực tế (shell/<id>1.png ... shell/<id>4.png) -->
+        <div class="pt-5 border-t border-gray-800">
+            <div class="flex items-center justify-between text-[10px] font-mono text-gray-400 mb-3">
+                <span><i class="fas fa-images text-neon-lime mr-1.5"></i>VISUAL PREVIEW GALLERY (destroyer1.png → destroyer4.png)</span>
+                <span class="text-cyber-blue">CLICK ĐỂ PHÓNG TO</span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                
+        <div class="bg-black/90 border border-gray-800 hover:border-neon-lime p-2 group cursor-pointer transition flex flex-col justify-between"
+             onclick='openInspectModal("Destroyer \u2014 Preview 01 (destroyer1.png)", "Combat Specialist // Chuy\u00ean gia Giao tranh Tuy\u1ebfn \u0111\u1ea7u", "M\u1ed9t b\u1ed9 gi\u00e1p \u0111\u1ed3 s\u1ed9, ki\u00ean c\u1ed1 \u0111\u01b0\u1ee3c t\u1ea1o b\u1edfi c\u00e1c h\u00ecnh kh\u1ed1i g\u00f3c c\u1ea1nh mang h\u01a1i h\u01b0\u1edbng Halo t\u1ea1o cho Destroyer m\u1ed9t c\u1ea3m gi\u00e1c to l\u1edbn v\u00e0 nguy hi\u1ec3m. Chi\u1ebfc m\u0169 che m\u1eb7t khi\u1ebfn nh\u00e2n v\u1eadt thi\u1ebfu \u0111i n\u00e9t con ng\u01b0\u1eddi, tr\u1edf n\u00ean v\u00f4 c\u1ea3m.", this.querySelector("img").src)'>
+            <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-1.5">
+                <span class="text-neon-lime">DESTROYER1.PNG</span>
+                <span class="group-hover:text-neon-lime">[ ZOOM ]</span>
+            </div>
+            <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                <img src="shell/destroyer1.png" 
+                     onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='destroyer1.png';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/ccff00?text=DESTROYER+PREVIEW+01+(destroyer1.png)';}"
+                     alt="Destroyer Preview 1" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+        </div>
+        
+        <div class="bg-black/90 border border-gray-800 hover:border-neon-lime p-2 group cursor-pointer transition flex flex-col justify-between"
+             onclick='openInspectModal("Destroyer \u2014 Preview 02 (destroyer2.png)", "Combat Specialist // Chuy\u00ean gia Giao tranh Tuy\u1ebfn \u0111\u1ea7u", "M\u1ed9t b\u1ed9 gi\u00e1p \u0111\u1ed3 s\u1ed9, ki\u00ean c\u1ed1 \u0111\u01b0\u1ee3c t\u1ea1o b\u1edfi c\u00e1c h\u00ecnh kh\u1ed1i g\u00f3c c\u1ea1nh mang h\u01a1i h\u01b0\u1edbng Halo t\u1ea1o cho Destroyer m\u1ed9t c\u1ea3m gi\u00e1c to l\u1edbn v\u00e0 nguy hi\u1ec3m. Chi\u1ebfc m\u0169 che m\u1eb7t khi\u1ebfn nh\u00e2n v\u1eadt thi\u1ebfu \u0111i n\u00e9t con ng\u01b0\u1eddi, tr\u1edf n\u00ean v\u00f4 c\u1ea3m.", this.querySelector("img").src)'>
+            <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-1.5">
+                <span class="text-neon-lime">DESTROYER2.PNG</span>
+                <span class="group-hover:text-neon-lime">[ ZOOM ]</span>
+            </div>
+            <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                <img src="shell/destroyer2.png" 
+                     onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='destroyer2.png';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/ccff00?text=DESTROYER+PREVIEW+02+(destroyer2.png)';}"
+                     alt="Destroyer Preview 2" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+        </div>
+        
+        <div class="bg-black/90 border border-gray-800 hover:border-neon-lime p-2 group cursor-pointer transition flex flex-col justify-between"
+             onclick='openInspectModal("Destroyer \u2014 Preview 03 (destroyer3.png)", "Combat Specialist // Chuy\u00ean gia Giao tranh Tuy\u1ebfn \u0111\u1ea7u", "M\u1ed9t b\u1ed9 gi\u00e1p \u0111\u1ed3 s\u1ed9, ki\u00ean c\u1ed1 \u0111\u01b0\u1ee3c t\u1ea1o b\u1edfi c\u00e1c h\u00ecnh kh\u1ed1i g\u00f3c c\u1ea1nh mang h\u01a1i h\u01b0\u1edbng Halo t\u1ea1o cho Destroyer m\u1ed9t c\u1ea3m gi\u00e1c to l\u1edbn v\u00e0 nguy hi\u1ec3m. Chi\u1ebfc m\u0169 che m\u1eb7t khi\u1ebfn nh\u00e2n v\u1eadt thi\u1ebfu \u0111i n\u00e9t con ng\u01b0\u1eddi, tr\u1edf n\u00ean v\u00f4 c\u1ea3m.", this.querySelector("img").src)'>
+            <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-1.5">
+                <span class="text-neon-lime">DESTROYER3.PNG</span>
+                <span class="group-hover:text-neon-lime">[ ZOOM ]</span>
+            </div>
+            <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                <img src="shell/destroyer3.png" 
+                     onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='destroyer3.png';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/ccff00?text=DESTROYER+PREVIEW+03+(destroyer3.png)';}"
+                     alt="Destroyer Preview 3" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+        </div>
+        
+        <div class="bg-black/90 border border-gray-800 hover:border-neon-lime p-2 group cursor-pointer transition flex flex-col justify-between"
+             onclick='openInspectModal("Destroyer \u2014 Preview 04 (destroyer4.png)", "Combat Specialist // Chuy\u00ean gia Giao tranh Tuy\u1ebfn \u0111\u1ea7u", "M\u1ed9t b\u1ed9 gi\u00e1p \u0111\u1ed3 s\u1ed9, ki\u00ean c\u1ed1 \u0111\u01b0\u1ee3c t\u1ea1o b\u1edfi c\u00e1c h\u00ecnh kh\u1ed1i g\u00f3c c\u1ea1nh mang h\u01a1i h\u01b0\u1edbng Halo t\u1ea1o cho Destroyer m\u1ed9t c\u1ea3m gi\u00e1c to l\u1edbn v\u00e0 nguy hi\u1ec3m. Chi\u1ebfc m\u0169 che m\u1eb7t khi\u1ebfn nh\u00e2n v\u1eadt thi\u1ebfu \u0111i n\u00e9t con ng\u01b0\u1eddi, tr\u1edf n\u00ean v\u00f4 c\u1ea3m.", this.querySelector("img").src)'>
+            <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-1.5">
+                <span class="text-neon-lime">DESTROYER4.PNG</span>
+                <span class="group-hover:text-neon-lime">[ ZOOM ]</span>
+            </div>
+            <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                <img src="shell/destroyer4.png" 
+                     onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='destroyer4.png';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/ccff00?text=DESTROYER+PREVIEW+04+(destroyer4.png)';}"
+                     alt="Destroyer Preview 4" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+        </div>
+        
+            </div>
+        </div>
+    </article>
+    
+
+    <article id="shell-assassin" class="terminal-panel p-6 md:p-8 border-l-4 border-purple-400 hover:shadow-[0_0_30px_rgba(0,208,255,0.12)] transition duration-300">
+        <!-- Card Top Header -->
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-gray-800 pb-4 mb-6">
+            <div class="flex items-center gap-4">
+                <!-- Mini Shell Emblem Icon -->
+                <div class="w-12 h-12 bg-black border border-purple-400 p-1.5 flex items-center justify-center shrink-0">
+                    <img src="shell/assassin-icon.png" 
+                         onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='assassin-icon.png';}else{this.onerror=null;this.src='https://placehold.co/200x200/0a0f18/ccff00?text=ASSASSIN+ICON';}"
+                         alt="Assassin Icon" class="w-full h-full object-contain">
+                </div>
+                <div>
+                    <span class="text-[10px] font-mono text-gray-400 block tracking-widest">RUNNER SHELL // 3.1.2 // 2.2.4</span>
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-xl md:text-2xl font-heading font-black text-purple-400">[02]</span>
+                        <h3 class="text-2xl md:text-3xl text-white font-heading font-black tracking-wider">ASSASSIN</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="px-3 py-1 border text-xs font-mono font-bold uppercase tracking-wider bg-purple-500/15 text-purple-300 border-purple-400/50">
+                    <i class="fas fa-crosshairs mr-1.5"></i>VAI TRÒ: Shadow Agent
+                </span>
+            </div>
+        </div>
+
+        <!-- Main Content Grid: Left (Front & Back 3D Renders) | Right (Function, Playstyle & Visual Impression) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch mb-6">
+            
+            <!-- Left: Dual 3D Render Stage (Front & Back from shell/<id>-front.png & shell/<id>-back.png) -->
+            <div class="lg:col-span-5 grid grid-cols-2 gap-3">
+                <!-- Front View -->
+                <div class="bg-black/90 border border-gray-800 hover:border-purple-400 p-2.5 flex flex-col justify-between group cursor-pointer transition"
+                     onclick='openInspectModal("Assassin \u2014 G\u00f3c nh\u00ecn M\u1eb7t tr\u01b0\u1edbc (Front View)", "Shadow Agent // \u0110\u1eb7c v\u1ee5 \u00c1m s\u00e1t & Ng\u1ee5y trang", "To\u00e1t l\u00ean v\u1ebb nguy hi\u1ec3m ngay t\u1eeb c\u00e1i nh\u00ecn \u0111\u1ea7u ti\u00ean v\u1edbi chi\u1ebfc m\u0169 tr\u00f9m \u0111\u1ea7u che \u0111i n\u1eeda tr\u00ean c\u1ee7a khu\u00f4n m\u1eb7t, Assassin v\u1edbi th\u00e2n h\u00ecnh nhanh nh\u1eb9n v\u00e0 \u0111\u1ed9ng t\u00e1c s\u1eafc b\u00e9n t\u1ea1o n\u00ean s\u1ef1 nguy hi\u1ec3m c\u1ee7a m\u1ed9t k\u1ebb s\u0103n m\u1ed3i l\u1ea9n khu\u1ea5t trong b\u00f3ng t\u1ed1i!", this.querySelector("img").src)'>
+                    <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1.5 mb-2">
+                        <span class="text-purple-400 font-bold">MẶT TRƯỚC (FRONT)</span>
+                        <span>[ ZOOM ]</span>
+                    </div>
+                    <div class="h-64 flex items-center justify-center overflow-hidden relative">
+                        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,208,255,0.08),transparent_70%)] pointer-events-none"></div>
+                        <img src="shell/assassin-front.png" 
+                             onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='assassin-front.png';}else{this.onerror=null;this.src='https://placehold.co/500x700/0a0f18/ccff00?text=ASSASSIN+FRONT+(assassin-front.png)';}"
+                             alt="Assassin Front" class="max-h-60 w-auto object-contain group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="text-[9px] font-mono text-gray-500 text-center mt-1.5 truncate">shell/assassin-front.png</div>
+                </div>
+
+                <!-- Back View -->
+                <div class="bg-black/90 border border-gray-800 hover:border-purple-400 p-2.5 flex flex-col justify-between group cursor-pointer transition"
+                     onclick='openInspectModal("Assassin \u2014 G\u00f3c nh\u00ecn M\u1eb7t sau (Back View)", "Shadow Agent // \u0110\u1eb7c v\u1ee5 \u00c1m s\u00e1t & Ng\u1ee5y trang", "To\u00e1t l\u00ean v\u1ebb nguy hi\u1ec3m ngay t\u1eeb c\u00e1i nh\u00ecn \u0111\u1ea7u ti\u00ean v\u1edbi chi\u1ebfc m\u0169 tr\u00f9m \u0111\u1ea7u che \u0111i n\u1eeda tr\u00ean c\u1ee7a khu\u00f4n m\u1eb7t, Assassin v\u1edbi th\u00e2n h\u00ecnh nhanh nh\u1eb9n v\u00e0 \u0111\u1ed9ng t\u00e1c s\u1eafc b\u00e9n t\u1ea1o n\u00ean s\u1ef1 nguy hi\u1ec3m c\u1ee7a m\u1ed9t k\u1ebb s\u0103n m\u1ed3i l\u1ea9n khu\u1ea5t trong b\u00f3ng t\u1ed1i!", this.querySelector("img").src)'>
+                    <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1.5 mb-2">
+                        <span class="text-purple-400 font-bold">MẶT SAU (BACK)</span>
+                        <span>[ ZOOM ]</span>
+                    </div>
+                    <div class="h-64 flex items-center justify-center overflow-hidden relative">
+                        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(168,85,247,0.08),transparent_70%)] pointer-events-none"></div>
+                        <img src="shell/assassin-back.png" 
+                             onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='assassin-back.png';}else{this.onerror=null;this.src='https://placehold.co/500x700/0a0f18/00d0ff?text=ASSASSIN+BACK+(assassin-back.png)';}"
+                             alt="Assassin Back" class="max-h-60 w-auto object-contain group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="text-[9px] font-mono text-gray-500 text-center mt-1.5 truncate">shell/assassin-back.png</div>
+                </div>
+            </div>
+
+            <!-- Right: Functional & Visual Breakdown -->
+            <div class="lg:col-span-7 flex flex-col justify-between space-y-4">
+                
+                <!-- 1. Chức năng & Cơ chế Gameplay (3.1) -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-purple-400 font-bold mb-1.5">
+                        <span><i class="fas fa-bolt mr-1.5"></i>CHỨC NĂNG & CƠ CHẾ CHIẾN ĐẤU:</span>
+                        <span>ĐẶC VỤ ÁM SÁT & NGỤY TRANG</span>
+                    </div>
+                    <p class="text-xs md:text-sm text-gray-200 leading-relaxed mb-3">
+                        Shell tập trung vào khả năng che giấu và tạo lợi thế bất ngờ. Khói nhân tạo và công nghệ ngụy trang là những yếu tố nổi bật trong thiết kế.
+                    </p>
+                    <div class="bg-panel-blue/80 border-l-2 border-purple-400 px-3 py-2 text-xs text-gray-300">
+                        <strong class="text-white font-mono">→ PHONG CÁCH:</strong> Ẩn mình, đánh lạc hướng và thay đổi vị trí.
+                    </div>
+                </div>
+
+                <!-- 2. Ấn tượng Tạo hình & Thiết kế Ngoại trang (2.2) -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-cyber-blue font-bold mb-1.5">
+                        <span><i class="fas fa-eye mr-1.5"></i>ẤN TƯỢNG NGOẠI HÌNH & NGÔN NGỮ TẠO HÌNH:</span>
+                        <span>VISUAL IDENTITY</span>
+                    </div>
+                    <p class="text-xs md:text-sm text-gray-200 leading-relaxed mb-3 italic border-l-2 border-cyber-blue pl-3">
+                        "Toát lên vẻ nguy hiểm ngay từ cái nhìn đầu tiên với chiếc mũ trùm đầu che đi nửa trên của khuôn mặt, Assassin với thân hình nhanh nhẹn và động tác sắc bén tạo nên sự nguy hiểm của một kẻ săn mồi lẩn khuất trong bóng tối!"
+                    </p>
+                    <ul class="space-y-1">
+                        <li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-purple-400 font-bold">▹</span><span>Mũ trùm đầu (Hood) tối màu đổ bóng che khuất nửa trên khuôn mặt đầy sát khí.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-purple-400 font-bold">▹</span><span>Bộ suit bó sát in họa tiết ngụy trang kỹ thuật số trắng-xanh kết hợp đai lưng tác chiến đen.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-purple-400 font-bold">▹</span><span>Dáng đứng khép tay chuẩn bị ra đòn của một thợ săn tốc độ cao.</span></li>
+                    </ul>
+                </div>
+
+                <!-- 3. Bộ Kỹ năng & Thiết bị Đặc trưng -->
+                <div class="pt-2 flex flex-wrap items-center gap-2">
+                    <span class="text-[10px] font-mono text-gray-400 mr-1">TRANG BỊ & KỸ NĂNG:</span>
+                    <span class="px-3 py-1 bg-black/80 border border-gray-700 text-xs font-mono text-gray-200 flex items-center gap-1.5"><i class="fas fa-microchip text-purple-400 text-[10px]"></i>Synthetic Smoke (Khói nhân tạo)</span><span class="px-3 py-1 bg-black/80 border border-gray-700 text-xs font-mono text-gray-200 flex items-center gap-1.5"><i class="fas fa-microchip text-purple-400 text-[10px]"></i>Active Camouflage (Công nghệ ngụy trang)</span><span class="px-3 py-1 bg-black/80 border border-gray-700 text-xs font-mono text-gray-200 flex items-center gap-1.5"><i class="fas fa-microchip text-purple-400 text-[10px]"></i>Shadow Reposition (Đổi vị trí bất ngờ)</span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- 4 Ảnh Preview Thực tế (shell/<id>1.png ... shell/<id>4.png) -->
+        <div class="pt-5 border-t border-gray-800">
+            <div class="flex items-center justify-between text-[10px] font-mono text-gray-400 mb-3">
+                <span><i class="fas fa-images text-purple-400 mr-1.5"></i>VISUAL PREVIEW GALLERY // 4 GÓC NHÌN & HOẠT ẢNH TRONG GAME (assassin1.png → assassin4.png)</span>
+                <span class="text-cyber-blue">CLICK ĐỂ PHÓNG TO</span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                
+        <div class="bg-black/90 border border-gray-800 hover:border-purple-400 p-2 group cursor-pointer transition flex flex-col justify-between"
+             onclick='openInspectModal("Assassin \u2014 Preview 01 (assassin1.png)", "Shadow Agent // \u0110\u1eb7c v\u1ee5 \u00c1m s\u00e1t & Ng\u1ee5y trang", "To\u00e1t l\u00ean v\u1ebb nguy hi\u1ec3m ngay t\u1eeb c\u00e1i nh\u00ecn \u0111\u1ea7u ti\u00ean v\u1edbi chi\u1ebfc m\u0169 tr\u00f9m \u0111\u1ea7u che \u0111i n\u1eeda tr\u00ean c\u1ee7a khu\u00f4n m\u1eb7t, Assassin v\u1edbi th\u00e2n h\u00ecnh nhanh nh\u1eb9n v\u00e0 \u0111\u1ed9ng t\u00e1c s\u1eafc b\u00e9n t\u1ea1o n\u00ean s\u1ef1 nguy hi\u1ec3m c\u1ee7a m\u1ed9t k\u1ebb s\u0103n m\u1ed3i l\u1ea9n khu\u1ea5t trong b\u00f3ng t\u1ed1i!", this.querySelector("img").src)'>
+            <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-1.5">
+                <span class="text-purple-400">ASSASSIN1.PNG</span>
+                <span class="group-hover:text-neon-lime">[ ZOOM ]</span>
+            </div>
+            <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                <img src="shell/assassin1.png" 
+                     onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='assassin1.png';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/ccff00?text=ASSASSIN+PREVIEW+01+(assassin1.png)';}"
+                     alt="Assassin Preview 1" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+        </div>
+        
+        <div class="bg-black/90 border border-gray-800 hover:border-purple-400 p-2 group cursor-pointer transition flex flex-col justify-between"
+             onclick='openInspectModal("Assassin \u2014 Preview 02 (assassin2.png)", "Shadow Agent // \u0110\u1eb7c v\u1ee5 \u00c1m s\u00e1t & Ng\u1ee5y trang", "To\u00e1t l\u00ean v\u1ebb nguy hi\u1ec3m ngay t\u1eeb c\u00e1i nh\u00ecn \u0111\u1ea7u ti\u00ean v\u1edbi chi\u1ebfc m\u0169 tr\u00f9m \u0111\u1ea7u che \u0111i n\u1eeda tr\u00ean c\u1ee7a khu\u00f4n m\u1eb7t, Assassin v\u1edbi th\u00e2n h\u00ecnh nhanh nh\u1eb9n v\u00e0 \u0111\u1ed9ng t\u00e1c s\u1eafc b\u00e9n t\u1ea1o n\u00ean s\u1ef1 nguy hi\u1ec3m c\u1ee7a m\u1ed9t k\u1ebb s\u0103n m\u1ed3i l\u1ea9n khu\u1ea5t trong b\u00f3ng t\u1ed1i!", this.querySelector("img").src)'>
+            <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-1.5">
+                <span class="text-purple-400">ASSASSIN2.PNG</span>
+                <span class="group-hover:text-neon-lime">[ ZOOM ]</span>
+            </div>
+            <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                <img src="shell/assassin2.png" 
+                     onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='assassin2.png';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/ccff00?text=ASSASSIN+PREVIEW+02+(assassin2.png)';}"
+                     alt="Assassin Preview 2" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+        </div>
+        
+        <div class="bg-black/90 border border-gray-800 hover:border-purple-400 p-2 group cursor-pointer transition flex flex-col justify-between"
+             onclick='openInspectModal("Assassin \u2014 Preview 03 (assassin3.png)", "Shadow Agent // \u0110\u1eb7c v\u1ee5 \u00c1m s\u00e1t & Ng\u1ee5y trang", "To\u00e1t l\u00ean v\u1ebb nguy hi\u1ec3m ngay t\u1eeb c\u00e1i nh\u00ecn \u0111\u1ea7u ti\u00ean v\u1edbi chi\u1ebfc m\u0169 tr\u00f9m \u0111\u1ea7u che \u0111i n\u1eeda tr\u00ean c\u1ee7a khu\u00f4n m\u1eb7t, Assassin v\u1edbi th\u00e2n h\u00ecnh nhanh nh\u1eb9n v\u00e0 \u0111\u1ed9ng t\u00e1c s\u1eafc b\u00e9n t\u1ea1o n\u00ean s\u1ef1 nguy hi\u1ec3m c\u1ee7a m\u1ed9t k\u1ebb s\u0103n m\u1ed3i l\u1ea9n khu\u1ea5t trong b\u00f3ng t\u1ed1i!", this.querySelector("img").src)'>
+            <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-1.5">
+                <span class="text-purple-400">ASSASSIN3.PNG</span>
+                <span class="group-hover:text-neon-lime">[ ZOOM ]</span>
+            </div>
+            <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                <img src="shell/assassin3.png" 
+                     onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='assassin3.png';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/ccff00?text=ASSASSIN+PREVIEW+03+(assassin3.png)';}"
+                     alt="Assassin Preview 3" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+        </div>
+        
+        <div class="bg-black/90 border border-gray-800 hover:border-purple-400 p-2 group cursor-pointer transition flex flex-col justify-between"
+             onclick='openInspectModal("Assassin \u2014 Preview 04 (assassin4.png)", "Shadow Agent // \u0110\u1eb7c v\u1ee5 \u00c1m s\u00e1t & Ng\u1ee5y trang", "To\u00e1t l\u00ean v\u1ebb nguy hi\u1ec3m ngay t\u1eeb c\u00e1i nh\u00ecn \u0111\u1ea7u ti\u00ean v\u1edbi chi\u1ebfc m\u0169 tr\u00f9m \u0111\u1ea7u che \u0111i n\u1eeda tr\u00ean c\u1ee7a khu\u00f4n m\u1eb7t, Assassin v\u1edbi th\u00e2n h\u00ecnh nhanh nh\u1eb9n v\u00e0 \u0111\u1ed9ng t\u00e1c s\u1eafc b\u00e9n t\u1ea1o n\u00ean s\u1ef1 nguy hi\u1ec3m c\u1ee7a m\u1ed9t k\u1ebb s\u0103n m\u1ed3i l\u1ea9n khu\u1ea5t trong b\u00f3ng t\u1ed1i!", this.querySelector("img").src)'>
+            <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-1.5">
+                <span class="text-purple-400">ASSASSIN4.PNG</span>
+                <span class="group-hover:text-neon-lime">[ ZOOM ]</span>
+            </div>
+            <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                <img src="shell/assassin4.png" 
+                     onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='assassin4.png';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/ccff00?text=ASSASSIN+PREVIEW+04+(assassin4.png)';}"
+                     alt="Assassin Preview 4" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+        </div>
+        
+            </div>
+        </div>
+    </article>
+    
+
+    <article id="shell-recon" class="terminal-panel p-6 md:p-8 border-l-4 border-cyber-blue hover:shadow-[0_0_30px_rgba(0,208,255,0.12)] transition duration-300">
+        <!-- Card Top Header -->
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-gray-800 pb-4 mb-6">
+            <div class="flex items-center gap-4">
+                <!-- Mini Shell Emblem Icon -->
+                <div class="w-12 h-12 bg-black border border-cyber-blue p-1.5 flex items-center justify-center shrink-0">
+                    <img src="shell/recon-icon.png" 
+                         onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='recon-icon.png';}else{this.onerror=null;this.src='https://placehold.co/200x200/0a0f18/ccff00?text=RECON+ICON';}"
+                         alt="Recon Icon" class="w-full h-full object-contain">
+                </div>
+                <div>
+                    <span class="text-[10px] font-mono text-gray-400 block tracking-widest">RUNNER SHELL // 3.1.3 // 2.2.2</span>
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-xl md:text-2xl font-heading font-black text-cyber-blue">[03]</span>
+                        <h3 class="text-2xl md:text-3xl text-white font-heading font-black tracking-wider">RECON</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="px-3 py-1 border text-xs font-mono font-bold uppercase tracking-wider bg-cyber-blue/15 text-cyber-blue border-cyber-blue/50">
+                    <i class="fas fa-crosshairs mr-1.5"></i>VAI TRÒ: Intel Specialist
+                </span>
+            </div>
+        </div>
+
+        <!-- Main Content Grid: Left (Front & Back 3D Renders) | Right (Function, Playstyle & Visual Impression) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch mb-6">
+            
+            <!-- Left: Dual 3D Render Stage (Front & Back from shell/<id>-front.png & shell/<id>-back.png) -->
+            <div class="lg:col-span-5 grid grid-cols-2 gap-3">
+                <!-- Front View -->
+                <div class="bg-black/90 border border-gray-800 hover:border-cyber-blue p-2.5 flex flex-col justify-between group cursor-pointer transition"
+                     onclick='openInspectModal("Recon \u2014 G\u00f3c nh\u00ecn M\u1eb7t tr\u01b0\u1edbc (Front View)", "Intel Specialist // Chuy\u00ean gia T\u00ecnh b\u00e1o & Trinh s\u00e1t", "N\u1ed5i b\u1eadt v\u1edbi b\u1ed9 suit li\u1ec1n th\u00e2n, chi\u1ebfc m\u0169 bao quanh \u0111\u1ea7u tho\u1ea1t nh\u00ecn nh\u01b0 m\u1ed9t thi\u1ebft b\u1ecb VR qu\u00e1 kh\u1ed5, v\u00e0 b\u0103ng \u0111eo trang b\u1ecb quanh ng\u01b0\u1eddi, Recon t\u1ea1o cho ng\u01b0\u1eddi ch\u01a1i m\u1ed9t c\u1ea3m gi\u00e1c b\u00ed \u1ea9n, chuy\u00ean nghi\u1ec7p.", this.querySelector("img").src)'>
+                    <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1.5 mb-2">
+                        <span class="text-cyber-blue font-bold">MẶT TRƯỚC (FRONT)</span>
+                        <span>[ ZOOM ]</span>
+                    </div>
+                    <div class="h-64 flex items-center justify-center overflow-hidden relative">
+                        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,208,255,0.08),transparent_70%)] pointer-events-none"></div>
+                        <img src="shell/recon-front.png" 
+                             onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='recon-front.png';}else{this.onerror=null;this.src='https://placehold.co/500x700/0a0f18/ccff00?text=RECON+FRONT+(recon-front.png)';}"
+                             alt="Recon Front" class="max-h-60 w-auto object-contain group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="text-[9px] font-mono text-gray-500 text-center mt-1.5 truncate">shell/recon-front.png</div>
+                </div>
+
+                <!-- Back View -->
+                <div class="bg-black/90 border border-gray-800 hover:border-cyber-blue p-2.5 flex flex-col justify-between group cursor-pointer transition"
+                     onclick='openInspectModal("Recon \u2014 G\u00f3c nh\u00ecn M\u1eb7t sau (Back View)", "Intel Specialist // Chuy\u00ean gia T\u00ecnh b\u00e1o & Trinh s\u00e1t", "N\u1ed5i b\u1eadt v\u1edbi b\u1ed9 suit li\u1ec1n th\u00e2n, chi\u1ebfc m\u0169 bao quanh \u0111\u1ea7u tho\u1ea1t nh\u00ecn nh\u01b0 m\u1ed9t thi\u1ebft b\u1ecb VR qu\u00e1 kh\u1ed5, v\u00e0 b\u0103ng \u0111eo trang b\u1ecb quanh ng\u01b0\u1eddi, Recon t\u1ea1o cho ng\u01b0\u1eddi ch\u01a1i m\u1ed9t c\u1ea3m gi\u00e1c b\u00ed \u1ea9n, chuy\u00ean nghi\u1ec7p.", this.querySelector("img").src)'>
+                    <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1.5 mb-2">
+                        <span class="text-purple-400 font-bold">MẶT SAU (BACK)</span>
+                        <span>[ ZOOM ]</span>
+                    </div>
+                    <div class="h-64 flex items-center justify-center overflow-hidden relative">
+                        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(168,85,247,0.08),transparent_70%)] pointer-events-none"></div>
+                        <img src="shell/recon-back.png" 
+                             onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='recon-back.png';}else{this.onerror=null;this.src='https://placehold.co/500x700/0a0f18/00d0ff?text=RECON+BACK+(recon-back.png)';}"
+                             alt="Recon Back" class="max-h-60 w-auto object-contain group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="text-[9px] font-mono text-gray-500 text-center mt-1.5 truncate">shell/recon-back.png</div>
+                </div>
+            </div>
+
+            <!-- Right: Functional & Visual Breakdown -->
+            <div class="lg:col-span-7 flex flex-col justify-between space-y-4">
+                
+                <!-- 1. Chức năng & Cơ chế Gameplay (3.1) -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-cyber-blue font-bold mb-1.5">
+                        <span><i class="fas fa-bolt mr-1.5"></i>CHỨC NĂNG & CƠ CHẾ CHIẾN ĐẤU:</span>
+                        <span>CHUYÊN GIA TÌNH BÁO & TRINH SÁT</span>
+                    </div>
+                    <p class="text-xs md:text-sm text-gray-200 leading-relaxed mb-3">
+                        Recon sử dụng các hệ thống thu thập thông tin như Echo Pulse, Tracker Drone và dấu chân hologram để phát hiện hoặc theo dõi mục tiêu.
+                    </p>
+                    <div class="bg-panel-blue/80 border-l-2 border-cyber-blue px-3 py-2 text-xs text-gray-300">
+                        <strong class="text-white font-mono">→ PHONG CÁCH:</strong> Nhận biết tình huống, thu thập thông tin và hỗ trợ đồng đội.
+                    </div>
+                </div>
+
+                <!-- 2. Ấn tượng Tạo hình & Thiết kế Ngoại trang (2.2) -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-cyber-blue font-bold mb-1.5">
+                        <span><i class="fas fa-eye mr-1.5"></i>ẤN TƯỢNG NGOẠI HÌNH & NGÔN NGỮ TẠO HÌNH:</span>
+                        <span>VISUAL IDENTITY</span>
+                    </div>
+                    <p class="text-xs md:text-sm text-gray-200 leading-relaxed mb-3 italic border-l-2 border-cyber-blue pl-3">
+                        "Nổi bật với bộ suit liền thân, chiếc mũ bao quanh đầu thoạt nhìn như một thiết bị VR quá khổ, và băng đeo trang bị quanh người, Recon tạo cho người chơi một cảm giác bí ẩn, chuyên nghiệp."
+                    </p>
+                    <ul class="space-y-1">
+                        <li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-cyber-blue font-bold">▹</span><span>Mũ cảm biến toàn phần hình khối lớn như một kính thực tế ảo (VR Visor) công nghệ cao.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-cyber-blue font-bold">▹</span><span>Bộ suit liền thân màu xám đen phối các mảng giáp vai và khớp gối màu vàng chanh (Acid Lime).</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-cyber-blue font-bold">▹</span><span>Hệ thống túi ngực và thiết bị thu phát tín hiệu đeo chéo quanh thân.</span></li>
+                    </ul>
+                </div>
+
+                <!-- 3. Bộ Kỹ năng & Thiết bị Đặc trưng -->
+                <div class="pt-2 flex flex-wrap items-center gap-2">
+                    <span class="text-[10px] font-mono text-gray-400 mr-1">TRANG BỊ & KỸ NĂNG:</span>
+                    <span class="px-3 py-1 bg-black/80 border border-gray-700 text-xs font-mono text-gray-200 flex items-center gap-1.5"><i class="fas fa-microchip text-cyber-blue text-[10px]"></i>Echo Pulse (Xung dò tìm)</span><span class="px-3 py-1 bg-black/80 border border-gray-700 text-xs font-mono text-gray-200 flex items-center gap-1.5"><i class="fas fa-microchip text-cyber-blue text-[10px]"></i>Tracker Drone (Drone theo dấu)</span><span class="px-3 py-1 bg-black/80 border border-gray-700 text-xs font-mono text-gray-200 flex items-center gap-1.5"><i class="fas fa-microchip text-cyber-blue text-[10px]"></i>Hologram Footprints (Dấu chân Hologram)</span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- 4 Ảnh Preview Thực tế (shell/<id>1.png ... shell/<id>4.png) -->
+        <div class="pt-5 border-t border-gray-800">
+            <div class="flex items-center justify-between text-[10px] font-mono text-gray-400 mb-3">
+                <span><i class="fas fa-images text-cyber-blue mr-1.5"></i>VISUAL PREVIEW GALLERY // 4 GÓC NHÌN & HOẠT ẢNH TRONG GAME (recon1.png → recon4.png)</span>
+                <span class="text-cyber-blue">CLICK ĐỂ PHÓNG TO</span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                
+        <div class="bg-black/90 border border-gray-800 hover:border-cyber-blue p-2 group cursor-pointer transition flex flex-col justify-between"
+             onclick='openInspectModal("Recon \u2014 Preview 01 (recon1.png)", "Intel Specialist // Chuy\u00ean gia T\u00ecnh b\u00e1o & Trinh s\u00e1t", "N\u1ed5i b\u1eadt v\u1edbi b\u1ed9 suit li\u1ec1n th\u00e2n, chi\u1ebfc m\u0169 bao quanh \u0111\u1ea7u tho\u1ea1t nh\u00ecn nh\u01b0 m\u1ed9t thi\u1ebft b\u1ecb VR qu\u00e1 kh\u1ed5, v\u00e0 b\u0103ng \u0111eo trang b\u1ecb quanh ng\u01b0\u1eddi, Recon t\u1ea1o cho ng\u01b0\u1eddi ch\u01a1i m\u1ed9t c\u1ea3m gi\u00e1c b\u00ed \u1ea9n, chuy\u00ean nghi\u1ec7p.", this.querySelector("img").src)'>
+            <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-1.5">
+                <span class="text-cyber-blue">RECON1.PNG</span>
+                <span class="group-hover:text-neon-lime">[ ZOOM ]</span>
+            </div>
+            <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                <img src="shell/recon1.png" 
+                     onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='recon1.png';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/ccff00?text=RECON+PREVIEW+01+(recon1.png)';}"
+                     alt="Recon Preview 1" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+        </div>
+        
+        <div class="bg-black/90 border border-gray-800 hover:border-cyber-blue p-2 group cursor-pointer transition flex flex-col justify-between"
+             onclick='openInspectModal("Recon \u2014 Preview 02 (recon2.png)", "Intel Specialist // Chuy\u00ean gia T\u00ecnh b\u00e1o & Trinh s\u00e1t", "N\u1ed5i b\u1eadt v\u1edbi b\u1ed9 suit li\u1ec1n th\u00e2n, chi\u1ebfc m\u0169 bao quanh \u0111\u1ea7u tho\u1ea1t nh\u00ecn nh\u01b0 m\u1ed9t thi\u1ebft b\u1ecb VR qu\u00e1 kh\u1ed5, v\u00e0 b\u0103ng \u0111eo trang b\u1ecb quanh ng\u01b0\u1eddi, Recon t\u1ea1o cho ng\u01b0\u1eddi ch\u01a1i m\u1ed9t c\u1ea3m gi\u00e1c b\u00ed \u1ea9n, chuy\u00ean nghi\u1ec7p.", this.querySelector("img").src)'>
+            <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-1.5">
+                <span class="text-cyber-blue">RECON2.PNG</span>
+                <span class="group-hover:text-neon-lime">[ ZOOM ]</span>
+            </div>
+            <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                <img src="shell/recon2.png" 
+                     onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='recon2.png';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/ccff00?text=RECON+PREVIEW+02+(recon2.png)';}"
+                     alt="Recon Preview 2" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+        </div>
+        
+        <div class="bg-black/90 border border-gray-800 hover:border-cyber-blue p-2 group cursor-pointer transition flex flex-col justify-between"
+             onclick='openInspectModal("Recon \u2014 Preview 03 (recon3.png)", "Intel Specialist // Chuy\u00ean gia T\u00ecnh b\u00e1o & Trinh s\u00e1t", "N\u1ed5i b\u1eadt v\u1edbi b\u1ed9 suit li\u1ec1n th\u00e2n, chi\u1ebfc m\u0169 bao quanh \u0111\u1ea7u tho\u1ea1t nh\u00ecn nh\u01b0 m\u1ed9t thi\u1ebft b\u1ecb VR qu\u00e1 kh\u1ed5, v\u00e0 b\u0103ng \u0111eo trang b\u1ecb quanh ng\u01b0\u1eddi, Recon t\u1ea1o cho ng\u01b0\u1eddi ch\u01a1i m\u1ed9t c\u1ea3m gi\u00e1c b\u00ed \u1ea9n, chuy\u00ean nghi\u1ec7p.", this.querySelector("img").src)'>
+            <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-1.5">
+                <span class="text-cyber-blue">RECON3.PNG</span>
+                <span class="group-hover:text-neon-lime">[ ZOOM ]</span>
+            </div>
+            <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                <img src="shell/recon3.png" 
+                     onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='recon3.png';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/ccff00?text=RECON+PREVIEW+03+(recon3.png)';}"
+                     alt="Recon Preview 3" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+        </div>
+        
+        <div class="bg-black/90 border border-gray-800 hover:border-cyber-blue p-2 group cursor-pointer transition flex flex-col justify-between"
+             onclick='openInspectModal("Recon \u2014 Preview 04 (recon4.png)", "Intel Specialist // Chuy\u00ean gia T\u00ecnh b\u00e1o & Trinh s\u00e1t", "N\u1ed5i b\u1eadt v\u1edbi b\u1ed9 suit li\u1ec1n th\u00e2n, chi\u1ebfc m\u0169 bao quanh \u0111\u1ea7u tho\u1ea1t nh\u00ecn nh\u01b0 m\u1ed9t thi\u1ebft b\u1ecb VR qu\u00e1 kh\u1ed5, v\u00e0 b\u0103ng \u0111eo trang b\u1ecb quanh ng\u01b0\u1eddi, Recon t\u1ea1o cho ng\u01b0\u1eddi ch\u01a1i m\u1ed9t c\u1ea3m gi\u00e1c b\u00ed \u1ea9n, chuy\u00ean nghi\u1ec7p.", this.querySelector("img").src)'>
+            <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-1.5">
+                <span class="text-cyber-blue">RECON4.PNG</span>
+                <span class="group-hover:text-neon-lime">[ ZOOM ]</span>
+            </div>
+            <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                <img src="shell/recon4.png" 
+                     onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='recon4.png';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/ccff00?text=RECON+PREVIEW+04+(recon4.png)';}"
+                     alt="Recon Preview 4" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+        </div>
+        
+            </div>
+        </div>
+    </article>
+    
+
+    <article id="shell-vandal" class="terminal-panel p-6 md:p-8 border-l-4 border-pink-500 hover:shadow-[0_0_30px_rgba(0,208,255,0.12)] transition duration-300">
+        <!-- Card Top Header -->
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-gray-800 pb-4 mb-6">
+            <div class="flex items-center gap-4">
+                <!-- Mini Shell Emblem Icon -->
+                <div class="w-12 h-12 bg-black border border-pink-500 p-1.5 flex items-center justify-center shrink-0">
+                    <img src="shell/vandal-icon.png" 
+                         onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='vandal-icon.png';}else{this.onerror=null;this.src='https://placehold.co/200x200/0a0f18/ccff00?text=VANDAL+ICON';}"
+                         alt="Vandal Icon" class="w-full h-full object-contain">
+                </div>
+                <div>
+                    <span class="text-[10px] font-mono text-gray-400 block tracking-widest">RUNNER SHELL // 3.1.4 // 2.2.1</span>
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-xl md:text-2xl font-heading font-black text-pink-400">[04]</span>
+                        <h3 class="text-2xl md:text-3xl text-white font-heading font-black tracking-wider">VANDAL</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="px-3 py-1 border text-xs font-mono font-bold uppercase tracking-wider bg-pink-500/15 text-pink-300 border-pink-500/50">
+                    <i class="fas fa-crosshairs mr-1.5"></i>VAI TRÒ: Combat Anarchist
+                </span>
+            </div>
+        </div>
+
+        <!-- Main Content Grid: Left (Front & Back 3D Renders) | Right (Function, Playstyle & Visual Impression) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch mb-6">
+            
+            <!-- Left: Dual 3D Render Stage (Front & Back from shell/<id>-front.png & shell/<id>-back.png) -->
+            <div class="lg:col-span-5 grid grid-cols-2 gap-3">
+                <!-- Front View -->
+                <div class="bg-black/90 border border-gray-800 hover:border-pink-500 p-2.5 flex flex-col justify-between group cursor-pointer transition"
+                     onclick='openInspectModal("Vandal \u2014 G\u00f3c nh\u00ecn M\u1eb7t tr\u01b0\u1edbc (Front View)", "Combat Anarchist // K\u1ebb N\u1ed5i lo\u1ea1n C\u01a1 \u0111\u1ed9ng", "Vandal v\u1edbi \u00e1o ph\u00f4ng r\u1ed9ng, n\u1ed5i b\u1eadt l\u00e0 \u1ed1ng tay \u00e1o sau l\u01b0ng v\u00e0 ki\u1ec3u t\u00f3c gai nh\u1ecdn cho ng\u01b0\u1eddi ch\u01a1i m\u1ed9t c\u1ea3m gi\u00e1c ph\u00e1 c\u00e1ch, c\u1ea3m gi\u00e1c con ng\u01b0\u1eddi gi\u1eefa m\u00f4i tr\u01b0\u1eddng game \u0111\u1eadm ch\u1ea5t robot c\u00f4ng ngh\u1ec7.", this.querySelector("img").src)'>
+                    <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1.5 mb-2">
+                        <span class="text-pink-400 font-bold">MẶT TRƯỚC (FRONT)</span>
+                        <span>[ ZOOM ]</span>
+                    </div>
+                    <div class="h-64 flex items-center justify-center overflow-hidden relative">
+                        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,208,255,0.08),transparent_70%)] pointer-events-none"></div>
+                        <img src="shell/vandal-front.png" 
+                             onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='vandal-front.png';}else{this.onerror=null;this.src='https://placehold.co/500x700/0a0f18/ccff00?text=VANDAL+FRONT+(vandal-front.png)';}"
+                             alt="Vandal Front" class="max-h-60 w-auto object-contain group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="text-[9px] font-mono text-gray-500 text-center mt-1.5 truncate">shell/vandal-front.png</div>
+                </div>
+
+                <!-- Back View -->
+                <div class="bg-black/90 border border-gray-800 hover:border-pink-500 p-2.5 flex flex-col justify-between group cursor-pointer transition"
+                     onclick='openInspectModal("Vandal \u2014 G\u00f3c nh\u00ecn M\u1eb7t sau (Back View)", "Combat Anarchist // K\u1ebb N\u1ed5i lo\u1ea1n C\u01a1 \u0111\u1ed9ng", "Vandal v\u1edbi \u00e1o ph\u00f4ng r\u1ed9ng, n\u1ed5i b\u1eadt l\u00e0 \u1ed1ng tay \u00e1o sau l\u01b0ng v\u00e0 ki\u1ec3u t\u00f3c gai nh\u1ecdn cho ng\u01b0\u1eddi ch\u01a1i m\u1ed9t c\u1ea3m gi\u00e1c ph\u00e1 c\u00e1ch, c\u1ea3m gi\u00e1c con ng\u01b0\u1eddi gi\u1eefa m\u00f4i tr\u01b0\u1eddng game \u0111\u1eadm ch\u1ea5t robot c\u00f4ng ngh\u1ec7.", this.querySelector("img").src)'>
+                    <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1.5 mb-2">
+                        <span class="text-purple-400 font-bold">MẶT SAU (BACK)</span>
+                        <span>[ ZOOM ]</span>
+                    </div>
+                    <div class="h-64 flex items-center justify-center overflow-hidden relative">
+                        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(168,85,247,0.08),transparent_70%)] pointer-events-none"></div>
+                        <img src="shell/vandal-back.png" 
+                             onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='vandal-back.png';}else{this.onerror=null;this.src='https://placehold.co/500x700/0a0f18/00d0ff?text=VANDAL+BACK+(vandal-back.png)';}"
+                             alt="Vandal Back" class="max-h-60 w-auto object-contain group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="text-[9px] font-mono text-gray-500 text-center mt-1.5 truncate">shell/vandal-back.png</div>
+                </div>
+            </div>
+
+            <!-- Right: Functional & Visual Breakdown -->
+            <div class="lg:col-span-7 flex flex-col justify-between space-y-4">
+                
+                <!-- 1. Chức năng & Cơ chế Gameplay (3.1) -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-pink-400 font-bold mb-1.5">
+                        <span><i class="fas fa-bolt mr-1.5"></i>CHỨC NĂNG & CƠ CHẾ CHIẾN ĐẤU:</span>
+                        <span>KẺ NỔI LOẠN CƠ ĐỘNG</span>
+                    </div>
+                    <p class="text-xs md:text-sm text-gray-200 leading-relaxed mb-3">
+                        Vandal nổi bật với khả năng di chuyển linh hoạt, nhảy kép, Power Slide và Disrupt Cannon tạo hiệu ứng đẩy lùi.
+                    </p>
+                    <div class="bg-panel-blue/80 border-l-2 border-pink-500 px-3 py-2 text-xs text-gray-300">
+                        <strong class="text-white font-mono">→ PHONG CÁCH:</strong> Cơ động, thay đổi vị trí nhanh và tạo đột biến.
+                    </div>
+                </div>
+
+                <!-- 2. Ấn tượng Tạo hình & Thiết kế Ngoại trang (2.2) -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-cyber-blue font-bold mb-1.5">
+                        <span><i class="fas fa-eye mr-1.5"></i>ẤN TƯỢNG NGOẠI HÌNH & NGÔN NGỮ TẠO HÌNH:</span>
+                        <span>VISUAL IDENTITY</span>
+                    </div>
+                    <p class="text-xs md:text-sm text-gray-200 leading-relaxed mb-3 italic border-l-2 border-cyber-blue pl-3">
+                        "Vandal với áo phông rộng, nổi bật là ống tay áo sau lưng và kiểu tóc gai nhọn cho người chơi một cảm giác phá cách, cảm giác con người giữa môi trường game đậm chất robot công nghệ."
+                    </p>
+                    <ul class="space-y-1">
+                        <li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-pink-400 font-bold">▹</span><span>Áo khoác/áo phông form rộng màu trắng thả hai ống tay áo dài buông thõng sau lưng đầy nổi loạn.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-pink-400 font-bold">▹</span><span>Kiểu tóc trắng tạo hình gai nhọn (Spiky Hair) kết hợp cụm tai nghe hộp vuông hai bên thái dương.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-pink-400 font-bold">▹</span><span>Sự pha trộn táo bạo giữa thời trang đường phố (Streetwear), găng tay hồng đậm và giày chạy đế Neon.</span></li>
+                    </ul>
+                </div>
+
+                <!-- 3. Bộ Kỹ năng & Thiết bị Đặc trưng -->
+                <div class="pt-2 flex flex-wrap items-center gap-2">
+                    <span class="text-[10px] font-mono text-gray-400 mr-1">TRANG BỊ & KỸ NĂNG:</span>
+                    <span class="px-3 py-1 bg-black/80 border border-gray-700 text-xs font-mono text-gray-200 flex items-center gap-1.5"><i class="fas fa-microchip text-pink-400 text-[10px]"></i>Double Jump (Nhảy kép)</span><span class="px-3 py-1 bg-black/80 border border-gray-700 text-xs font-mono text-gray-200 flex items-center gap-1.5"><i class="fas fa-microchip text-pink-400 text-[10px]"></i>Power Slide (Trượt tốc độ)</span><span class="px-3 py-1 bg-black/80 border border-gray-700 text-xs font-mono text-gray-200 flex items-center gap-1.5"><i class="fas fa-microchip text-pink-400 text-[10px]"></i>Disrupt Cannon (Pháo đẩy lùi)</span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- 4 Ảnh Preview Thực tế (shell/<id>1.png ... shell/<id>4.png) -->
+        <div class="pt-5 border-t border-gray-800">
+            <div class="flex items-center justify-between text-[10px] font-mono text-gray-400 mb-3">
+                <span><i class="fas fa-images text-pink-400 mr-1.5"></i>VISUAL PREVIEW GALLERY // 4 GÓC NHÌN & HOẠT ẢNH TRONG GAME (vandal1.png → vandal4.png)</span>
+                <span class="text-cyber-blue">CLICK ĐỂ PHÓNG TO</span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                
+        <div class="bg-black/90 border border-gray-800 hover:border-pink-500 p-2 group cursor-pointer transition flex flex-col justify-between"
+             onclick='openInspectModal("Vandal \u2014 Preview 01 (vandal1.png)", "Combat Anarchist // K\u1ebb N\u1ed5i lo\u1ea1n C\u01a1 \u0111\u1ed9ng", "Vandal v\u1edbi \u00e1o ph\u00f4ng r\u1ed9ng, n\u1ed5i b\u1eadt l\u00e0 \u1ed1ng tay \u00e1o sau l\u01b0ng v\u00e0 ki\u1ec3u t\u00f3c gai nh\u1ecdn cho ng\u01b0\u1eddi ch\u01a1i m\u1ed9t c\u1ea3m gi\u00e1c ph\u00e1 c\u00e1ch, c\u1ea3m gi\u00e1c con ng\u01b0\u1eddi gi\u1eefa m\u00f4i tr\u01b0\u1eddng game \u0111\u1eadm ch\u1ea5t robot c\u00f4ng ngh\u1ec7.", this.querySelector("img").src)'>
+            <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-1.5">
+                <span class="text-pink-400">VANDAL1.PNG</span>
+                <span class="group-hover:text-neon-lime">[ ZOOM ]</span>
+            </div>
+            <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                <img src="shell/vandal1.png" 
+                     onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='vandal1.png';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/ccff00?text=VANDAL+PREVIEW+01+(vandal1.png)';}"
+                     alt="Vandal Preview 1" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+        </div>
+        
+        <div class="bg-black/90 border border-gray-800 hover:border-pink-500 p-2 group cursor-pointer transition flex flex-col justify-between"
+             onclick='openInspectModal("Vandal \u2014 Preview 02 (vandal2.png)", "Combat Anarchist // K\u1ebb N\u1ed5i lo\u1ea1n C\u01a1 \u0111\u1ed9ng", "Vandal v\u1edbi \u00e1o ph\u00f4ng r\u1ed9ng, n\u1ed5i b\u1eadt l\u00e0 \u1ed1ng tay \u00e1o sau l\u01b0ng v\u00e0 ki\u1ec3u t\u00f3c gai nh\u1ecdn cho ng\u01b0\u1eddi ch\u01a1i m\u1ed9t c\u1ea3m gi\u00e1c ph\u00e1 c\u00e1ch, c\u1ea3m gi\u00e1c con ng\u01b0\u1eddi gi\u1eefa m\u00f4i tr\u01b0\u1eddng game \u0111\u1eadm ch\u1ea5t robot c\u00f4ng ngh\u1ec7.", this.querySelector("img").src)'>
+            <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-1.5">
+                <span class="text-pink-400">VANDAL2.PNG</span>
+                <span class="group-hover:text-neon-lime">[ ZOOM ]</span>
+            </div>
+            <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                <img src="shell/vandal2.png" 
+                     onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='vandal2.png';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/ccff00?text=VANDAL+PREVIEW+02+(vandal2.png)';}"
+                     alt="Vandal Preview 2" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+        </div>
+        
+        <div class="bg-black/90 border border-gray-800 hover:border-pink-500 p-2 group cursor-pointer transition flex flex-col justify-between"
+             onclick='openInspectModal("Vandal \u2014 Preview 03 (vandal3.png)", "Combat Anarchist // K\u1ebb N\u1ed5i lo\u1ea1n C\u01a1 \u0111\u1ed9ng", "Vandal v\u1edbi \u00e1o ph\u00f4ng r\u1ed9ng, n\u1ed5i b\u1eadt l\u00e0 \u1ed1ng tay \u00e1o sau l\u01b0ng v\u00e0 ki\u1ec3u t\u00f3c gai nh\u1ecdn cho ng\u01b0\u1eddi ch\u01a1i m\u1ed9t c\u1ea3m gi\u00e1c ph\u00e1 c\u00e1ch, c\u1ea3m gi\u00e1c con ng\u01b0\u1eddi gi\u1eefa m\u00f4i tr\u01b0\u1eddng game \u0111\u1eadm ch\u1ea5t robot c\u00f4ng ngh\u1ec7.", this.querySelector("img").src)'>
+            <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-1.5">
+                <span class="text-pink-400">VANDAL3.PNG</span>
+                <span class="group-hover:text-neon-lime">[ ZOOM ]</span>
+            </div>
+            <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                <img src="shell/vandal3.png" 
+                     onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='vandal3.png';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/ccff00?text=VANDAL+PREVIEW+03+(vandal3.png)';}"
+                     alt="Vandal Preview 3" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+        </div>
+        
+        <div class="bg-black/90 border border-gray-800 hover:border-pink-500 p-2 group cursor-pointer transition flex flex-col justify-between"
+             onclick='openInspectModal("Vandal \u2014 Preview 04 (vandal4.png)", "Combat Anarchist // K\u1ebb N\u1ed5i lo\u1ea1n C\u01a1 \u0111\u1ed9ng", "Vandal v\u1edbi \u00e1o ph\u00f4ng r\u1ed9ng, n\u1ed5i b\u1eadt l\u00e0 \u1ed1ng tay \u00e1o sau l\u01b0ng v\u00e0 ki\u1ec3u t\u00f3c gai nh\u1ecdn cho ng\u01b0\u1eddi ch\u01a1i m\u1ed9t c\u1ea3m gi\u00e1c ph\u00e1 c\u00e1ch, c\u1ea3m gi\u00e1c con ng\u01b0\u1eddi gi\u1eefa m\u00f4i tr\u01b0\u1eddng game \u0111\u1eadm ch\u1ea5t robot c\u00f4ng ngh\u1ec7.", this.querySelector("img").src)'>
+            <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-1.5">
+                <span class="text-pink-400">VANDAL4.PNG</span>
+                <span class="group-hover:text-neon-lime">[ ZOOM ]</span>
+            </div>
+            <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                <img src="shell/vandal4.png" 
+                     onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='vandal4.png';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/ccff00?text=VANDAL+PREVIEW+04+(vandal4.png)';}"
+                     alt="Vandal Preview 4" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+        </div>
+        
+            </div>
+        </div>
+    </article>
+    
+
+    <article id="shell-thief" class="terminal-panel p-6 md:p-8 border-l-4 border-white hover:shadow-[0_0_30px_rgba(0,208,255,0.12)] transition duration-300">
+        <!-- Card Top Header -->
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-gray-800 pb-4 mb-6">
+            <div class="flex items-center gap-4">
+                <!-- Mini Shell Emblem Icon -->
+                <div class="w-12 h-12 bg-black border border-white p-1.5 flex items-center justify-center shrink-0">
+                    <img src="shell/thief-icon.png" 
+                         onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='thief-icon.png';}else{this.onerror=null;this.src='https://placehold.co/200x200/0a0f18/ccff00?text=THIEF+ICON';}"
+                         alt="Thief Icon" class="w-full h-full object-contain">
+                </div>
+                <div>
+                    <span class="text-[10px] font-mono text-gray-400 block tracking-widest">RUNNER SHELL // 3.1.5 // 2.2.5</span>
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-xl md:text-2xl font-heading font-black text-white">[05]</span>
+                        <h3 class="text-2xl md:text-3xl text-white font-heading font-black tracking-wider">THIEF</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="px-3 py-1 border text-xs font-mono font-bold uppercase tracking-wider bg-white/15 text-white border-white/50">
+                    <i class="fas fa-crosshairs mr-1.5"></i>VAI TRÒ: Covert Acquisitions
+                </span>
+            </div>
+        </div>
+
+        <!-- Main Content Grid: Left (Front & Back 3D Renders) | Right (Function, Playstyle & Visual Impression) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch mb-6">
+            
+            <!-- Left: Dual 3D Render Stage (Front & Back from shell/<id>-front.png & shell/<id>-back.png) -->
+            <div class="lg:col-span-5 grid grid-cols-2 gap-3">
+                <!-- Front View -->
+                <div class="bg-black/90 border border-gray-800 hover:border-white p-2.5 flex flex-col justify-between group cursor-pointer transition"
+                     onclick='openInspectModal("Thief \u2014 G\u00f3c nh\u00ecn M\u1eb7t tr\u01b0\u1edbc (Front View)", "Covert Acquisitions // Chuy\u00ean gia Thu th\u1eadp & \u0110\u1ed9t nh\u1eadp", "Hi\u1ec7n l\u00ean v\u1edbi v\u1ebb ngo\u00e0i nh\u1eb9 nh\u00e0ng, m\u1ed9t b\u1ed9 armor tr\u1eafng tinh khi\u1ebft c\u00f9ng th\u00e2n h\u00ecnh m\u1ea3nh kh\u1ea3nh, Thief n\u1ed5i b\u1eadt gi\u1eefa nh\u1eefng gam m\u00e0u Neon c\u1ee7a Marathon, t\u1ea1o cho ng\u01b0\u1eddi ch\u01a1i m\u1ed9t c\u1ea3m gi\u00e1c cu\u1ed1n h\u00fat v\u00e0 b\u00ed \u1ea9n.", this.querySelector("img").src)'>
+                    <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1.5 mb-2">
+                        <span class="text-white font-bold">MẶT TRƯỚC (FRONT)</span>
+                        <span>[ ZOOM ]</span>
+                    </div>
+                    <div class="h-64 flex items-center justify-center overflow-hidden relative">
+                        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,208,255,0.08),transparent_70%)] pointer-events-none"></div>
+                        <img src="shell/thief-front.png" 
+                             onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='thief-front.png';}else{this.onerror=null;this.src='https://placehold.co/500x700/0a0f18/ccff00?text=THIEF+FRONT+(thief-front.png)';}"
+                             alt="Thief Front" class="max-h-60 w-auto object-contain group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="text-[9px] font-mono text-gray-500 text-center mt-1.5 truncate">shell/thief-front.png</div>
+                </div>
+
+                <!-- Back View -->
+                <div class="bg-black/90 border border-gray-800 hover:border-white p-2.5 flex flex-col justify-between group cursor-pointer transition"
+                     onclick='openInspectModal("Thief \u2014 G\u00f3c nh\u00ecn M\u1eb7t sau (Back View)", "Covert Acquisitions // Chuy\u00ean gia Thu th\u1eadp & \u0110\u1ed9t nh\u1eadp", "Hi\u1ec7n l\u00ean v\u1edbi v\u1ebb ngo\u00e0i nh\u1eb9 nh\u00e0ng, m\u1ed9t b\u1ed9 armor tr\u1eafng tinh khi\u1ebft c\u00f9ng th\u00e2n h\u00ecnh m\u1ea3nh kh\u1ea3nh, Thief n\u1ed5i b\u1eadt gi\u1eefa nh\u1eefng gam m\u00e0u Neon c\u1ee7a Marathon, t\u1ea1o cho ng\u01b0\u1eddi ch\u01a1i m\u1ed9t c\u1ea3m gi\u00e1c cu\u1ed1n h\u00fat v\u00e0 b\u00ed \u1ea9n.", this.querySelector("img").src)'>
+                    <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1.5 mb-2">
+                        <span class="text-purple-400 font-bold">MẶT SAU (BACK)</span>
+                        <span>[ ZOOM ]</span>
+                    </div>
+                    <div class="h-64 flex items-center justify-center overflow-hidden relative">
+                        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(168,85,247,0.08),transparent_70%)] pointer-events-none"></div>
+                        <img src="shell/thief-back.png" 
+                             onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='thief-back.png';}else{this.onerror=null;this.src='https://placehold.co/500x700/0a0f18/00d0ff?text=THIEF+BACK+(thief-back.png)';}"
+                             alt="Thief Back" class="max-h-60 w-auto object-contain group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="text-[9px] font-mono text-gray-500 text-center mt-1.5 truncate">shell/thief-back.png</div>
+                </div>
+            </div>
+
+            <!-- Right: Functional & Visual Breakdown -->
+            <div class="lg:col-span-7 flex flex-col justify-between space-y-4">
+                
+                <!-- 1. Chức năng & Cơ chế Gameplay (3.1) -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-white font-bold mb-1.5">
+                        <span><i class="fas fa-bolt mr-1.5"></i>CHỨC NĂNG & CƠ CHẾ CHIẾN ĐẤU:</span>
+                        <span>CHUYÊN GIA THU THẬP & ĐỘT NHẬP</span>
+                    </div>
+                    <p class="text-xs md:text-sm text-gray-200 leading-relaxed mb-3">
+                        Thief được thiết kế xoay quanh việc tìm kiếm và thu hồi vật phẩm. Shell này có X-Ray Visor, Pickpocket Drone và Grapple Device.
+                    </p>
+                    <div class="bg-panel-blue/80 border-l-2 border-white px-3 py-2 text-xs text-gray-300">
+                        <strong class="text-white font-mono">→ PHONG CÁCH:</strong> Khám phá tài nguyên, cơ động và tối ưu hóa hoạt động thu thập.
+                    </div>
+                </div>
+
+                <!-- 2. Ấn tượng Tạo hình & Thiết kế Ngoại trang (2.2) -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-cyber-blue font-bold mb-1.5">
+                        <span><i class="fas fa-eye mr-1.5"></i>ẤN TƯỢNG NGOẠI HÌNH & NGÔN NGỮ TẠO HÌNH:</span>
+                        <span>VISUAL IDENTITY</span>
+                    </div>
+                    <p class="text-xs md:text-sm text-gray-200 leading-relaxed mb-3 italic border-l-2 border-cyber-blue pl-3">
+                        "Hiện lên với vẻ ngoài nhẹ nhàng, một bộ armor trắng tinh khiết cùng thân hình mảnh khảnh, Thief nổi bật giữa những gam màu Neon của Marathon, tạo cho người chơi một cảm giác cuốn hút và bí ẩn."
+                    </p>
+                    <ul class="space-y-1">
+                        <li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-white font-bold">▹</span><span>Áo khoác phao lửng cổ cao và khung cơ thể Biomata màu trắng sứ (Clinical White) thanh thoát.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-white font-bold">▹</span><span>Các khớp nối chi dưới lộ rõ cấu trúc cơ khí mảnh mai với bàn chân tách ngón linh hoạt.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-white font-bold">▹</span><span>Gương mặt sắc sảo với tóc búi cao và kính X-Ray Visor gập gọn trên trán.</span></li>
+                    </ul>
+                </div>
+
+                <!-- 3. Bộ Kỹ năng & Thiết bị Đặc trưng -->
+                <div class="pt-2 flex flex-wrap items-center gap-2">
+                    <span class="text-[10px] font-mono text-gray-400 mr-1">TRANG BỊ & KỸ NĂNG:</span>
+                    <span class="px-3 py-1 bg-black/80 border border-gray-700 text-xs font-mono text-gray-200 flex items-center gap-1.5"><i class="fas fa-microchip text-white text-[10px]"></i>X-Ray Visor (Kính nhìn xuyên thấu)</span><span class="px-3 py-1 bg-black/80 border border-gray-700 text-xs font-mono text-gray-200 flex items-center gap-1.5"><i class="fas fa-microchip text-white text-[10px]"></i>Pickpocket Drone (Drone thu hồi vật phẩm)</span><span class="px-3 py-1 bg-black/80 border border-gray-700 text-xs font-mono text-gray-200 flex items-center gap-1.5"><i class="fas fa-microchip text-white text-[10px]"></i>Grapple Device (Móc kéo cơ động)</span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- 4 Ảnh Preview Thực tế (shell/<id>1.png ... shell/<id>4.png) -->
+        <div class="pt-5 border-t border-gray-800">
+            <div class="flex items-center justify-between text-[10px] font-mono text-gray-400 mb-3">
+                <span><i class="fas fa-images text-white mr-1.5"></i>VISUAL PREVIEW GALLERY // 4 GÓC NHÌN & HOẠT ẢNH TRONG GAME (thief1.png → thief4.png)</span>
+                <span class="text-cyber-blue">CLICK ĐỂ PHÓNG TO</span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                
+        <div class="bg-black/90 border border-gray-800 hover:border-white p-2 group cursor-pointer transition flex flex-col justify-between"
+             onclick='openInspectModal("Thief \u2014 Preview 01 (thief1.png)", "Covert Acquisitions // Chuy\u00ean gia Thu th\u1eadp & \u0110\u1ed9t nh\u1eadp", "Hi\u1ec7n l\u00ean v\u1edbi v\u1ebb ngo\u00e0i nh\u1eb9 nh\u00e0ng, m\u1ed9t b\u1ed9 armor tr\u1eafng tinh khi\u1ebft c\u00f9ng th\u00e2n h\u00ecnh m\u1ea3nh kh\u1ea3nh, Thief n\u1ed5i b\u1eadt gi\u1eefa nh\u1eefng gam m\u00e0u Neon c\u1ee7a Marathon, t\u1ea1o cho ng\u01b0\u1eddi ch\u01a1i m\u1ed9t c\u1ea3m gi\u00e1c cu\u1ed1n h\u00fat v\u00e0 b\u00ed \u1ea9n.", this.querySelector("img").src)'>
+            <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-1.5">
+                <span class="text-white">THIEF1.PNG</span>
+                <span class="group-hover:text-neon-lime">[ ZOOM ]</span>
+            </div>
+            <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                <img src="shell/thief1.png" 
+                     onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='thief1.png';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/ccff00?text=THIEF+PREVIEW+01+(thief1.png)';}"
+                     alt="Thief Preview 1" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+        </div>
+        
+        <div class="bg-black/90 border border-gray-800 hover:border-white p-2 group cursor-pointer transition flex flex-col justify-between"
+             onclick='openInspectModal("Thief \u2014 Preview 02 (thief2.png)", "Covert Acquisitions // Chuy\u00ean gia Thu th\u1eadp & \u0110\u1ed9t nh\u1eadp", "Hi\u1ec7n l\u00ean v\u1edbi v\u1ebb ngo\u00e0i nh\u1eb9 nh\u00e0ng, m\u1ed9t b\u1ed9 armor tr\u1eafng tinh khi\u1ebft c\u00f9ng th\u00e2n h\u00ecnh m\u1ea3nh kh\u1ea3nh, Thief n\u1ed5i b\u1eadt gi\u1eefa nh\u1eefng gam m\u00e0u Neon c\u1ee7a Marathon, t\u1ea1o cho ng\u01b0\u1eddi ch\u01a1i m\u1ed9t c\u1ea3m gi\u00e1c cu\u1ed1n h\u00fat v\u00e0 b\u00ed \u1ea9n.", this.querySelector("img").src)'>
+            <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-1.5">
+                <span class="text-white">THIEF2.PNG</span>
+                <span class="group-hover:text-neon-lime">[ ZOOM ]</span>
+            </div>
+            <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                <img src="shell/thief2.png" 
+                     onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='thief2.png';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/ccff00?text=THIEF+PREVIEW+02+(thief2.png)';}"
+                     alt="Thief Preview 2" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+        </div>
+        
+        <div class="bg-black/90 border border-gray-800 hover:border-white p-2 group cursor-pointer transition flex flex-col justify-between"
+             onclick='openInspectModal("Thief \u2014 Preview 03 (thief3.png)", "Covert Acquisitions // Chuy\u00ean gia Thu th\u1eadp & \u0110\u1ed9t nh\u1eadp", "Hi\u1ec7n l\u00ean v\u1edbi v\u1ebb ngo\u00e0i nh\u1eb9 nh\u00e0ng, m\u1ed9t b\u1ed9 armor tr\u1eafng tinh khi\u1ebft c\u00f9ng th\u00e2n h\u00ecnh m\u1ea3nh kh\u1ea3nh, Thief n\u1ed5i b\u1eadt gi\u1eefa nh\u1eefng gam m\u00e0u Neon c\u1ee7a Marathon, t\u1ea1o cho ng\u01b0\u1eddi ch\u01a1i m\u1ed9t c\u1ea3m gi\u00e1c cu\u1ed1n h\u00fat v\u00e0 b\u00ed \u1ea9n.", this.querySelector("img").src)'>
+            <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-1.5">
+                <span class="text-white">THIEF3.PNG</span>
+                <span class="group-hover:text-neon-lime">[ ZOOM ]</span>
+            </div>
+            <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                <img src="shell/thief3.png" 
+                     onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='thief3.png';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/ccff00?text=THIEF+PREVIEW+03+(thief3.png)';}"
+                     alt="Thief Preview 3" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+        </div>
+        
+        <div class="bg-black/90 border border-gray-800 hover:border-white p-2 group cursor-pointer transition flex flex-col justify-between"
+             onclick='openInspectModal("Thief \u2014 Preview 04 (thief4.png)", "Covert Acquisitions // Chuy\u00ean gia Thu th\u1eadp & \u0110\u1ed9t nh\u1eadp", "Hi\u1ec7n l\u00ean v\u1edbi v\u1ebb ngo\u00e0i nh\u1eb9 nh\u00e0ng, m\u1ed9t b\u1ed9 armor tr\u1eafng tinh khi\u1ebft c\u00f9ng th\u00e2n h\u00ecnh m\u1ea3nh kh\u1ea3nh, Thief n\u1ed5i b\u1eadt gi\u1eefa nh\u1eefng gam m\u00e0u Neon c\u1ee7a Marathon, t\u1ea1o cho ng\u01b0\u1eddi ch\u01a1i m\u1ed9t c\u1ea3m gi\u00e1c cu\u1ed1n h\u00fat v\u00e0 b\u00ed \u1ea9n.", this.querySelector("img").src)'>
+            <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-1.5">
+                <span class="text-white">THIEF4.PNG</span>
+                <span class="group-hover:text-neon-lime">[ ZOOM ]</span>
+            </div>
+            <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                <img src="shell/thief4.png" 
+                     onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='thief4.png';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/ccff00?text=THIEF+PREVIEW+04+(thief4.png)';}"
+                     alt="Thief Preview 4" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+        </div>
+        
+            </div>
+        </div>
+    </article>
+    
+
+    <article id="shell-triage" class="terminal-panel p-6 md:p-8 border-l-4 border-amber-400 hover:shadow-[0_0_30px_rgba(0,208,255,0.12)] transition duration-300">
+        <!-- Card Top Header -->
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-gray-800 pb-4 mb-6">
+            <div class="flex items-center gap-4">
+                <!-- Mini Shell Emblem Icon -->
+                <div class="w-12 h-12 bg-black border border-amber-400 p-1.5 flex items-center justify-center shrink-0">
+                    <img src="shell/triage-icon.png" 
+                         onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='triage-icon.png';}else{this.onerror=null;this.src='https://placehold.co/200x200/0a0f18/ccff00?text=TRIAGE+ICON';}"
+                         alt="Triage Icon" class="w-full h-full object-contain">
+                </div>
+                <div>
+                    <span class="text-[10px] font-mono text-gray-400 block tracking-widest">RUNNER SHELL // 3.1.6 // 2.2.3</span>
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-xl md:text-2xl font-heading font-black text-amber-400">[06]</span>
+                        <h3 class="text-2xl md:text-3xl text-white font-heading font-black tracking-wider">TRIAGE</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="px-3 py-1 border text-xs font-mono font-bold uppercase tracking-wider bg-amber-400/15 text-amber-300 border-amber-400/50">
+                    <i class="fas fa-crosshairs mr-1.5"></i>VAI TRÒ: Field Medic
+                </span>
+            </div>
+        </div>
+
+        <!-- Main Content Grid: Left (Front & Back 3D Renders) | Right (Function, Playstyle & Visual Impression) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch mb-6">
+            
+            <!-- Left: Dual 3D Render Stage (Front & Back from shell/<id>-front.png & shell/<id>-back.png) -->
+            <div class="lg:col-span-5 grid grid-cols-2 gap-3">
+                <!-- Front View -->
+                <div class="bg-black/90 border border-gray-800 hover:border-amber-400 p-2.5 flex flex-col justify-between group cursor-pointer transition"
+                     onclick='openInspectModal("Triage \u2014 G\u00f3c nh\u00ecn M\u1eb7t tr\u01b0\u1edbc (Front View)", "Field Medic // Qu\u00e2n y D\u00e3 chi\u1ebfn & H\u1ed3i sinh", "\u0110\u01b0\u1ee3c x\u00e2y d\u1ef1ng v\u1edbi th\u00e2n h\u00ecnh \u0111\u1ed3 s\u1ed9, trang b\u1ecb k\u00edn k\u1ebd. Bi\u1ec3u t\u01b0\u1ee3ng ch\u1eef th\u1eadp v\u00e0ng tr\u01b0\u1edbc ng\u1ef1c g\u1ee3i bi\u1ec3u t\u01b0\u1ee3ng y t\u1ebf. Triage to\u00e1t l\u00ean s\u1ef1 ch\u1eafc ch\u1eafn, m\u1ea1nh m\u1ebd v\u00e0 uy nghi\u00eam, nh\u1eafc nh\u1edf v\u1ec1 tr\u00e1ch nhi\u1ec7m quan tr\u1ecdng c\u1ee7a m\u00ecnh.", this.querySelector("img").src)'>
+                    <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1.5 mb-2">
+                        <span class="text-amber-400 font-bold">MẶT TRƯỚC (FRONT)</span>
+                        <span>[ ZOOM ]</span>
+                    </div>
+                    <div class="h-64 flex items-center justify-center overflow-hidden relative">
+                        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,208,255,0.08),transparent_70%)] pointer-events-none"></div>
+                        <img src="shell/triage-front.png" 
+                             onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='triage-front.png';}else{this.onerror=null;this.src='https://placehold.co/500x700/0a0f18/ccff00?text=TRIAGE+FRONT+(triage-front.png)';}"
+                             alt="Triage Front" class="max-h-60 w-auto object-contain group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="text-[9px] font-mono text-gray-500 text-center mt-1.5 truncate">shell/triage-front.png</div>
+                </div>
+
+                <!-- Back View -->
+                <div class="bg-black/90 border border-gray-800 hover:border-amber-400 p-2.5 flex flex-col justify-between group cursor-pointer transition"
+                     onclick='openInspectModal("Triage \u2014 G\u00f3c nh\u00ecn M\u1eb7t sau (Back View)", "Field Medic // Qu\u00e2n y D\u00e3 chi\u1ebfn & H\u1ed3i sinh", "\u0110\u01b0\u1ee3c x\u00e2y d\u1ef1ng v\u1edbi th\u00e2n h\u00ecnh \u0111\u1ed3 s\u1ed9, trang b\u1ecb k\u00edn k\u1ebd. Bi\u1ec3u t\u01b0\u1ee3ng ch\u1eef th\u1eadp v\u00e0ng tr\u01b0\u1edbc ng\u1ef1c g\u1ee3i bi\u1ec3u t\u01b0\u1ee3ng y t\u1ebf. Triage to\u00e1t l\u00ean s\u1ef1 ch\u1eafc ch\u1eafn, m\u1ea1nh m\u1ebd v\u00e0 uy nghi\u00eam, nh\u1eafc nh\u1edf v\u1ec1 tr\u00e1ch nhi\u1ec7m quan tr\u1ecdng c\u1ee7a m\u00ecnh.", this.querySelector("img").src)'>
+                    <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1.5 mb-2">
+                        <span class="text-purple-400 font-bold">MẶT SAU (BACK)</span>
+                        <span>[ ZOOM ]</span>
+                    </div>
+                    <div class="h-64 flex items-center justify-center overflow-hidden relative">
+                        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(168,85,247,0.08),transparent_70%)] pointer-events-none"></div>
+                        <img src="shell/triage-back.png" 
+                             onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='triage-back.png';}else{this.onerror=null;this.src='https://placehold.co/500x700/0a0f18/00d0ff?text=TRIAGE+BACK+(triage-back.png)';}"
+                             alt="Triage Back" class="max-h-60 w-auto object-contain group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="text-[9px] font-mono text-gray-500 text-center mt-1.5 truncate">shell/triage-back.png</div>
+                </div>
+            </div>
+
+            <!-- Right: Functional & Visual Breakdown -->
+            <div class="lg:col-span-7 flex flex-col justify-between space-y-4">
+                
+                <!-- 1. Chức năng & Cơ chế Gameplay (3.1) -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-amber-400 font-bold mb-1.5">
+                        <span><i class="fas fa-bolt mr-1.5"></i>CHỨC NĂNG & CƠ CHẾ CHIẾN ĐẤU:</span>
+                        <span>QUÂN Y DÃ CHIẾN & HỒI SINH</span>
+                    </div>
+                    <p class="text-xs md:text-sm text-gray-200 leading-relaxed mb-3">
+                        Triage tập trung vào hỗ trợ sinh tồn cho nhóm bằng Med-Drone, khả năng hỗ trợ hồi sinh từ xa và những hiệu ứng hỗ trợ đồng đội.
+                    </p>
+                    <div class="bg-panel-blue/80 border-l-2 border-amber-400 px-3 py-2 text-xs text-gray-300">
+                        <strong class="text-white font-mono">→ PHONG CÁCH:</strong> Hỗ trợ, duy trì khả năng hoạt động của nhóm và tăng tính phối hợp.
+                    </div>
+                </div>
+
+                <!-- 2. Ấn tượng Tạo hình & Thiết kế Ngoại trang (2.2) -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-cyber-blue font-bold mb-1.5">
+                        <span><i class="fas fa-eye mr-1.5"></i>ẤN TƯỢNG NGOẠI HÌNH & NGÔN NGỮ TẠO HÌNH:</span>
+                        <span>VISUAL IDENTITY</span>
+                    </div>
+                    <p class="text-xs md:text-sm text-gray-200 leading-relaxed mb-3 italic border-l-2 border-cyber-blue pl-3">
+                        "Được xây dựng với thân hình đồ sộ, trang bị kín kẽ. Biểu tượng chữ thập vàng trước ngực gợi biểu tượng y tế. Triage toát lên sự chắc chắn, mạnh mẽ và uy nghiêm, nhắc nhở về trách nhiệm quan trọng của mình."
+                    </p>
+                    <ul class="space-y-1">
+                        <li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-amber-400 font-bold">▹</span><span>Biểu tượng Chữ thập Y tế màu vàng rực rỡ đặt ngay chính giữa giáp ngực hạng nặng.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-amber-400 font-bold">▹</span><span>Cổ áo bảo hộ dày ôm quanh gáy, kết hợp túi y tế màu xanh lam lớn ('ARM +++') đeo ngang thắt lưng sau.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-amber-400 font-bold">▹</span><span>Gương mặt nghiêm nghị với đôi mắt phát sáng xanh lá và vóc dáng vững chãi đáng tin cậy.</span></li>
+                    </ul>
+                </div>
+
+                <!-- 3. Bộ Kỹ năng & Thiết bị Đặc trưng -->
+                <div class="pt-2 flex flex-wrap items-center gap-2">
+                    <span class="text-[10px] font-mono text-gray-400 mr-1">TRANG BỊ & KỸ NĂNG:</span>
+                    <span class="px-3 py-1 bg-black/80 border border-gray-700 text-xs font-mono text-gray-200 flex items-center gap-1.5"><i class="fas fa-microchip text-amber-400 text-[10px]"></i>Med-Drone (Drone quân y)</span><span class="px-3 py-1 bg-black/80 border border-gray-700 text-xs font-mono text-gray-200 flex items-center gap-1.5"><i class="fas fa-microchip text-amber-400 text-[10px]"></i>Remote Revive (Hồi sinh từ xa)</span><span class="px-3 py-1 bg-black/80 border border-gray-700 text-xs font-mono text-gray-200 flex items-center gap-1.5"><i class="fas fa-microchip text-amber-400 text-[10px]"></i>Squad Buffs (Hiệu ứng hỗ trợ tổ đội)</span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- 4 Ảnh Preview Thực tế (shell/<id>1.png ... shell/<id>4.png) -->
+        <div class="pt-5 border-t border-gray-800">
+            <div class="flex items-center justify-between text-[10px] font-mono text-gray-400 mb-3">
+                <span><i class="fas fa-images text-amber-400 mr-1.5"></i>VISUAL PREVIEW GALLERY // 4 GÓC NHÌN & HOẠT ẢNH TRONG GAME (triage1.png → triage4.png)</span>
+                <span class="text-cyber-blue">CLICK ĐỂ PHÓNG TO</span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                
+        <div class="bg-black/90 border border-gray-800 hover:border-amber-400 p-2 group cursor-pointer transition flex flex-col justify-between"
+             onclick='openInspectModal("Triage \u2014 Preview 01 (triage1.png)", "Field Medic // Qu\u00e2n y D\u00e3 chi\u1ebfn & H\u1ed3i sinh", "\u0110\u01b0\u1ee3c x\u00e2y d\u1ef1ng v\u1edbi th\u00e2n h\u00ecnh \u0111\u1ed3 s\u1ed9, trang b\u1ecb k\u00edn k\u1ebd. Bi\u1ec3u t\u01b0\u1ee3ng ch\u1eef th\u1eadp v\u00e0ng tr\u01b0\u1edbc ng\u1ef1c g\u1ee3i bi\u1ec3u t\u01b0\u1ee3ng y t\u1ebf. Triage to\u00e1t l\u00ean s\u1ef1 ch\u1eafc ch\u1eafn, m\u1ea1nh m\u1ebd v\u00e0 uy nghi\u00eam, nh\u1eafc nh\u1edf v\u1ec1 tr\u00e1ch nhi\u1ec7m quan tr\u1ecdng c\u1ee7a m\u00ecnh.", this.querySelector("img").src)'>
+            <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-1.5">
+                <span class="text-amber-400">TRIAGE1.PNG</span>
+                <span class="group-hover:text-neon-lime">[ ZOOM ]</span>
+            </div>
+            <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                <img src="shell/triage1.png" 
+                     onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='triage1.png';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/ccff00?text=TRIAGE+PREVIEW+01+(triage1.png)';}"
+                     alt="Triage Preview 1" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+        </div>
+        
+        <div class="bg-black/90 border border-gray-800 hover:border-amber-400 p-2 group cursor-pointer transition flex flex-col justify-between"
+             onclick='openInspectModal("Triage \u2014 Preview 02 (triage2.png)", "Field Medic // Qu\u00e2n y D\u00e3 chi\u1ebfn & H\u1ed3i sinh", "\u0110\u01b0\u1ee3c x\u00e2y d\u1ef1ng v\u1edbi th\u00e2n h\u00ecnh \u0111\u1ed3 s\u1ed9, trang b\u1ecb k\u00edn k\u1ebd. Bi\u1ec3u t\u01b0\u1ee3ng ch\u1eef th\u1eadp v\u00e0ng tr\u01b0\u1edbc ng\u1ef1c g\u1ee3i bi\u1ec3u t\u01b0\u1ee3ng y t\u1ebf. Triage to\u00e1t l\u00ean s\u1ef1 ch\u1eafc ch\u1eafn, m\u1ea1nh m\u1ebd v\u00e0 uy nghi\u00eam, nh\u1eafc nh\u1edf v\u1ec1 tr\u00e1ch nhi\u1ec7m quan tr\u1ecdng c\u1ee7a m\u00ecnh.", this.querySelector("img").src)'>
+            <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-1.5">
+                <span class="text-amber-400">TRIAGE2.PNG</span>
+                <span class="group-hover:text-neon-lime">[ ZOOM ]</span>
+            </div>
+            <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                <img src="shell/triage2.png" 
+                     onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='triage2.png';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/ccff00?text=TRIAGE+PREVIEW+02+(triage2.png)';}"
+                     alt="Triage Preview 2" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+        </div>
+        
+        <div class="bg-black/90 border border-gray-800 hover:border-amber-400 p-2 group cursor-pointer transition flex flex-col justify-between"
+             onclick='openInspectModal("Triage \u2014 Preview 03 (triage3.png)", "Field Medic // Qu\u00e2n y D\u00e3 chi\u1ebfn & H\u1ed3i sinh", "\u0110\u01b0\u1ee3c x\u00e2y d\u1ef1ng v\u1edbi th\u00e2n h\u00ecnh \u0111\u1ed3 s\u1ed9, trang b\u1ecb k\u00edn k\u1ebd. Bi\u1ec3u t\u01b0\u1ee3ng ch\u1eef th\u1eadp v\u00e0ng tr\u01b0\u1edbc ng\u1ef1c g\u1ee3i bi\u1ec3u t\u01b0\u1ee3ng y t\u1ebf. Triage to\u00e1t l\u00ean s\u1ef1 ch\u1eafc ch\u1eafn, m\u1ea1nh m\u1ebd v\u00e0 uy nghi\u00eam, nh\u1eafc nh\u1edf v\u1ec1 tr\u00e1ch nhi\u1ec7m quan tr\u1ecdng c\u1ee7a m\u00ecnh.", this.querySelector("img").src)'>
+            <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-1.5">
+                <span class="text-amber-400">TRIAGE3.PNG</span>
+                <span class="group-hover:text-neon-lime">[ ZOOM ]</span>
+            </div>
+            <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                <img src="shell/triage3.png" 
+                     onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='triage3.png';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/ccff00?text=TRIAGE+PREVIEW+03+(triage3.png)';}"
+                     alt="Triage Preview 3" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+        </div>
+        
+        <div class="bg-black/90 border border-gray-800 hover:border-amber-400 p-2 group cursor-pointer transition flex flex-col justify-between"
+             onclick='openInspectModal("Triage \u2014 Preview 04 (triage4.png)", "Field Medic // Qu\u00e2n y D\u00e3 chi\u1ebfn & H\u1ed3i sinh", "\u0110\u01b0\u1ee3c x\u00e2y d\u1ef1ng v\u1edbi th\u00e2n h\u00ecnh \u0111\u1ed3 s\u1ed9, trang b\u1ecb k\u00edn k\u1ebd. Bi\u1ec3u t\u01b0\u1ee3ng ch\u1eef th\u1eadp v\u00e0ng tr\u01b0\u1edbc ng\u1ef1c g\u1ee3i bi\u1ec3u t\u01b0\u1ee3ng y t\u1ebf. Triage to\u00e1t l\u00ean s\u1ef1 ch\u1eafc ch\u1eafn, m\u1ea1nh m\u1ebd v\u00e0 uy nghi\u00eam, nh\u1eafc nh\u1edf v\u1ec1 tr\u00e1ch nhi\u1ec7m quan tr\u1ecdng c\u1ee7a m\u00ecnh.", this.querySelector("img").src)'>
+            <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-1.5">
+                <span class="text-amber-400">TRIAGE4.PNG</span>
+                <span class="group-hover:text-neon-lime">[ ZOOM ]</span>
+            </div>
+            <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                <img src="shell/triage4.png" 
+                     onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='triage4.png';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/ccff00?text=TRIAGE+PREVIEW+04+(triage4.png)';}"
+                     alt="Triage Preview 4" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+        </div>
+        
+            </div>
+        </div>
+    </article>
+    
+
+    <article id="shell-sentinel" class="terminal-panel p-6 md:p-8 border-l-4 border-alert-red hover:shadow-[0_0_30px_rgba(0,208,255,0.12)] transition duration-300">
+        <!-- Card Top Header -->
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-gray-800 pb-4 mb-6">
+            <div class="flex items-center gap-4">
+                <!-- Mini Shell Emblem Icon -->
+                <div class="w-12 h-12 bg-black border border-alert-red p-1.5 flex items-center justify-center shrink-0">
+                    <img src="shell/sentinel-icon.png" 
+                         onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='sentinel-icon.png';}else{this.onerror=null;this.src='https://placehold.co/200x200/0a0f18/ccff00?text=SENTINEL+ICON';}"
+                         alt="Sentinel Icon" class="w-full h-full object-contain">
+                </div>
+                <div>
+                    <span class="text-[10px] font-mono text-gray-400 block tracking-widest">RUNNER SHELL // 2.2.6 // DEFENSIVE SHELL</span>
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-xl md:text-2xl font-heading font-black text-alert-red">[07]</span>
+                        <h3 class="text-2xl md:text-3xl text-white font-heading font-black tracking-wider">SENTINEL</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="px-3 py-1 border text-xs font-mono font-bold uppercase tracking-wider bg-alert-red/15 text-alert-red border-alert-red/50">
+                    <i class="fas fa-crosshairs mr-1.5"></i>VAI TRÒ: Defensive Specialist
+                </span>
+            </div>
+        </div>
+
+        <!-- Main Content Grid: Left (Front & Back 3D Renders) | Right (Function, Playstyle & Visual Impression) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch mb-6">
+            
+            <!-- Left: Dual 3D Render Stage (Front & Back from shell/<id>-front.png & shell/<id>-back.png) -->
+            <div class="lg:col-span-5 grid grid-cols-2 gap-3">
+                <!-- Front View -->
+                <div class="bg-black/90 border border-gray-800 hover:border-alert-red p-2.5 flex flex-col justify-between group cursor-pointer transition"
+                     onclick='openInspectModal("Sentinel \u2014 G\u00f3c nh\u00ecn M\u1eb7t tr\u01b0\u1edbc (Front View)", "Defensive Specialist // Chuy\u00ean gia Ph\u00f2ng th\u1ee7 & C\u1ea3nh b\u00e1o", "Sentinel mang trong m\u00ecnh m\u1ed9t m\u00e0u ch\u1ee7 \u0111\u1ea1o \u0111\u1ecf cam, th\u01b0\u1eddng mang t\u00ednh c\u1ea3nh b\u00e1o, ph\u00f9 h\u1ee3p v\u1edbi vai tr\u00f2 ph\u00f2ng th\u1ee7. Chi\u1ebfc m\u0169 \u00f4m tr\u1ecdn \u0111\u1ea7u v\u00e0 nh\u1eefng kh\u1ed1i h\u1ed9p g\u00f3c c\u1ea1nh t\u1ea1o m\u1ed9t c\u1ea3m gi\u00e1c gai g\u00f3c, c\u1ee9ng r\u1eafn.", this.querySelector("img").src)'>
+                    <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1.5 mb-2">
+                        <span class="text-alert-red font-bold">MẶT TRƯỚC (FRONT)</span>
+                        <span>[ ZOOM ]</span>
+                    </div>
+                    <div class="h-64 flex items-center justify-center overflow-hidden relative">
+                        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,208,255,0.08),transparent_70%)] pointer-events-none"></div>
+                        <img src="shell/sentinel-front.png" 
+                             onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='sentinel-front.png';}else{this.onerror=null;this.src='https://placehold.co/500x700/0a0f18/ccff00?text=SENTINEL+FRONT+(sentinel-front.png)';}"
+                             alt="Sentinel Front" class="max-h-60 w-auto object-contain group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="text-[9px] font-mono text-gray-500 text-center mt-1.5 truncate">shell/sentinel-front.png</div>
+                </div>
+
+                <!-- Back View -->
+                <div class="bg-black/90 border border-gray-800 hover:border-alert-red p-2.5 flex flex-col justify-between group cursor-pointer transition"
+                     onclick='openInspectModal("Sentinel \u2014 G\u00f3c nh\u00ecn M\u1eb7t sau (Back View)", "Defensive Specialist // Chuy\u00ean gia Ph\u00f2ng th\u1ee7 & C\u1ea3nh b\u00e1o", "Sentinel mang trong m\u00ecnh m\u1ed9t m\u00e0u ch\u1ee7 \u0111\u1ea1o \u0111\u1ecf cam, th\u01b0\u1eddng mang t\u00ednh c\u1ea3nh b\u00e1o, ph\u00f9 h\u1ee3p v\u1edbi vai tr\u00f2 ph\u00f2ng th\u1ee7. Chi\u1ebfc m\u0169 \u00f4m tr\u1ecdn \u0111\u1ea7u v\u00e0 nh\u1eefng kh\u1ed1i h\u1ed9p g\u00f3c c\u1ea1nh t\u1ea1o m\u1ed9t c\u1ea3m gi\u00e1c gai g\u00f3c, c\u1ee9ng r\u1eafn.", this.querySelector("img").src)'>
+                    <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1.5 mb-2">
+                        <span class="text-purple-400 font-bold">MẶT SAU (BACK)</span>
+                        <span>[ ZOOM ]</span>
+                    </div>
+                    <div class="h-64 flex items-center justify-center overflow-hidden relative">
+                        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(168,85,247,0.08),transparent_70%)] pointer-events-none"></div>
+                        <img src="shell/sentinel-back.png" 
+                             onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='sentinel-back.png';}else{this.onerror=null;this.src='https://placehold.co/500x700/0a0f18/00d0ff?text=SENTINEL+BACK+(sentinel-back.png)';}"
+                             alt="Sentinel Back" class="max-h-60 w-auto object-contain group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="text-[9px] font-mono text-gray-500 text-center mt-1.5 truncate">shell/sentinel-back.png</div>
+                </div>
+            </div>
+
+            <!-- Right: Functional & Visual Breakdown -->
+            <div class="lg:col-span-7 flex flex-col justify-between space-y-4">
+                
+                <!-- 1. Chức năng & Cơ chế Gameplay (3.1) -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-alert-red font-bold mb-1.5">
+                        <span><i class="fas fa-bolt mr-1.5"></i>CHỨC NĂNG & CƠ CHẾ CHIẾN ĐẤU:</span>
+                        <span>CHUYÊN GIA PHÒNG THỦ & CẢNH BÁO</span>
+                    </div>
+                    <p class="text-xs md:text-sm text-gray-200 leading-relaxed mb-3">
+                        Đơn vị Shell chuyên trách thiết lập hàng rào phòng ngự, kiểm soát khu vực trọng yếu và thu hút hỏa lực bảo vệ tổ đội trong các pha giao tranh căng thẳng.
+                    </p>
+                    <div class="bg-panel-blue/80 border-l-2 border-alert-red px-3 py-2 text-xs text-gray-300">
+                        <strong class="text-white font-mono">→ PHONG CÁCH:</strong> Phòng thủ khu vực, chốt chặn điểm nóng và cảnh báo sớm mối đe dọa.
+                    </div>
+                </div>
+
+                <!-- 2. Ấn tượng Tạo hình & Thiết kế Ngoại trang (2.2) -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-cyber-blue font-bold mb-1.5">
+                        <span><i class="fas fa-eye mr-1.5"></i>ẤN TƯỢNG NGOẠI HÌNH & NGÔN NGỮ TẠO HÌNH:</span>
+                        <span>VISUAL IDENTITY</span>
+                    </div>
+                    <p class="text-xs md:text-sm text-gray-200 leading-relaxed mb-3 italic border-l-2 border-cyber-blue pl-3">
+                        "Sentinel mang trong mình một màu chủ đạo đỏ cam, thường mang tính cảnh báo, phù hợp với vai trò phòng thủ. Chiếc mũ ôm trọn đầu và những khối hộp góc cạnh tạo một cảm giác gai góc, cứng rắn."
+                    </p>
+                    <ul class="space-y-1">
+                        <li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-alert-red font-bold">▹</span><span>Tông màu Đỏ Cam (International Orange / Crimson) mang tính cảnh báo công nghiệp cường độ cao.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-alert-red font-bold">▹</span><span>Mũ bảo hiểm đỏ cam ôm trọn đầu với mặt kính đen in họa tiết đối xứng dữ dằn.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-alert-red font-bold">▹</span><span>Hệ thống 4 khối hộp mô-đun trắng góc cạnh đeo chéo trước ngực và bình tác chiến đỏ sau lưng.</span></li>
+                    </ul>
+                </div>
+
+                <!-- 3. Bộ Kỹ năng & Thiết bị Đặc trưng -->
+                <div class="pt-2 flex flex-wrap items-center gap-2">
+                    <span class="text-[10px] font-mono text-gray-400 mr-1">TRANG BỊ & KỸ NĂNG:</span>
+                    <span class="px-3 py-1 bg-black/80 border border-gray-700 text-xs font-mono text-gray-200 flex items-center gap-1.5"><i class="fas fa-microchip text-alert-red text-[10px]"></i>Zone Fortification (Củng cố khu vực)</span><span class="px-3 py-1 bg-black/80 border border-gray-700 text-xs font-mono text-gray-200 flex items-center gap-1.5"><i class="fas fa-microchip text-alert-red text-[10px]"></i>Hazard Alert (Cảnh báo phòng vệ)</span><span class="px-3 py-1 bg-black/80 border border-gray-700 text-xs font-mono text-gray-200 flex items-center gap-1.5"><i class="fas fa-microchip text-alert-red text-[10px]"></i>Heavy Modular Armor (Giáp hộp góc cạnh)</span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- 4 Ảnh Preview Thực tế (shell/<id>1.png ... shell/<id>4.png) -->
+        <div class="pt-5 border-t border-gray-800">
+            <div class="flex items-center justify-between text-[10px] font-mono text-gray-400 mb-3">
+                <span><i class="fas fa-images text-alert-red mr-1.5"></i>VISUAL PREVIEW GALLERY // 4 GÓC NHÌN & HOẠT ẢNH TRONG GAME (sentinel1.png → sentinel4.png)</span>
+                <span class="text-cyber-blue">CLICK ĐỂ PHÓNG TO</span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                
+        <div class="bg-black/90 border border-gray-800 hover:border-alert-red p-2 group cursor-pointer transition flex flex-col justify-between"
+             onclick='openInspectModal("Sentinel \u2014 Preview 01 (sentinel1.png)", "Defensive Specialist // Chuy\u00ean gia Ph\u00f2ng th\u1ee7 & C\u1ea3nh b\u00e1o", "Sentinel mang trong m\u00ecnh m\u1ed9t m\u00e0u ch\u1ee7 \u0111\u1ea1o \u0111\u1ecf cam, th\u01b0\u1eddng mang t\u00ednh c\u1ea3nh b\u00e1o, ph\u00f9 h\u1ee3p v\u1edbi vai tr\u00f2 ph\u00f2ng th\u1ee7. Chi\u1ebfc m\u0169 \u00f4m tr\u1ecdn \u0111\u1ea7u v\u00e0 nh\u1eefng kh\u1ed1i h\u1ed9p g\u00f3c c\u1ea1nh t\u1ea1o m\u1ed9t c\u1ea3m gi\u00e1c gai g\u00f3c, c\u1ee9ng r\u1eafn.", this.querySelector("img").src)'>
+            <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-1.5">
+                <span class="text-alert-red">SENTINEL1.PNG</span>
+                <span class="group-hover:text-neon-lime">[ ZOOM ]</span>
+            </div>
+            <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                <img src="shell/sentinel1.png" 
+                     onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='sentinel1.png';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/ccff00?text=SENTINEL+PREVIEW+01+(sentinel1.png)';}"
+                     alt="Sentinel Preview 1" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+        </div>
+        
+        <div class="bg-black/90 border border-gray-800 hover:border-alert-red p-2 group cursor-pointer transition flex flex-col justify-between"
+             onclick='openInspectModal("Sentinel \u2014 Preview 02 (sentinel2.png)", "Defensive Specialist // Chuy\u00ean gia Ph\u00f2ng th\u1ee7 & C\u1ea3nh b\u00e1o", "Sentinel mang trong m\u00ecnh m\u1ed9t m\u00e0u ch\u1ee7 \u0111\u1ea1o \u0111\u1ecf cam, th\u01b0\u1eddng mang t\u00ednh c\u1ea3nh b\u00e1o, ph\u00f9 h\u1ee3p v\u1edbi vai tr\u00f2 ph\u00f2ng th\u1ee7. Chi\u1ebfc m\u0169 \u00f4m tr\u1ecdn \u0111\u1ea7u v\u00e0 nh\u1eefng kh\u1ed1i h\u1ed9p g\u00f3c c\u1ea1nh t\u1ea1o m\u1ed9t c\u1ea3m gi\u00e1c gai g\u00f3c, c\u1ee9ng r\u1eafn.", this.querySelector("img").src)'>
+            <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-1.5">
+                <span class="text-alert-red">SENTINEL2.PNG</span>
+                <span class="group-hover:text-neon-lime">[ ZOOM ]</span>
+            </div>
+            <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                <img src="shell/sentinel2.png" 
+                     onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='sentinel2.png';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/ccff00?text=SENTINEL+PREVIEW+02+(sentinel2.png)';}"
+                     alt="Sentinel Preview 2" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+        </div>
+        
+        <div class="bg-black/90 border border-gray-800 hover:border-alert-red p-2 group cursor-pointer transition flex flex-col justify-between"
+             onclick='openInspectModal("Sentinel \u2014 Preview 03 (sentinel3.png)", "Defensive Specialist // Chuy\u00ean gia Ph\u00f2ng th\u1ee7 & C\u1ea3nh b\u00e1o", "Sentinel mang trong m\u00ecnh m\u1ed9t m\u00e0u ch\u1ee7 \u0111\u1ea1o \u0111\u1ecf cam, th\u01b0\u1eddng mang t\u00ednh c\u1ea3nh b\u00e1o, ph\u00f9 h\u1ee3p v\u1edbi vai tr\u00f2 ph\u00f2ng th\u1ee7. Chi\u1ebfc m\u0169 \u00f4m tr\u1ecdn \u0111\u1ea7u v\u00e0 nh\u1eefng kh\u1ed1i h\u1ed9p g\u00f3c c\u1ea1nh t\u1ea1o m\u1ed9t c\u1ea3m gi\u00e1c gai g\u00f3c, c\u1ee9ng r\u1eafn.", this.querySelector("img").src)'>
+            <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-1.5">
+                <span class="text-alert-red">SENTINEL3.PNG</span>
+                <span class="group-hover:text-neon-lime">[ ZOOM ]</span>
+            </div>
+            <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                <img src="shell/sentinel3.png" 
+                     onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='sentinel3.png';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/ccff00?text=SENTINEL+PREVIEW+03+(sentinel3.png)';}"
+                     alt="Sentinel Preview 3" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+        </div>
+        
+        <div class="bg-black/90 border border-gray-800 hover:border-alert-red p-2 group cursor-pointer transition flex flex-col justify-between"
+             onclick='openInspectModal("Sentinel \u2014 Preview 04 (sentinel4.png)", "Defensive Specialist // Chuy\u00ean gia Ph\u00f2ng th\u1ee7 & C\u1ea3nh b\u00e1o", "Sentinel mang trong m\u00ecnh m\u1ed9t m\u00e0u ch\u1ee7 \u0111\u1ea1o \u0111\u1ecf cam, th\u01b0\u1eddng mang t\u00ednh c\u1ea3nh b\u00e1o, ph\u00f9 h\u1ee3p v\u1edbi vai tr\u00f2 ph\u00f2ng th\u1ee7. Chi\u1ebfc m\u0169 \u00f4m tr\u1ecdn \u0111\u1ea7u v\u00e0 nh\u1eefng kh\u1ed1i h\u1ed9p g\u00f3c c\u1ea1nh t\u1ea1o m\u1ed9t c\u1ea3m gi\u00e1c gai g\u00f3c, c\u1ee9ng r\u1eafn.", this.querySelector("img").src)'>
+            <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-1.5">
+                <span class="text-alert-red">SENTINEL4.PNG</span>
+                <span class="group-hover:text-neon-lime">[ ZOOM ]</span>
+            </div>
+            <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                <img src="shell/sentinel4.png" 
+                     onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='sentinel4.png';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/ccff00?text=SENTINEL+PREVIEW+04+(sentinel4.png)';}"
+                     alt="Sentinel Preview 4" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+        </div>
+        
+            </div>
+        </div>
+    </article>
+    
+            </div>
+        </section>
+
+        <!-- Bottom Navigation Footer -->
+        <footer class="mt-16 pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="core-mechanic.html" class="cyber-btn">
+                <i class="fas fa-chevron-left"></i>
+                <span>QUAY VỀ CORE MECHANICS</span>
+            </a>
+            <div class="flex items-center gap-4">
+                <a href="art-weapons.html" class="cyber-btn">
+                    <i class="fas fa-gun"></i>
+                    <span>XEM KHO VŨ KHÍ (WEAPONS)</span>
+                </a>
+                <a href="main.html" class="cyber-btn">
+                    <span>VỀ TRANG CHÍNH (MAIN GDD)</span>
+                    <i class="fas fa-home"></i>
+                </a>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        const shellsData = [{"num": "01", "id": "destroyer", "code_ref": "3.1.1 // 2.2.7", "name": "Destroyer", "role": "Combat Specialist", "role_vi": "Chuyên gia Giao tranh Tuyến đầu", "accent": "neon-lime", "border_cls": "border-neon-lime", "text_cls": "text-neon-lime", "badge_cls": "bg-neon-lime/15 text-neon-lime border-neon-lime/50", "function_desc": "Shell thiên về giao tranh trực diện và giữ tuyến đầu. Bộ kỹ năng nổi bật gồm khiên chắn Riot Barricade, hệ thống tên lửa và Thruster hỗ trợ di chuyển.", "playstyle": "Chủ động đối đầu, bảo vệ vị trí và tạo áp lực trong giao tranh.", "visual_impression": "Một bộ giáp đồ sộ, kiên cố được tạo bởi các hình khối góc cạnh mang hơi hướng Halo tạo cho Destroyer một cảm giác to lớn và nguy hiểm. Chiếc mũ che mặt khiến nhân vật thiếu đi nét con người, trở nên vô cảm.", "visual_highlights": ["Khung giáp hạng nặng màu xanh ngọc nhạt (Mint/Sage Tactical) phối các điểm nhấn cảnh báo màu cam đỏ.", "Mũ bảo hiểm kín mặt với kính chắn phản quang đỏ-tím tạo vẻ lạnh lùng, phi nhân tính.", "Hai cụm bệ phóng và giáp vai vươn cao kiểu chiến binh không gian cổ điển."], "abilities": ["Riot Barricade (Khiên chắn)", "Missile System (Hệ thống tên lửa)", "Thruster (Động cơ đẩy di chuyển)"], "icon_img": "shell/destroyer-icon.png", "front_img": "shell/destroyer-front.png", "back_img": "shell/destroyer-back.png", "previews": ["shell/destroyer1.png", "shell/destroyer2.png", "shell/destroyer3.png", "shell/destroyer4.png"]}, {"num": "02", "id": "assassin", "code_ref": "3.1.2 // 2.2.4", "name": "Assassin", "role": "Shadow Agent", "role_vi": "Đặc vụ Ám sát & Ngụy trang", "accent": "purple-400", "border_cls": "border-purple-400", "text_cls": "text-purple-400", "badge_cls": "bg-purple-500/15 text-purple-300 border-purple-400/50", "function_desc": "Shell tập trung vào khả năng che giấu và tạo lợi thế bất ngờ. Khói nhân tạo và công nghệ ngụy trang là những yếu tố nổi bật trong thiết kế.", "playstyle": "Ẩn mình, đánh lạc hướng và thay đổi vị trí.", "visual_impression": "Toát lên vẻ nguy hiểm ngay từ cái nhìn đầu tiên với chiếc mũ trùm đầu che đi nửa trên của khuôn mặt, Assassin với thân hình nhanh nhẹn và động tác sắc bén tạo nên sự nguy hiểm của một kẻ săn mồi lẩn khuất trong bóng tối!", "visual_highlights": ["Mũ trùm đầu (Hood) tối màu đổ bóng che khuất nửa trên khuôn mặt đầy sát khí.", "Bộ suit bó sát in họa tiết ngụy trang kỹ thuật số trắng-xanh kết hợp đai lưng tác chiến đen.", "Dáng đứng khép tay chuẩn bị ra đòn của một thợ săn tốc độ cao."], "abilities": ["Synthetic Smoke (Khói nhân tạo)", "Active Camouflage (Công nghệ ngụy trang)", "Shadow Reposition (Đổi vị trí bất ngờ)"], "icon_img": "shell/assassin-icon.png", "front_img": "shell/assassin-front.png", "back_img": "shell/assassin-back.png", "previews": ["shell/assassin1.png", "shell/assassin2.png", "shell/assassin3.png", "shell/assassin4.png"]}, {"num": "03", "id": "recon", "code_ref": "3.1.3 // 2.2.2", "name": "Recon", "role": "Intel Specialist", "role_vi": "Chuyên gia Tình báo & Trinh sát", "accent": "cyber-blue", "border_cls": "border-cyber-blue", "text_cls": "text-cyber-blue", "badge_cls": "bg-cyber-blue/15 text-cyber-blue border-cyber-blue/50", "function_desc": "Recon sử dụng các hệ thống thu thập thông tin như Echo Pulse, Tracker Drone và dấu chân hologram để phát hiện hoặc theo dõi mục tiêu.", "playstyle": "Nhận biết tình huống, thu thập thông tin và hỗ trợ đồng đội.", "visual_impression": "Nổi bật với bộ suit liền thân, chiếc mũ bao quanh đầu thoạt nhìn như một thiết bị VR quá khổ, và băng đeo trang bị quanh người, Recon tạo cho người chơi một cảm giác bí ẩn, chuyên nghiệp.", "visual_highlights": ["Mũ cảm biến toàn phần hình khối lớn như một kính thực tế ảo (VR Visor) công nghệ cao.", "Bộ suit liền thân màu xám đen phối các mảng giáp vai và khớp gối màu vàng chanh (Acid Lime).", "Hệ thống túi ngực và thiết bị thu phát tín hiệu đeo chéo quanh thân."], "abilities": ["Echo Pulse (Xung dò tìm)", "Tracker Drone (Drone theo dấu)", "Hologram Footprints (Dấu chân Hologram)"], "icon_img": "shell/recon-icon.png", "front_img": "shell/recon-front.png", "back_img": "shell/recon-back.png", "previews": ["shell/recon1.png", "shell/recon2.png", "shell/recon3.png", "shell/recon4.png"]}, {"num": "04", "id": "vandal", "code_ref": "3.1.4 // 2.2.1", "name": "Vandal", "role": "Combat Anarchist", "role_vi": "Kẻ Nổi loạn Cơ động", "accent": "pink-500", "border_cls": "border-pink-500", "text_cls": "text-pink-400", "badge_cls": "bg-pink-500/15 text-pink-300 border-pink-500/50", "function_desc": "Vandal nổi bật với khả năng di chuyển linh hoạt, nhảy kép, Power Slide và Disrupt Cannon tạo hiệu ứng đẩy lùi.", "playstyle": "Cơ động, thay đổi vị trí nhanh và tạo đột biến.", "visual_impression": "Vandal với áo phông rộng, nổi bật là ống tay áo sau lưng và kiểu tóc gai nhọn cho người chơi một cảm giác phá cách, cảm giác con người giữa môi trường game đậm chất robot công nghệ.", "visual_highlights": ["Áo khoác/áo phông form rộng màu trắng thả hai ống tay áo dài buông thõng sau lưng đầy nổi loạn.", "Kiểu tóc trắng tạo hình gai nhọn (Spiky Hair) kết hợp cụm tai nghe hộp vuông hai bên thái dương.", "Sự pha trộn táo bạo giữa thời trang đường phố (Streetwear), găng tay hồng đậm và giày chạy đế Neon."], "abilities": ["Double Jump (Nhảy kép)", "Power Slide (Trượt tốc độ)", "Disrupt Cannon (Pháo đẩy lùi)"], "icon_img": "shell/vandal-icon.png", "front_img": "shell/vandal-front.png", "back_img": "shell/vandal-back.png", "previews": ["shell/vandal1.png", "shell/vandal2.png", "shell/vandal3.png", "shell/vandal4.png"]}, {"num": "05", "id": "thief", "code_ref": "3.1.5 // 2.2.5", "name": "Thief", "role": "Covert Acquisitions", "role_vi": "Chuyên gia Thu thập & Đột nhập", "accent": "white", "border_cls": "border-white", "text_cls": "text-white", "badge_cls": "bg-white/15 text-white border-white/50", "function_desc": "Thief được thiết kế xoay quanh việc tìm kiếm và thu hồi vật phẩm. Shell này có X-Ray Visor, Pickpocket Drone và Grapple Device.", "playstyle": "Khám phá tài nguyên, cơ động và tối ưu hóa hoạt động thu thập.", "visual_impression": "Hiện lên với vẻ ngoài nhẹ nhàng, một bộ armor trắng tinh khiết cùng thân hình mảnh khảnh, Thief nổi bật giữa những gam màu Neon của Marathon, tạo cho người chơi một cảm giác cuốn hút và bí ẩn.", "visual_highlights": ["Áo khoác phao lửng cổ cao và khung cơ thể Biomata màu trắng sứ (Clinical White) thanh thoát.", "Các khớp nối chi dưới lộ rõ cấu trúc cơ khí mảnh mai với bàn chân tách ngón linh hoạt.", "Gương mặt sắc sảo với tóc búi cao và kính X-Ray Visor gập gọn trên trán."], "abilities": ["X-Ray Visor (Kính nhìn xuyên thấu)", "Pickpocket Drone (Drone thu hồi vật phẩm)", "Grapple Device (Móc kéo cơ động)"], "icon_img": "shell/thief-icon.png", "front_img": "shell/thief-front.png", "back_img": "shell/thief-back.png", "previews": ["shell/thief1.png", "shell/thief2.png", "shell/thief3.png", "shell/thief4.png"]}, {"num": "06", "id": "triage", "code_ref": "3.1.6 // 2.2.3", "name": "Triage", "role": "Field Medic", "role_vi": "Quân y Dã chiến & Hồi sinh", "accent": "amber-400", "border_cls": "border-amber-400", "text_cls": "text-amber-400", "badge_cls": "bg-amber-400/15 text-amber-300 border-amber-400/50", "function_desc": "Triage tập trung vào hỗ trợ sinh tồn cho nhóm bằng Med-Drone, khả năng hỗ trợ hồi sinh từ xa và những hiệu ứng hỗ trợ đồng đội.", "playstyle": "Hỗ trợ, duy trì khả năng hoạt động của nhóm và tăng tính phối hợp.", "visual_impression": "Được xây dựng với thân hình đồ sộ, trang bị kín kẽ. Biểu tượng chữ thập vàng trước ngực gợi biểu tượng y tế. Triage toát lên sự chắc chắn, mạnh mẽ và uy nghiêm, nhắc nhở về trách nhiệm quan trọng của mình.", "visual_highlights": ["Biểu tượng Chữ thập Y tế màu vàng rực rỡ đặt ngay chính giữa giáp ngực hạng nặng.", "Cổ áo bảo hộ dày ôm quanh gáy, kết hợp túi y tế màu xanh lam lớn ('ARM +++') đeo ngang thắt lưng sau.", "Gương mặt nghiêm nghị với đôi mắt phát sáng xanh lá và vóc dáng vững chãi đáng tin cậy."], "abilities": ["Med-Drone (Drone quân y)", "Remote Revive (Hồi sinh từ xa)", "Squad Buffs (Hiệu ứng hỗ trợ tổ đội)"], "icon_img": "shell/triage-icon.png", "front_img": "shell/triage-front.png", "back_img": "shell/triage-back.png", "previews": ["shell/triage1.png", "shell/triage2.png", "shell/triage3.png", "shell/triage4.png"]}, {"num": "07", "id": "sentinel", "code_ref": "2.2.6 // DEFENSIVE SHELL", "name": "Sentinel", "role": "Defensive Specialist", "role_vi": "Chuyên gia Phòng thủ & Cảnh báo", "accent": "alert-red", "border_cls": "border-alert-red", "text_cls": "text-alert-red", "badge_cls": "bg-alert-red/15 text-alert-red border-alert-red/50", "function_desc": "Đơn vị Shell chuyên trách thiết lập hàng rào phòng ngự, kiểm soát khu vực trọng yếu và thu hút hỏa lực bảo vệ tổ đội trong các pha giao tranh căng thẳng.", "playstyle": "Phòng thủ khu vực, chốt chặn điểm nóng và cảnh báo sớm mối đe dọa.", "visual_impression": "Sentinel mang trong mình một màu chủ đạo đỏ cam, thường mang tính cảnh báo, phù hợp với vai trò phòng thủ. Chiếc mũ ôm trọn đầu và những khối hộp góc cạnh tạo một cảm giác gai góc, cứng rắn.", "visual_highlights": ["Tông màu Đỏ Cam (International Orange / Crimson) mang tính cảnh báo công nghiệp cường độ cao.", "Mũ bảo hiểm đỏ cam ôm trọn đầu với mặt kính đen in họa tiết đối xứng dữ dằn.", "Hệ thống 4 khối hộp mô-đun trắng góc cạnh đeo chéo trước ngực và bình tác chiến đỏ sau lưng."], "abilities": ["Zone Fortification (Củng cố khu vực)", "Hazard Alert (Cảnh báo phòng vệ)", "Heavy Modular Armor (Giáp hộp góc cạnh)"], "icon_img": "shell/sentinel-icon.png", "front_img": "shell/sentinel-front.png", "back_img": "shell/sentinel-back.png", "previews": ["shell/sentinel1.png", "shell/sentinel2.png", "shell/sentinel3.png", "shell/sentinel4.png"]}];
+        let activeCharIndex = 0;
+
+        function renderTabs() {
+            const container = document.getElementById('char-tabs-container');
+            container.innerHTML = shellsData.map((s, idx) => `
+                <button type="button" onclick="switchCharacter(${idx})" 
+                        class="cyber-btn char-tab ${idx === activeCharIndex ? 'active' : ''} !py-2.5 !px-4 !text-xs">
+                    <span>${s.num}. ${s.name.toUpperCase()}</span>
+                </button>
+            `).join('');
+        }
+
+        function renderSpotlightArena() {
+            const s = shellsData[activeCharIndex];
+            const arena = document.getElementById('character-display-arena');
+
+            const iconRoot = s.icon_img.replace('shell/', '');
+            const iconPlaceholder = `https://placehold.co/500x500/0a0f18/ccff00?text=${s.name.toUpperCase()}+ICON+(${iconRoot})`;
+
+            const abilitiesHtml = s.abilities.map(ab => `
+                <span class="px-3 py-1.5 bg-black/90 border border-gray-700 text-xs font-mono text-white flex items-center gap-2">
+                    <i class="fas fa-microchip ${s.text_cls}"></i>${ab}
+                </span>
+            `).join('');
+
+            const highlightsHtml = s.visual_highlights.map(hl => `
+                <li class="flex items-start gap-2 text-xs md:text-sm text-gray-300">
+                    <span class="${s.text_cls} font-bold">▹</span>
+                    <span>${hl}</span>
+                </li>
+            `).join('');
+
+            const spotlightPreviewsHtml = s.previews.map((pSrc, i) => {
+                const pRoot = pSrc.replace('shell/', '');
+                const pPh = `https://placehold.co/600x400/0a0f18/00d0ff?text=${s.name.toUpperCase()}+PREVIEW+0${i+1}+(${pRoot})`;
+                return `
+                    <div class="bg-black border border-gray-800 hover:${s.border_cls} p-2 cursor-pointer group transition"
+                         onclick='openInspectModal("${s.name} — Preview 0${i+1} (${pRoot})", "${s.role} // ${s.role_vi}", ${JSON.stringify(s.visual_impression)}, this.querySelector("img").src)'>
+                        <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800 pb-1 mb-1.5">
+                            <span class="${s.text_cls} font-bold">${pRoot.toUpperCase()}</span>
+                            <span class="group-hover:text-neon-lime">[ ZOOM ]</span>
+                        </div>
+                        <div class="h-28 flex items-center justify-center overflow-hidden relative bg-deep-blue/50">
+                            <img src="${pSrc}" 
+                                 onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='${pRoot}';}else{this.onerror=null;this.src='${pPh}';}"
+                                 alt="${s.name} Preview ${i+1}" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            arena.innerHTML = `
+                <div class="terminal-panel p-6 md:p-8 border-l-4 ${s.border_cls}">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                        
+                        <!-- Cột Trái: Khung Trình Chiếu Ảnh Biểu Tượng (Shell Emblem Icon) & 4 Ảnh Preview -->
+                        <div class="lg:col-span-5 flex flex-col justify-between gap-4">
+                            <!-- Khung Ảnh Biểu Tượng Chính -->
+                            <div class="bg-black border border-gray-800 hover:${s.border_cls} p-4 flex flex-col justify-between cursor-pointer group transition flex-1"
+                                 onclick='openInspectModal("${s.name} — Biểu tượng Runner Shell (${iconRoot})", "${s.role} // ${s.role_vi}", ${JSON.stringify(s.visual_impression)}, this.querySelector("img").src)'>
+                                <div class="flex items-center justify-between text-[10px] font-mono text-gray-400 border-b border-gray-800 pb-2 mb-3">
+                                    <span class="${s.text_cls} font-bold"><i class="fas fa-shield-halved mr-1.5"></i>SHELL EMBLEM // BIỂU TƯỢNG NHẬN DIỆN</span>
+                                    <span class="group-hover:text-neon-lime">[ CLICK ZOOM ]</span>
+                                </div>
+                                <div class="h-64 flex items-center justify-center overflow-hidden relative my-auto">
+                                    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(204,255,0,0.1),transparent_70%)] pointer-events-none"></div>
+                                    <img src="${s.icon_img}" 
+                                         onerror="if(!this.dataset.triedRoot){this.dataset.triedRoot='1';this.src='${iconRoot}';}else{this.onerror=null;this.src='${iconPlaceholder}';}"
+                                         alt="${s.name} Emblem Icon" 
+                                         class="max-h-56 w-auto object-contain group-hover:scale-110 transition duration-500">
+                                </div>
+                                <div class="text-[10px] font-mono text-gray-500 text-center mt-3 pt-2 border-t border-gray-800/80">
+                                    FILE: <span class="text-cyber-blue">${s.icon_img}</span> (hoặc <span class="text-gray-300">${iconRoot}</span>)
+                                </div>
+                            </div>
+
+                            <!-- Lưới 4 Ảnh Preview của Shell đang chọn -->
+                            <div>
+                                <div class="text-[10px] font-mono text-gray-400 mb-2 flex items-center justify-between">
+                                    <span><i class="fas fa-film ${s.text_cls} mr-1.5"></i>4 ẢNH PREVIEW (${s.id}1.png → ${s.id}4.png):</span>
+                                    <a href="#shell-${s.id}" class="text-neon-lime hover:underline">Xem ảnh Front/Back ↓</a>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2.5">
+                                    ${spotlightPreviewsHtml}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cột Phải: Hồ sơ Chức năng & Ấn tượng Ngoại hình -->
+                        <div class="lg:col-span-7 flex flex-col justify-between space-y-5">
+                            <div>
+                                <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                                    <span class="text-xs font-mono text-gray-400">CLASSIFICATION // ${s.code_ref}</span>
+                                    <span class="px-3 py-0.5 border text-xs font-mono font-bold uppercase ${s.badge_cls}">
+                                        ${s.role}
+                                    </span>
+                                </div>
+                                <h3 class="text-3xl md:text-4xl text-white font-heading font-black mb-1">
+                                    ${s.num}. ${s.name.toUpperCase()}
+                                </h3>
+                                <p class="text-xs font-mono ${s.text_cls} mb-5">${s.role_vi}</p>
+
+                                <!-- Khối Chức năng & Phong cách -->
+                                <div class="bg-black/65 border border-gray-800 p-4 mb-4">
+                                    <span class="text-[10px] font-mono text-neon-lime font-bold block mb-1.5">
+                                        <i class="fas fa-crosshairs mr-1.5"></i>CHỨC NĂNG & BỘ KỸ NĂNG CHIẾN THUẬT:
+                                    </span>
+                                    <p class="text-xs md:text-sm text-gray-200 leading-relaxed mb-3">
+                                        ${s.function_desc}
+                                    </p>
+                                    <div class="text-xs md:text-sm text-white bg-panel-blue/90 border-l-2 ${s.border_cls} p-2.5">
+                                        <strong class="${s.text_cls} font-mono">PHONG CÁCH:</strong> ${s.playstyle}
+                                    </div>
+                                </div>
+
+                                <!-- Khối Ấn tượng Tạo hình -->
+                                <div class="bg-black/65 border border-gray-800 p-4">
+                                    <span class="text-[10px] font-mono text-cyber-blue font-bold block mb-1.5">
+                                        <i class="fas fa-eye mr-1.5"></i>MÔ TẢ ẤN TƯỢNG NGOẠI HÌNH (VISUAL DESIGN):
+                                    </span>
+                                    <p class="text-xs md:text-sm text-gray-200 leading-relaxed mb-3 italic border-l-2 border-cyber-blue pl-3">
+                                        "${s.visual_impression}"
+                                    </p>
+                                    <ul class="space-y-1.5">
+                                        ${highlightsHtml}
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Các thẻ kỹ năng -->
+                            <div class="pt-3 border-t border-gray-800">
+                                <span class="text-[10px] font-mono text-gray-400 block mb-2">HỆ THỐNG KỸ NĂNG & CÔNG NGHỆ TÍCH HỢP:</span>
+                                <div class="flex flex-wrap gap-2">
+                                    ${abilitiesHtml}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            `;
+        }
+
+        function switchCharacter(index) {
+            activeCharIndex = index;
+            renderTabs();
+            renderSpotlightArena();
+            document.getElementById('interactive-spotlight').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Modal Phóng to
+        const inspectModal = document.getElementById('inspect-modal');
+        function openInspectModal(title, role, desc, imgSrc) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-role').innerText = role;
+            document.getElementById('modal-desc').innerText = desc;
+            document.getElementById('modal-img').src = imgSrc;
+            inspectModal.classList.remove('hidden');
+            inspectModal.classList.add('flex');
+        }
+        function closeInspectModal() {
+            inspectModal.classList.add('hidden');
+            inspectModal.classList.remove('flex');
+        }
+        inspectModal.addEventListener('click', (e) => {
+            if (e.target === inspectModal) closeInspectModal();
+        });
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeInspectModal();
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderTabs();
+            renderSpotlightArena();
+        });
+
+        // Hiệu ứng Glitch khi click giống trang main.html
+        document.body.addEventListener('click', (e) => {
+            if (e.target.closest('a') || e.target.closest('button') || e.target.closest('tr') || e.target.closest('#inspect-modal')) return;
+
+            document.body.classList.add('glitch-effect');
+            setTimeout(() => {
+                document.body.classList.remove('glitch-effect');
+            }, 300);
+        });
+    </script>
+</body>
+</html>

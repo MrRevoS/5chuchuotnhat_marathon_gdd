@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Style - Hệ thống Bản đồ (Maps) | Marathon GDD - CUTES1TG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Liên kết tới file CSS dùng chung -->
+    <link rel="stylesheet" href="style.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Orbitron', 'sans-serif'],
+                        mono: ['Share Tech Mono', 'monospace'],
+                    },
+                    colors: {
+                        'deep-blue': '#0a0f18',
+                        'panel-blue': '#121a28',
+                        'neon-lime': '#ccff00',
+                        'alert-red': '#ff3333',
+                        'cyber-blue': '#00d0ff'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Scanline Overlay -->
+    <div class="scanline"></div>
+
+    <!-- ================= TOP BAR / HEADER ================= -->
+    <header class="sticky top-0 z-50 bg-panel-blue/90 backdrop-blur-md border-b border-gray-800 px-6 py-4 shadow-lg">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <a href="main.html#art-sound" class="cyber-btn !py-2 !px-4">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>QUAY LẠI TRANG CHÍNH</span>
+                </a>
+                <div class="hidden md:block h-6 w-px bg-gray-700"></div>
+                <div class="hidden md:block">
+                    <span class="text-[10px] text-cyber-blue font-mono block tracking-widest">SECTION 05 // ART STYLE + SOUND</span>
+                    <span class="text-xs text-white font-heading font-bold tracking-wider">HỆ THỐNG BẢN ĐỒ (MAPS ARCHITECTURE)</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 text-[11px] font-mono">
+                <span class="text-gray-400">MODULE: <strong class="text-neon-lime">GAME_MAPS_DATABASE</strong></span>
+                <span class="text-gray-600">|</span>
+                <span class="text-gray-400">TOTAL MAPS: <strong class="text-cyber-blue">4 ZONES</strong></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-neon-lime animate-pulse"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= MAIN LAYOUT ================= -->
+    <div class="flex-1 max-w-6xl w-full mx-auto p-6 md:p-12 lg:p-16">
+
+        <!-- Page Title Banner -->
+        <div class="mb-12 border-b border-gray-800 pb-6 relative">
+            <div class="flex items-center gap-2 text-xs text-cyber-blue font-mono mb-2 tracking-widest">
+                <i class="fas fa-globe"></i>
+                <span>ART STYLE // GRAPHIC REALISM & MAP DESIGN</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl text-white font-black tracking-wider">
+                <span class="text-neon-lime">GR // 06.</span>HỆ THỐNG BẢN ĐỒ (MAPS)
+            </h1>
+        </div>
+
+        <!-- ================= MAP 1: PERIMETER ================= -->
+        <section id="map-perimeter" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[01]</span>
+                    <span>PERIMETER – BẢN ĐỒ NHẬP MÔN</span>
+                </h2>
+                <span class="text-xs font-mono text-neon-lime border border-neon-lime/40 bg-neon-lime/10 px-3 py-1">
+                    DIFFICULTY: INTRODUCTORY
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 mb-8 border-l-4 border-l-neon-lime">
+                <p class="text-gray-200 text-sm md:text-base leading-relaxed mb-6">
+                    <strong class="text-white">PERIMETER</strong> là map đầu tiên người chơi được làm quen với. Không gian ngoài trời thoáng đạt rộng rãi, những điểm nóng trên bản đồ được sắp xếp cạnh nhau không quá xa và bố cục kiến trúc tương đối đơn giản. Tất cả điều này tạo nên một không gian phù hợp cho người mới chơi giúp người chơi không bị choáng ngợp.
+                </p>
+
+                <!-- KHUNG ẢNH 1 -->
+                <div class="bg-black border border-gray-800 p-3 relative group overflow-hidden mt-6">
+                    <div class="flex items-center justify-between text-[11px] font-mono text-gray-400 mb-2 px-2">
+                        <span><i class="fas fa-image text-neon-lime mr-2"></i>VISUAL REFERENCE // ẢNH 1: BẢN ĐỒ PERIMETER</span>
+                        <span class="text-cyber-blue">FILE: map1.png</span>
+                    </div>
+                    <div class="overflow-hidden border border-gray-800/80 bg-deep-blue">
+                        <img src="map/map1.png" onerror="this.src='https://placehold.co/1200x675/0a0f18/ccff00?text=MAP+01+-+PERIMETER+(map1.png)'" alt="Ảnh 1 - Bản đồ Perimeter" class="w-full max-h-[500px] object-cover group-hover:scale-[1.02] transition duration-500">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MAP 2: DIRE MARSH ================= -->
+        <section id="map-dire-marsh" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[02]</span>
+                    <span>DIRE MARSH – VÙNG ĐẦM LẦY NGUY HIỂM</span>
+                </h2>
+                <span class="text-xs font-mono text-cyber-blue border border-cyber-blue/40 bg-cyber-blue/10 px-3 py-1">
+                    VERSIONS: DAY & NIGHT MARSH
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 mb-8 border-l-4 border-l-cyber-blue">
+                <p class="text-gray-200 text-sm md:text-base leading-relaxed mb-6">
+                    <strong class="text-white">DIRE MARSH</strong> là bản đồ thứ hai người chơi được tiếp cận và có 2 phiên bản khác nhau: <span class="text-cyber-blue font-bold">DIRE MARSH map ban ngày</span> và <span class="text-purple-400 font-bold">NIGHT MARSH map ban đêm</span>. Các điểm nóng được sắp xếp dàn đều xuyên suốt toàn bản đồ. Không gian ở đây rộng mở gần gấp đôi map PERIMETER, điều này khiến người chơi cần có tính toán trước khi di chuyển. Những kiến trúc của những điểm nóng đã có độ phức tạp nhất định, những đường hầm dưới lòng đất, mật độ kẻ địch UESC dày đặc hơn đòi hỏi sự tập trung của người chơi.
+                </p>
+
+                <!-- KHUNG ẢNH 2 -->
+                <div class="bg-black border border-gray-800 p-3 relative group overflow-hidden mt-6">
+                    <div class="flex items-center justify-between text-[11px] font-mono text-gray-400 mb-2 px-2">
+                        <span><i class="fas fa-image text-cyber-blue mr-2"></i>VISUAL REFERENCE // ẢNH 2: BẢN ĐỒ DIRE MARSH / NIGHT MARSH</span>
+                        <span class="text-cyber-blue">FILE: map2.png</span>
+                    </div>
+                    <div class="overflow-hidden border border-gray-800/80 bg-deep-blue">
+                        <img src="map/map2.png" onerror="this.src='https://placehold.co/1200x675/0a0f18/00d0ff?text=MAP+02+-+DIRE+MARSH+(map2.png)'" alt="Ảnh 2 - Bản đồ Dire Marsh" class="w-full max-h-[500px] object-cover group-hover:scale-[1.02] transition duration-500">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MAP 3: OUTPOST ================= -->
+        <section id="map-outpost" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[03]</span>
+                    <span>OUTPOST – TRẠM TIỀN TIÊU 2 TẦNG KHÔNG GIAN</span>
+                </h2>
+                <span class="text-xs font-mono text-purple-400 border border-purple-400/40 bg-purple-400/10 px-3 py-1">
+                    FEATURES: DUAL-TIER + GREEN CARDS
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 mb-8 border-l-4 border-l-purple-400">
+                <p class="text-gray-200 text-sm md:text-base leading-relaxed mb-6">
+                    <strong class="text-white">OUTPOST</strong> là bản đồ thứ ba được giới thiệu. Đây là map với diện tích nhỏ nhất tính đến hiện tại. Bù lại vào đó, OUTPOST có sự tách biệt hai tầng không gian: dưới mặt đất sẽ là những điểm nóng thông thường tìm thấy trong hai map trước như Flight Control, Airfield, Orientation, Dormitories, Processing, còn trên bầu trời sẽ là Pinwheel Base, nơi thường chứa những vật phẩm quý hiếm hơn. Để truy cập tầng trên Pinwheel Base thì có nhiều cách nhưng cách phổ thông nhất đó chính là sử dụng hai chiếc thẻ xanh được rải rác khắp nơi suốt map. Điều này thúc đẩy người chơi phải di chuyển và tìm hiểu bản đồ, từ đó tăng khả năng tương tác giữa người với người. Kết hợp với diện tích vốn nhỏ của bản đồ khiến mức độ aggressive của map tăng cao.
+                </p>
+
+                <!-- KHUNG ẢNH 3 -->
+                <div class="bg-black border border-gray-800 p-3 relative group overflow-hidden mt-6">
+                    <div class="flex items-center justify-between text-[11px] font-mono text-gray-400 mb-2 px-2">
+                        <span><i class="fas fa-image text-purple-400 mr-2"></i>VISUAL REFERENCE // ẢNH 3: BẢN ĐỒ OUTPOST & PINWHEEL BASE</span>
+                        <span class="text-cyber-blue">FILE: map3.png</span>
+                    </div>
+                    <div class="overflow-hidden border border-gray-800/80 bg-deep-blue">
+                        <img src="map/map3.png" onerror="this.src='https://placehold.co/1200x675/0a0f18/a855f7?text=MAP+03+-+OUTPOST+(map3.png)'" alt="Ảnh 3 - Bản đồ Outpost" class="w-full max-h-[500px] object-cover group-hover:scale-[1.02] transition duration-500">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MAP 4: CRYO ARCHIVE ================= -->
+        <section id="map-cryo-archive" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[04]</span>
+                    <span>CRYO ARCHIVE – KHU VỰC ĐỘ KHÓ CAO NHẤT & BOSS CUỐI</span>
+                </h2>
+                <span class="text-xs font-mono text-alert-red border border-alert-red/40 bg-alert-red/10 px-3 py-1 animate-pulse">
+                    DIFFICULTY: MAXIMUM // BOSS ARENA
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 mb-8 border-l-4 border-l-alert-red">
+                <p class="text-gray-200 text-sm md:text-base leading-relaxed mb-6">
+                    <strong class="text-white">CRYO ARCHIVE</strong> đang là map có độ khó cao nhất. Với vô vàn những con đường ẩn dấu xung quanh khắp bản đồ. Để di chuyển xung quanh và mở cửa, người chơi cần thu thập những chiếc thẻ <span class="text-cyber-blue font-bold">Security Credentials (gọi tắt là Cred)</span> để tăng cấp độ bảo mật của mình và mở những cánh cửa hệ thống bảo mật cao hơn. Đây là một map đồ sộ, không chỉ rộng lớn mà còn ẩn chứa nhiều ngóc ngách bí mật. Thêm nữa, CRYO ARCHIVE là map có mật độ kẻ địch UESC lớn nhất trong game, khiến cho nơi đây từng căn phòng đều có thể mang đến cái chết bất chợt cho những người chơi không chuẩn bị kỹ. Cuối cùng, đây là map duy nhất trong Marathon đến thời điểm này có một boss cuối với sàn đấu riêng.
+                </p>
+
+                <!-- KHUNG ẢNH 4 -->
+                <div class="bg-black border border-gray-800 p-3 relative group overflow-hidden mt-6">
+                    <div class="flex items-center justify-between text-[11px] font-mono text-gray-400 mb-2 px-2">
+                        <span><i class="fas fa-image text-alert-red mr-2"></i>VISUAL REFERENCE // ẢNH 4: BẢN ĐỒ CRYO ARCHIVE & BOSS ARENA</span>
+                        <span class="text-cyber-blue">FILE: map4.png</span>
+                    </div>
+                    <div class="overflow-hidden border border-gray-800/80 bg-deep-blue">
+                        <img src="map/map4.png" onerror="this.src='https://placehold.co/1200x675/0a0f18/ff3333?text=MAP+04+-+CRYO+ARCHIVE+(map4.png)'" alt="Ảnh 4 - Bản đồ Cryo Archive" class="w-full max-h-[500px] object-cover group-hover:scale-[1.02] transition duration-500">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom Navigation Footer -->
+        <footer class="mt-16 pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="main.html#art-sound" class="cyber-btn">
+                <i class="fas fa-chevron-left"></i>
+                <span>QUAY VỀ MỤC 05 TRÊN TRANG CHÍNH</span>
+            </a>
+            <div class="text-xs font-mono text-gray-500">
+                SQUAD: <span class="text-neon-lime">CUTES1TG</span> // MARATHON 2026 GDD
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Hiệu ứng Glitch khi click giống trang main.html
+        document.body.addEventListener('click', (e) => {
+            if (e.target.closest('a') || e.target.closest('button')) return;
+
+            document.body.classList.add('glitch-effect');
+            setTimeout(() => {
+                document.body.classList.remove('glitch-effect');
+            }, 300);
+        });
+    </script>
+</body>
+</html>

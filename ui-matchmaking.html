@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UI/UX - Giao diện Vào trận (Matchmaking & In-Game HUD) | Marathon GDD - CUTES1TG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Liên kết tới file CSS dùng chung -->
+    <link rel="stylesheet" href="style.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Orbitron', 'sans-serif'],
+                        mono: ['Share Tech Mono', 'monospace'],
+                    },
+                    colors: {
+                        'deep-blue': '#0a0f18',
+                        'panel-blue': '#121a28',
+                        'neon-lime': '#ccff00',
+                        'alert-red': '#ff3333',
+                        'cyber-blue': '#00d0ff'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Scanline Overlay -->
+    <div class="scanline"></div>
+
+    <!-- ================= TOP BAR / HEADER ================= -->
+    <header class="sticky top-0 z-50 bg-panel-blue/90 backdrop-blur-md border-b border-gray-800 px-6 py-4 shadow-lg">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <a href="main.html#ui-ux" class="cyber-btn !py-2 !px-4">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>QUAY LẠI TRANG CHÍNH</span>
+                </a>
+                <div class="hidden md:block h-6 w-px bg-gray-700"></div>
+                <div class="hidden md:block">
+                    <span class="text-[10px] text-cyber-blue font-mono block tracking-widest">SECTION 04 // UI_MODULE 06</span>
+                    <span class="text-xs text-white font-heading font-bold tracking-wider">GIAO DIỆN VÀO TRẬN (MATCHMAKING & IN-GAME HUD)</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 text-[11px] font-mono">
+                <span class="text-gray-400">MODULE: <strong class="text-neon-lime">MATCHMAKING_HUD</strong></span>
+                <span class="text-gray-600">|</span>
+                <span class="text-gray-400">STATE: <strong class="text-cyber-blue">ETHERSTEP & COMBAT HUD</strong></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-neon-lime animate-pulse"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= MAIN LAYOUT ================= -->
+    <div class="flex-1 max-w-6xl w-full mx-auto p-6 md:p-12 lg:p-16">
+
+        <!-- Page Title Banner -->
+        <div class="mb-12 border-b border-gray-800 pb-6 relative">
+            <div class="flex items-center gap-2 text-xs text-cyber-blue font-mono mb-2 tracking-widest">
+                <i class="fas fa-shuttle-space"></i>
+                <span>UI/UX ARCHITECTURE // SUB-MODULE 06</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl text-white font-black tracking-wider">
+                <span class="text-neon-lime">06.</span> GIAO DIỆN VÀO TRẬN (MATCHMAKING & IN-GAME HUD)
+            </h1>
+        </div>
+
+        <!-- ================= PHẦN 1: CHUYỂN CẢNH ETHERSTEP (MÀN HÌNH TẢI TRẬN NỘI TẠI) ================= -->
+        <section id="etherstep-section" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[01]</span>
+                    <span>CHUYỂN CẢNH ETHERSTEP (MÀN HÌNH TẢI TRẬN)</span>
+                </h2>
+                <span class="text-xs font-mono text-neon-lime border border-neon-lime/40 bg-neon-lime/10 px-3 py-1">
+                    LOADING PROTOCOL: CONSCIOUSNESS LINK
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 mb-8 border-l-4 border-l-neon-lime">
+                <p class="text-gray-200 text-sm md:text-base leading-relaxed mb-6">
+                    Quá trình nạp trận đấu không dùng màn hình chờ tĩnh kèm mẹo chơi game thông thường, mà mô phỏng <span class="text-cyber-blue font-bold">giao thức truyền tải ý thức của Runner vào cơ thể nhân tạo</span>. Màn hình chạy các dòng mã kiểm tra sinh trắc học, thông báo <span class="font-mono text-neon-lime font-bold">INITIATE CONSCIOUSNESS LINK</span> của hệ điều hành ONI, kết hợp với hiệu ứng hình ảnh nhiễu sóng và âm thanh tần số thấp trước khi mở mắt tại điểm đáp trên bản đồ.
+                </p>
+
+                <!-- KHUNG CHÈN VIDEO ETHERSTEP -->
+                <div class="bg-black border border-gray-800 p-3 relative group overflow-hidden mb-6">
+                    <div class="flex items-center justify-between text-[11px] font-mono text-gray-400 mb-2 px-2">
+                        <span><i class="fas fa-film text-neon-lime mr-2"></i>VIDEO MINH HỌA // QUÁ TRÌNH TẢI TRẬN ETHERSTEP</span>
+                        <span class="text-cyber-blue">FILE: etherstep.mp4</span>
+                    </div>
+                    <div class="relative bg-black border border-gray-800 overflow-hidden">
+                        <video class="w-full max-h-[500px] object-contain bg-black" controls preload="metadata">
+                            <source src="etherstep.mp4" type="video/mp4">
+                            Trình duyệt của bạn không hỗ trợ thẻ video HTML5.
+                        </video>
+                    </div>
+                </div>
+
+                <!-- KHUNG CHÈN ẢNH ETHERSTEP -->
+                <div class="bg-black border border-gray-800 p-3 relative group overflow-hidden">
+                    <div class="flex items-center justify-between text-[11px] font-mono text-gray-400 mb-2 px-2">
+                        <span><i class="fas fa-image text-cyber-blue mr-2"></i>VISUAL REFERENCE // MÀN HÌNH KIỂM TRA SINH TRẮC HỌC ONI</span>
+                        <span class="text-cyber-blue">FILE: etherstep.png</span>
+                    </div>
+                    <div class="overflow-hidden border border-gray-800/80 bg-deep-blue">
+                        <img src="etherstep.png" onerror="this.src='https://placehold.co/1200x675/0a0f18/00d0ff?text=ETHERSTEP+LOADING+SCREEN+(etherstep.png)'" alt="Ảnh Màn hình tải trận Etherstep" class="w-full max-h-[450px] object-cover group-hover:scale-[1.02] transition duration-500">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PHẦN 2: BỐ CỤC HUD CHIẾN ĐẤU & GIAO DIỆN HÒM ĐỒ ================= -->
+        <section id="combat-hud-section" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[02]</span>
+                    <span>BỐ CỤC HUD CHIẾN ĐẤU & TƯƠNG TÁC TRONG TRẬN</span>
+                </h2>
+                <span class="text-xs font-mono text-cyber-blue border border-cyber-blue/40 bg-cyber-blue/10 px-3 py-1">
+                    IN-GAME INTERFACE & INVENTORY
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 mb-8 border-l-4 border-l-cyber-blue">
+                <div class="space-y-6 text-gray-200 text-sm md:text-base leading-relaxed mb-8">
+                    <div>
+                        <h3 class="text-white text-base font-heading mb-2 flex items-center gap-2">
+                            <i class="fas fa-compass text-neon-lime"></i>
+                            <span>Cạnh trên cùng (Giải phóng trung tâm màn hình):</span>
+                        </h3>
+                        <p class="text-gray-300 text-xs md:text-sm">
+                            Không có bản đồ nhỏ (Minimap). Thay vào đó là một thanh la bàn ngang (<strong class="text-white">Compass Bar</strong>) mảnh, hiển thị số độ hướng quay, biểu tượng hướng điểm Exfil và các điểm Ping của đồng đội. Các icon 3D trên màn hình tự động giảm độ đậm (opacity) khi người chơi hướng tâm ngắm vào để không che khuất kẻ địch.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h3 class="text-white text-base font-heading mb-2 flex items-center gap-2">
+                            <i class="fas fa-heart-pulse text-alert-red"></i>
+                            <span>Góc dưới màn hình:</span>
+                        </h3>
+                        <p class="text-gray-300 text-xs md:text-sm">
+                            Hiển thị thanh máu, thanh giáp chia theo từng ô rời (<strong class="text-white">1–4 ô</strong> giúp người chơi nhẩm tính ngay số lượng Shield Charge cần dùng), đồng hồ đo nhiệt độ cơ thể/thể lực, thời gian hồi kỹ năng (<strong class="text-white">Tactical / Prime Ability</strong>) và bộ đếm đạn kích thước lớn bằng font <span class="font-mono text-neon-lime">PP Fraktion Mono</span>.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h3 class="text-white text-base font-heading mb-2 flex items-center gap-2">
+                            <i class="fas fa-boxes-stacked text-cyber-blue"></i>
+                            <span>Giao diện Loot & Radial Quick-Wheel:</span>
+                        </h3>
+                        <p class="text-gray-300 text-xs md:text-sm mb-3">
+                            Khi mở hòm đồ hoặc xác đối phương trong trận, giao diện chia đôi màn hình thành 2 lưới ô vuông phẳng (<strong class="text-white">Balo cá nhân bên trái – Hòm đồ bên phải</strong>). Nhờ hệ thống icon 2D tối giản và màu nền phân cấp độ hiếm, người chơi có thể thao tác kéo-thả hoặc bấm chuyển nhanh vật phẩm trong vài giây.
+                        </p>
+                        <p class="text-gray-300 text-xs md:text-sm">
+                            Các vật phẩm tiêu hao như Patch Kit hay Shield Charge được gắn vào menu vòng tròn (<strong class="text-white">Radial Quick-Wheel</strong>), cho phép vừa di chuyển nấp góc tường vừa chọn bơm máu/giáp mà không bị khóa tầm nhìn bởi màn hình kho đồ.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- KHUNG CHÈN ẢNH HUD TRONG TRẬN -->
+                <div class="bg-black border border-gray-800 p-3 relative group overflow-hidden">
+                    <div class="flex items-center justify-between text-[11px] font-mono text-gray-400 mb-2 px-2">
+                        <span><i class="fas fa-image text-neon-lime mr-2"></i>VISUAL REFERENCE // BỐ CỤC HUD CHIẾN ĐẤU & GIAO DIỆN LỤC SÁT HÒM ĐỒ</span>
+                        <span class="text-cyber-blue">FILE: hud.png</span>
+                    </div>
+                    <div class="overflow-hidden border border-gray-800/80 bg-deep-blue">
+                        <img src="hud.png" onerror="this.src='https://placehold.co/1200x675/0a0f18/ccff00?text=COMBAT+HUD+%26+SPLIT-SCREEN+LOOT+(hud.png)'" alt="Ảnh HUD chiến đấu trong trận" class="w-full max-h-[500px] object-cover group-hover:scale-[1.02] transition duration-500">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PHẦN 3: PHẢN ỨNG GIAO DIỆN THEO TRẠNG THÁI CƠ THỂ (STATUS-REACTIVE HUD) ================= -->
+        <section id="status-reactive-hud" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                <h2 class="text-2xl md:text-3xl text-white flex items-center gap-3">
+                    <span class="text-neon-lime font-mono text-lg">[03]</span>
+                    <span>PHẢN ỨNG GIAO DIỆN THEO TRẠNG THÁI CƠ THỂ (STATUS-REACTIVE HUD)</span>
+                </h2>
+                <span class="text-xs font-mono text-alert-red border border-alert-red/40 bg-alert-red/10 px-3 py-1 animate-pulse">
+                    HARDWARE MALFUNCTION SIMULATION
+                </span>
+            </div>
+
+            <div class="terminal-panel p-8 md:p-10 border-l-4 border-l-alert-red">
+                <p class="text-gray-200 text-sm md:text-base leading-relaxed mb-6">
+                    Khi cơ thể Runner bị dính lựu đạn xung điện (<span class="text-alert-red font-bold">EMP Grenade</span>), quá nhiệt, hoặc chịu hiệu ứng <span class="text-purple-400 font-bold">Digital Psychosis</span> quanh các vùng vật chất dị thường, toàn bộ các khung chữ và thanh máu trên HUD sẽ bị lệch màu (<span class="text-cyber-blue">chromatic aberration</span>), nhòe chữ hoặc nhấp nháy cảnh báo đỏ, truyền tải trực tiếp tình trạng hỏng hóc phần cứng lên màn hình của người chơi.
+                </p>
+
+                <!-- 3 Hiệu ứng trạng thái cơ thể -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-black/60 border border-alert-red/50 p-4">
+                        <div class="text-[10px] text-alert-red font-mono mb-1">MALFUNCTION // 01</div>
+                        <h4 class="text-sm text-white font-heading mb-2">EMP GRENADE</h4>
+                        <p class="text-xs text-gray-400">Xung điện từ làm tê liệt tạm thời HUD, chớp nháy màn hình tĩnh điện trắng-đen.</p>
+                    </div>
+
+                    <div class="bg-black/60 border border-alert-red/50 p-4">
+                        <div class="text-[10px] text-alert-red font-mono mb-1">MALFUNCTION // 02</div>
+                        <h4 class="text-sm text-white font-heading mb-2">QUÁ NHIỆT (OVERHEAT)</h4>
+                        <p class="text-xs text-gray-400">Cảnh báo đỏ rực toàn khung hình, thanh nhiệt độ cơ thể chớp nháy liên tục.</p>
+                    </div>
+
+                    <div class="bg-black/60 border border-alert-red/50 p-4">
+                        <div class="text-[10px] text-purple-400 font-mono mb-1">MALFUNCTION // 03</div>
+                        <h4 class="text-sm text-white font-heading mb-2">DIGITAL PSYCHOSIS</h4>
+                        <p class="text-xs text-gray-400">Hiệu ứng lệch màu sắc (chromatic aberration) và biến dạng chữ khi tiếp xúc vật chất dị thường.</p>
+                    </div>
+                </div>
+
+                <!-- KHUNG CHÈN ẢNH TRẠNG THÁI HUD LỖI PHẦN CỨNG -->
+                <div class="bg-black border border-gray-800 p-3 relative group overflow-hidden">
+                    <div class="flex items-center justify-between text-[11px] font-mono text-gray-400 mb-2 px-2">
+                        <span><i class="fas fa-image text-alert-red mr-2"></i>VISUAL REFERENCE // TRẠNG THÁI HUD LỖI HỎNG PHẦN CỨNG (EMP / PSYCHOSIS)</span>
+                        <span class="text-alert-red">FILE: hud-glitch.png</span>
+                    </div>
+                    <div class="overflow-hidden border border-gray-800/80 bg-deep-blue">
+                        <img src="hud-glitch.png" onerror="this.src='https://placehold.co/1200x675/0a0f18/ff3333?text=STATUS-REACTIVE+HUD+MALFUNCTION+(hud-glitch.png)'" alt="Ảnh lỗi phần cứng HUD" class="w-full max-h-[500px] object-cover group-hover:scale-[1.02] transition duration-500">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom Navigation Footer -->
+        <footer class="mt-16 pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="ui-cosmetic.html" class="cyber-btn">
+                <i class="fas fa-chevron-left"></i>
+                <span>05. CỬA HÀNG SKIN</span>
+            </a>
+            <div class="flex items-center gap-4">
+                <span class="text-xs font-mono text-gray-500 hidden md:inline">TIẾP THEO TRONG UI/UX:</span>
+                <a href="ui-encrypted-lore.html" class="cyber-btn">
+                    <span>07. CỐT TRUYỆN MÃ HÓA</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Hiệu ứng Glitch khi click giống trang main.html
+        document.body.addEventListener('click', (e) => {
+            if (e.target.closest('a') || e.target.closest('button') || e.target.closest('video')) return;
+
+            document.body.classList.add('glitch-effect');
+            setTimeout(() => {
+                document.body.classList.remove('glitch-effect');
+            }, 300);
+        });
+    </script>
+</body>
+</html>
