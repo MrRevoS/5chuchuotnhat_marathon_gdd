@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Phe Phái (Factions / Fractions) | Marathon GDD - CUTES1TG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Liên kết tới file CSS dùng chung -->
+    <link rel="stylesheet" href="style.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Orbitron', 'sans-serif'],
+                        mono: ['Share Tech Mono', 'monospace'],
+                    },
+                    colors: {
+                        'deep-blue': '#0a0f18',
+                        'panel-blue': '#121a28',
+                        'neon-lime': '#ccff00',
+                        'alert-red': '#ff3333',
+                        'cyber-blue': '#00d0ff'
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        .faction-tab.active {
+            background-color: #ccff00;
+            border-color: #ccff00;
+            color: #0a0f18;
+            box-shadow: 0 0 15px rgba(204, 255, 0, 0.45);
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Scanline Overlay -->
+    <div class="scanline"></div>
+
+    <!-- ================= MODAL PHÓNG TO ẢNH / GIF / ICON ================= -->
+    <div id="inspect-modal" class="fixed inset-0 z-[9999] hidden items-center justify-center bg-black/85 backdrop-blur-md p-4">
+        <div class="terminal-panel max-w-4xl w-full p-6 md:p-8 border border-neon-lime shadow-[0_0_50px_rgba(204,255,0,0.25)] relative">
+            <button onclick="closeInspectModal()" class="absolute top-4 right-4 text-gray-400 hover:text-alert-red font-mono text-xs border border-gray-700 hover:border-alert-red px-3 py-1 transition">
+                [ X ] ĐÓNG
+            </button>
+            <div class="text-xs font-mono text-cyber-blue mb-1" id="modal-role">FACTION ASSET INSPECTOR</div>
+            <h3 class="text-2xl md:text-3xl text-white font-heading mb-4" id="modal-title">FACTION NAME</h3>
+            
+            <div class="bg-black border border-gray-800 p-4 flex items-center justify-center h-[420px] mb-4 relative overflow-hidden">
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(204,255,0,0.1),transparent_70%)] pointer-events-none"></div>
+                <img id="modal-img" src="" alt="Inspect Asset" class="max-h-[390px] w-auto object-contain">
+            </div>
+
+            <div class="bg-black/70 border-l-2 border-neon-lime p-3.5 text-xs md:text-sm text-gray-200 leading-relaxed" id="modal-desc"></div>
+        </div>
+    </div>
+
+    <!-- ================= TOP BAR / HEADER ================= -->
+    <header class="sticky top-0 z-50 bg-panel-blue/95 backdrop-blur-md border-b border-gray-800 px-6 py-4 shadow-lg">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <a href="main.html" class="cyber-btn !py-2 !px-4">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>QUAY LẠI TRANG CHÍNH</span>
+                </a>
+                <a href="concept-background.html" class="cyber-btn !py-2 !px-4 hidden md:inline-flex">
+                    <i class="fas fa-globe"></i>
+                    <span>BỐI CẢNH (LORE)</span>
+                </a>
+                <div class="hidden lg:block h-6 w-px bg-gray-700"></div>
+                <div class="hidden lg:block">
+                    <span class="text-[10px] text-cyber-blue font-mono block tracking-widest">TAU CETI IV // CORPORATE & POLITICAL POWERS</span>
+                    <span class="text-xs text-white font-heading font-bold tracking-wider">6 MAJOR FACTIONS: ICON, GIF & CONCEPT ART</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 text-[11px] font-mono">
+                <span class="text-gray-400">FACTIONS: <strong class="text-neon-lime">06 ORGANIZATIONS</strong></span>
+                <span class="text-gray-600">|</span>
+                <span class="text-gray-400">MEDIA PER FACTION: <strong class="text-cyber-blue">ICON + GIF + IMAGE</strong></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-neon-lime animate-ping"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= MAIN LAYOUT ================= -->
+    <div class="flex-1 max-w-7xl w-full mx-auto p-6 md:p-10 lg:p-12">
+
+        <!-- Page Title Banner -->
+        <div class="mb-10 border-b border-gray-800 pb-6 relative">
+            <div class="flex items-center gap-2 text-xs text-cyber-blue font-mono mb-2 tracking-widest">
+                <i class="fas fa-sitemap"></i>
+            </div>
+            <h1 class="text-3xl md:text-5xl text-white font-black tracking-wider mb-3">
+                <span class="text-neon-lime">(FACTIONS)</span> HỆ THỐNG CÁC PHE PHÁI TRONG MARATHON
+            </h1>
+            <p class="text-sm text-gray-300 max-w-4xl leading-relaxed">
+                Trên hành tinh <strong class="text-white">Tau Ceti IV</strong> và thuộc địa bỏ hoang <strong class="text-neon-lime">New Cascadia</strong>, các Runner không chiến đấu cho riêng mình mà thực thi hợp đồng cho <span class="text-cyber-blue font-bold">6 thế lực đối địch</span>: từ những siêu tập đoàn công nghệ và công nghiệp thống trị hệ Mặt Trời (<strong class="text-white">CyberAcme, NuCaloric, Traxus, Sekiguchi Genetics</strong>) cho đến lực lượng cách mạng chính trị (<strong class="text-white">MIDA</strong>) và giáo phái tôn thờ cái chết (<strong class="text-white">Arachne</strong>).
+            </p>
+        </div>
+
+        <!-- ================= BẢNG MA TRẬN ĐỐI CHIẾU 6 PHE PHÁI ================= -->
+        <section id="factions-matrix" class="mb-14">
+            <div class="terminal-panel p-6 md:p-8 border-l-4 border-l-cyber-blue">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6 border-b border-gray-800 pb-4">
+                    <div>
+                        <span class="text-[10px] font-mono text-cyber-blue tracking-widest uppercase">STRATEGIC MATRIX // 6 FACTIONS OF TAU CETI IV</span>
+                        <h2 class="text-xl md:text-2xl text-white mt-1">BẢNG TỔNG HỢP VAI TRÒ & MỤC TIÊU CỦA 6 PHE PHÁI</h2>
+                    </div>
+                    <a href="#full-factions-roster" class="text-xs font-mono text-neon-lime hover:underline">
+                        [ CUỘN XUỐNG XEM ĐẦY ĐỦ 6 HỒ SƠ ↓ ]
+                    </a>
+                </div>
+
+                <div class="overflow-x-auto border border-gray-800">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="bg-black text-neon-lime font-heading border-b border-gray-800">
+                                <th class="p-3.5 border-r border-gray-800">PHE PHÁI</th>
+                                <th class="p-3.5 border-r border-gray-800">LĨNH VỰC CHỦ ĐẠO</th>
+                                <th class="p-3.5 border-r border-gray-800">CÔNG NGHỆ / ĐẶC TRƯNG CỐT LÕI</th>
+                                <th class="p-3.5">MỤC TIÊU TẠI TAU CETI IV & QUAN HỆ VỚI RUNNER</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-800 bg-black/50 text-gray-300">
+                            <tr class="hover:bg-panel-blue/60 cursor-pointer transition" onclick="switchFaction(0)">
+                                <td class="p-3.5 border-r border-gray-800 font-bold text-neon-lime font-mono">01. CyberAcme</td>
+                                <td class="p-3.5 border-r border-gray-800 font-bold text-white">Kiến trúc AI, Phân tích dữ liệu & An ninh mạng</td>
+                                <td class="p-3.5 border-r border-gray-800">Hệ thống ONI & Kiến trúc "trí tuệ cộng đồng phân tán"</td>
+                                <td class="p-3.5">Hỗ trợ toàn diện Runner; thu thập dữ liệu về Tau Ceti IV và số phận New Cascadia</td>
+                            </tr>
+                            <tr class="hover:bg-panel-blue/60 cursor-pointer transition" onclick="switchFaction(1)">
+                                <td class="p-3.5 border-r border-gray-800 font-bold text-emerald-400 font-mono">02. NuCaloric</td>
+                                <td class="p-3.5 border-r border-gray-800 font-bold text-white">Nông nghiệp, Hàng tiêu dùng, Hab Units & Mỹ phẩm</td>
+                                <td class="p-3.5 border-r border-gray-800">Tối ưu hóa chuỗi cung ứng dân dụng & Nhân đạo (Gus Moraine)</td>
+                                <td class="p-3.5">Tránh xung đột kéo dài với UESC; thuê Runner thu thập dữ liệu lịch sử & tình báo</td>
+                            </tr>
+                            <tr class="hover:bg-panel-blue/60 cursor-pointer transition" onclick="switchFaction(2)">
+                                <td class="p-3.5 border-r border-gray-800 font-bold text-amber-400 font-mono">03. Traxus</td>
+                                <td class="p-3.5 border-r border-gray-800 font-bold text-white">Siêu tập đoàn Khai thác vũ trụ & Công nghiệp</td>
+                                <td class="p-3.5 border-r border-gray-800">Đóng tàu UESC Marathon & Công nghệ công nghiệp độc quyền</td>
+                                <td class="p-3.5">Đòi quyền mua lại toàn bộ công nghệ độc quyền; ngầm dùng Runner quét sạch thuộc địa</td>
+                            </tr>
+                            <tr class="hover:bg-panel-blue/60 cursor-pointer transition" onclick="switchFaction(3)">
+                                <td class="p-3.5 border-r border-gray-800 font-bold text-purple-400 font-mono">04. MIDA</td>
+                                <td class="p-3.5 border-r border-gray-800 font-bold text-white">Phong trào Cách mạng Chính trị toàn hệ Sol</td>
+                                <td class="p-3.5 border-r border-gray-800">Khởi nghĩa chống kiểm soát tài nguyên & công dân trên Sao Hỏa</td>
+                                <td class="p-3.5">Đốt cháy trật tự thế giới trì trệ, mục nát của UESC để xây dựng thế giới mới</td>
+                            </tr>
+                            <tr class="hover:bg-panel-blue/60 cursor-pointer transition" onclick="switchFaction(4)">
+                                <td class="p-3.5 border-r border-gray-800 font-bold text-alert-red font-mono">05. Arachne</td>
+                                <td class="p-3.5 border-r border-gray-800 font-bold text-white">Nhóm tâm linh / Tôn giáo đăng ký mã 784s(g)</td>
+                                <td class="p-3.5 border-r border-gray-800">Đức tin về Giấc ngủ lạnh (Cryosleep) & "Món quà của sự im lặng"</td>
+                                <td class="p-3.5">Chiến đấu theo nghi lễ mang đến cái chết cứu rỗi; thần thánh hóa sự hiện diện của Runner</td>
+                            </tr>
+                            <tr class="hover:bg-panel-blue/60 cursor-pointer transition" onclick="switchFaction(5)">
+                                <td class="p-3.5 border-r border-gray-800 font-bold text-cyber-blue font-mono">06. Sekiguchi Genetics</td>
+                                <td class="p-3.5 border-r border-gray-800 font-bold text-white">Di truyền học & Chế tạo Vỏ sinh học (Runner Shells)</td>
+                                <td class="p-3.5 border-r border-gray-800">Công nghệ WeaveWorm, Neural Sync & Khóa gần mã hóa</td>
+                                <td class="p-3.5">Cung cấp trải nghiệm "cơ thể thứ hai" tự nhiên với chu kỳ bộ nhớ hàng loạt đầu ngành</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= DANH SÁCH HỒ SƠ ĐẦY ĐỦ 6 PHE PHÁI (FULL ROSTER) ================= -->
+        <section id="full-factions-roster" class="mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-8 border-b border-gray-800 pb-4">
+                <div>
+                    <span class="text-[10px] font-mono text-cyber-blue tracking-widest block">COMPLETE FACTION DOSSIERS // ALL 6 ORGANIZATIONS</span>
+                    <h2 class="text-2xl md:text-4xl text-white font-black mt-1">
+                        HỒ SƠ CHI TIẾT TOÀN BỘ 6 PHE PHÁI
+                    </h2>
+                </div>
+                <span class="text-xs font-mono text-neon-lime border border-neon-lime/40 bg-neon-lime/10 px-3 py-1">
+                    MỖI PHE GỒM 3 TỆP: ICON + GIF + ẢNH
+                </span>
+            </div>
+
+            <div class="space-y-12">
+                
+    <article id="faction-cyberacme" class="terminal-panel p-6 md:p-8 border-l-4 border-neon-lime hover:shadow-[0_0_30px_rgba(0,208,255,0.12)] transition duration-300">
+        <!-- Card Top Header -->
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-gray-800 pb-4 mb-6">
+            <div class="flex items-center gap-4">
+                <!-- Mini Faction Icon -->
+                <div class="w-14 h-14 bg-black border border-neon-lime p-1.5 flex items-center justify-center shrink-0 cursor-pointer"
+                     onclick='openInspectModal("CyberAcme \u2014 Faction Icon", "AI Architecture, Data Analytics & Cybersecurity", "Ki\u1ebfn tr\u00fac AI, Ph\u00e2n t\u00edch d\u1eef li\u1ec7u, An ninh m\u1ea1ng & H\u1ec7 th\u1ed1ng ONI", this.querySelector("img").src)'>
+                    <img src="factions/CyberAcme/CyberAcme_Icon.webp"
+                         onerror="if(!this.dataset.step){this.dataset.step='1';this.src='factions/cyberacme-icon.png';}else if(this.dataset.step==='1'){this.dataset.step='2';this.src='cyberacme-icon.png';}else if(this.dataset.step==='2'){this.dataset.step='3';this.src='cyberacme_icon.png';}else{this.onerror=null;this.src='https://placehold.co/300x300/0a0f18/ccff00?text=CYBERACME+ICON';}"
+                         alt="CyberAcme Icon" class="w-full h-full object-contain">
+                </div>
+                <div>
+                    <span class="text-[10px] font-mono text-gray-400 block tracking-widest">FACTION ARCHIVE // CODE_01 // CYBERACME</span>
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-xl md:text-2xl font-heading font-black text-neon-lime">[01]</span>
+                        <h3 class="text-2xl md:text-3xl text-white font-heading font-black tracking-wider">CYBERACME</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="px-3 py-1 border text-xs font-mono font-bold uppercase tracking-wider bg-neon-lime/15 text-neon-lime border-neon-lime/50">
+                    <i class="fas fa-network-wired mr-1.5"></i>Kiến trúc AI, Phân tích Dữ liệu & An ninh Mạng
+                </span>
+            </div>
+        </div>
+
+        <!-- Main Content Grid: Left (3 Media Assets: Icon, GIF, Image) | Right (Full Lore & Strategic Data) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+            
+            <!-- Left Column: Bộ 3 Tệp Đa Phương Tiện (1. ICON, 2. GIF, 3. ẢNH) -->
+            <div class="lg:col-span-5 flex flex-col justify-between gap-4">
+                
+                <!-- Hàng trên: Cột 1 là ICON chuẩn, Cột 2 là GIF chuyển động -->
+                <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+                    <!-- 1. TỆP ICON -->
+                    <div class="sm:col-span-5 bg-black/90 border border-gray-800 hover:border-neon-lime p-2.5 flex flex-col justify-between group cursor-pointer transition"
+                         onclick='openInspectModal("CyberAcme \u2014 Bi\u1ec3u t\u01b0\u1ee3ng Phe ph\u00e1i (ICON)", "ASSET TYPE 01 // FACTION ICON", "Ki\u1ebfn tr\u00fac AI, Ph\u00e2n t\u00edch D\u1eef li\u1ec7u & An ninh M\u1ea1ng", this.querySelector("img").src)'>
+                        <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-2">
+                            <span class="text-neon-lime font-bold"><i class="fas fa-shield-halved mr-1"></i>01. ICON</span>
+                            <span>[ ZOOM ]</span>
+                        </div>
+                        <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/40 p-2">
+                            <img src="factions/CyberAcme/CyberAcme_Icon.webp"
+                                 onerror="if(!this.dataset.step){this.dataset.step='1';this.src='factions/cyberacme-icon.png';}else if(this.dataset.step==='1'){this.dataset.step='2';this.src='cyberacme-icon.png';}else if(this.dataset.step==='2'){this.dataset.step='3';this.src='cyberacme_icon.png';}else{this.onerror=null;this.src='https://placehold.co/300x300/0a0f18/ccff00?text=CYBERACME+ICON';}"
+                                 alt="CyberAcme Icon" class="max-h-32 w-auto object-contain group-hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="text-[9px] font-mono text-gray-500 text-center mt-1.5 truncate">cyberacme-icon.png</div>
+                    </div>
+
+                    <!-- 2. TỆP GIF -->
+                    <div class="sm:col-span-7 bg-black/90 border border-gray-800 hover:border-neon-lime p-2.5 flex flex-col justify-between group cursor-pointer transition"
+                         onclick='openInspectModal("CyberAcme \u2014 Ho\u1ea1t \u1ea3nh Nh\u1eadn di\u1ec7n (GIF)", "ASSET TYPE 02 // ANIMATED GIF", "Ki\u1ebfn tr\u00fac AI, Ph\u00e2n t\u00edch D\u1eef li\u1ec7u & An ninh M\u1ea1ng", this.querySelector("img").src)'>
+                        <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-2">
+                            <span class="text-neon-lime font-bold"><i class="fas fa-film mr-1"></i>02. ANIMATED GIF</span>
+                            <span>[ ZOOM ]</span>
+                        </div>
+                        <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/40">
+                            <img src="factions/CyberAcme/Factions_CyberAcme.gif"
+                                 onerror="if(!this.dataset.step){this.dataset.step='1';this.src='factions/cyberacme.gif';}else if(this.dataset.step==='1'){this.dataset.step='2';this.src='cyberacme.gif';}else if(this.dataset.step==='2'){this.dataset.step='3';this.src='cyberacme-gif.gif';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/ccff00?text=CYBERACME+ANIMATED+GIF';}"
+                                 alt="CyberAcme GIF" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="text-[9px] font-mono text-gray-500 text-center mt-1.5 truncate">cyberacme.gif</div>
+                    </div>
+                </div>
+
+                <!-- Hàng dưới: 3. TỆP ẢNH (MAIN CONCEPT / FACTION ARTWORK) -->
+                <div class="bg-black/90 border border-gray-800 hover:border-neon-lime p-2.5 flex flex-col justify-between group cursor-pointer transition flex-1"
+                     onclick='openInspectModal("CyberAcme \u2014 \u1ea2nh Minh h\u1ecda Phe ph\u00e1i (IMAGE)", "ASSET TYPE 03 // FACTION ARTWORK", "Thu th\u1eadp th\u00f4ng tin v\u1ec1 \u0111i\u1ec1u ki\u1ec7n h\u00e0nh tinh Tau Ceti IV v\u00e0 s\u1ed1 ph\u1eadn c\u1ee7a thu\u1ed9c \u0111\u1ecba New Cascadia", this.querySelector("img").src)'>
+                    <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1.5 mb-2">
+                        <span class="text-cyber-blue font-bold"><i class="fas fa-image mr-1"></i>03. ẢNH MINH HỌA PHE PHÁI (FACTION IMAGE)</span>
+                        <span>[ CLICK ZOOM ]</span>
+                    </div>
+                    <div class="h-52 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                        <img src="factions/CyberAcme/CyberAcme_AI.webp"
+                             onerror="if(!this.dataset.step){this.dataset.step='1';this.src='factions/cyberacme.png';}else if(this.dataset.step==='1'){this.dataset.step='2';this.src='cyberacme.png';}else if(this.dataset.step==='2'){this.dataset.step='3';this.src='cyberacme-img.png';}else if(this.dataset.step==='3'){this.dataset.step='4';this.src='cyberacme.jpg';}else{this.onerror=null;this.src='https://placehold.co/800x450/0a0f18/ccff00?text=CYBERACME+CONCEPT+IMAGE';}"
+                             alt="CyberAcme Artwork" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="text-[9px] font-mono text-gray-500 text-center mt-1.5 truncate">cyberacme.png / cyberacme-img.png</div>
+                </div>
+
+            </div>
+
+            <!-- Right Column: Toàn văn Hồ sơ Cốt truyện & Phân tích Chiến lược -->
+            <div class="lg:col-span-7 flex flex-col justify-between space-y-4">
+                
+                <!-- Khối Văn bản Hồ sơ Chính thức -->
+                <div class="bg-black/60 border border-gray-800 p-5">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-neon-lime font-bold mb-3 pb-2 border-b border-gray-800">
+                        <span><i class="fas fa-database mr-1.5"></i>HỒ SƠ DỮ LIỆU CHÍNH THỨC (OFFICIAL LORE ARCHIVE)</span>
+                        <span>AI ARCHITECTURE, DATA ANALYTICS & CYBERSECURITY</span>
+                    </div>
+                    <div>
+                        <p class="text-xs md:text-sm text-gray-200 leading-relaxed mb-3.5 last:mb-0">CyberAcme là đơn vị dẫn đầu ngành trong các lĩnh vực thiết kế kiến trúc AI, phân tích dữ liệu và an ninh mạng. Họ hướng tới việc tích hợp liền mạch các hệ thống tiên tiến của mình vào mọi khía cạnh của đời sống hiện đại.</p><p class="text-xs md:text-sm text-gray-200 leading-relaxed mb-3.5 last:mb-0">Nhiều hệ thống tại UESC Marathon được vận hành bởi CyberAcme, bao gồm cả mạng lưới AI liên kết với nhau. Ngày nay, CyberAcme còn cung cấp sự hỗ trợ toàn diện cho các Runner (Người vận hành), quản lý mọi khía cạnh từ thông tin liên lạc, giám sát khí quyển cho đến các thuật toán mua sắm và bảo mật đồng bộ thần kinh. ONI – hệ thống Trí tuệ Điều hướng Tích hợp (Onboard Navigational Intelligence) được trang bị trên mỗi lớp vỏ (shell) của Runner – sử dụng kiến trúc "trí tuệ cộng đồng phân tán" (diffuse communal intelligence) đã được cấp bằng sáng chế của CyberAcme. Nhờ đó, các Runner luôn nhận được sự hỗ trợ đồng nhất, đảm bảo dịch vụ không bị gián đoạn và dữ liệu không bị mất đi ngay cả khi lớp vỏ bị phá hủy. Với ONI, không một Runner nào phải đơn độc trong công việc của mình.</p><p class="text-xs md:text-sm text-gray-200 leading-relaxed mb-3.5 last:mb-0">Thông qua quan hệ đối tác với các Runner, CyberAcme đặt mục tiêu thu thập thông tin về các điều kiện trên hành tinh Tau Ceti IV cũng như số phận của thuộc địa New Cascadia.</p>
+                    </div>
+                </div>
+
+                <!-- Khối Điểm nhấn Chiến lược & Công nghệ -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="text-[10px] font-mono text-cyber-blue font-bold mb-2 flex items-center gap-1.5">
+                        <i class="fas fa-bolt"></i>
+                        <span>ĐIỂM NHẤN CÔNG NGHỆ & TẦM ẢNH HƯỞNG TRONG THẾ GIỚI GAME:</span>
+                    </div>
+                    <ul class="space-y-1.5 mb-3">
+                        <li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-neon-lime font-bold">▹</span><span>Vận hành mạng lưới AI liên kết trên tàu UESC Marathon.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-neon-lime font-bold">▹</span><span>Cung cấp hệ thống ONI trên mỗi Runner Shell với kiến trúc 'trí tuệ cộng đồng phân tán' độc quyền.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-neon-lime font-bold">▹</span><span>Bảo toàn dữ liệu và duy trì dịch vụ liên lạc, giám sát khí quyển, đồng bộ thần kinh ngay cả khi Shell bị phá hủy.</span></li>
+                    </ul>
+                    <div class="bg-panel-blue/90 border-l-2 border-neon-lime p-2.5 text-xs text-gray-200 font-mono">
+                        <strong class="text-neon-lime">→ MỤC TIÊU TẠI TAU CETI IV:</strong> Thu thập thông tin về điều kiện hành tinh Tau Ceti IV và số phận của thuộc địa New Cascadia
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </article>
+    
+
+    <article id="faction-nucaloric" class="terminal-panel p-6 md:p-8 border-l-4 border-emerald-400 hover:shadow-[0_0_30px_rgba(0,208,255,0.12)] transition duration-300">
+        <!-- Card Top Header -->
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-gray-800 pb-4 mb-6">
+            <div class="flex items-center gap-4">
+                <!-- Mini Faction Icon -->
+                <div class="w-14 h-14 bg-black border border-emerald-400 p-1.5 flex items-center justify-center shrink-0 cursor-pointer"
+                     onclick='openInspectModal("NuCaloric \u2014 Faction Icon", "Essential Consumer Goods, Agriculture & Hab Units", "N\u00f4ng nghi\u1ec7p, Th\u1ef1c ph\u1ea9m, \u0110\u01a1n v\u1ecb nh\u00e0 \u1edf (Hab Units) & M\u1ef9 ph\u1ea9m", this.querySelector("img").src)'>
+                    <img src="factions/NuCaloric/nucaloric-icon.png"
+                         onerror="if(!this.dataset.step){this.dataset.step='1';this.src='factions/nucaloric-icon.png';}else if(this.dataset.step==='1'){this.dataset.step='2';this.src='nucaloric-icon.png';}else if(this.dataset.step==='2'){this.dataset.step='3';this.src='nucaloric_icon.png';}else{this.onerror=null;this.src='https://placehold.co/300x300/0a0f18/34d399?text=NUCALORIC+ICON';}"
+                         alt="NuCaloric Icon" class="w-full h-full object-contain">
+                </div>
+                <div>
+                    <span class="text-[10px] font-mono text-gray-400 block tracking-widest">FACTION ARCHIVE // CODE_02 // NUCALORIC</span>
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-xl md:text-2xl font-heading font-black text-emerald-400">[02]</span>
+                        <h3 class="text-2xl md:text-3xl text-white font-heading font-black tracking-wider">NUCALORIC</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="px-3 py-1 border text-xs font-mono font-bold uppercase tracking-wider bg-emerald-500/15 text-emerald-300 border-emerald-400/50">
+                    <i class="fas fa-network-wired mr-1.5"></i>Nông nghiệp, Hàng Tiêu dùng Thiết yếu & Đơn vị Nhà ở
+                </span>
+            </div>
+        </div>
+
+        <!-- Main Content Grid: Left (3 Media Assets: Icon, GIF, Image) | Right (Full Lore & Strategic Data) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+            
+            <!-- Left Column: Bộ 3 Tệp Đa Phương Tiện (1. ICON, 2. GIF, 3. ẢNH) -->
+            <div class="lg:col-span-5 flex flex-col justify-between gap-4">
+                
+                <!-- Hàng trên: Cột 1 là ICON chuẩn, Cột 2 là GIF chuyển động -->
+                <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+                    <!-- 1. TỆP ICON -->
+                    <div class="sm:col-span-5 bg-black/90 border border-gray-800 hover:border-emerald-400 p-2.5 flex flex-col justify-between group cursor-pointer transition"
+                         onclick='openInspectModal("NuCaloric \u2014 Bi\u1ec3u t\u01b0\u1ee3ng Phe ph\u00e1i (ICON)", "ASSET TYPE 01 // FACTION ICON", "N\u00f4ng nghi\u1ec7p, H\u00e0ng Ti\u00eau d\u00f9ng Thi\u1ebft y\u1ebfu & \u0110\u01a1n v\u1ecb Nh\u00e0 \u1edf", this.querySelector("img").src)'>
+                        <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-2">
+                            <span class="text-emerald-400 font-bold"><i class="fas fa-shield-halved mr-1"></i>01. ICON</span>
+                            <span>[ ZOOM ]</span>
+                        </div>
+                        <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/40 p-2">
+                            <img src="factions/NuCaloric/nucaloric-icon.png"
+                                 onerror="if(!this.dataset.step){this.dataset.step='1';this.src='factions/nucaloric-icon.png';}else if(this.dataset.step==='1'){this.dataset.step='2';this.src='nucaloric-icon.png';}else if(this.dataset.step==='2'){this.dataset.step='3';this.src='nucaloric_icon.png';}else{this.onerror=null;this.src='https://placehold.co/300x300/0a0f18/34d399?text=NUCALORIC+ICON';}"
+                                 alt="NuCaloric Icon" class="max-h-32 w-auto object-contain group-hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="text-[9px] font-mono text-gray-500 text-center mt-1.5 truncate">nucaloric-icon.png</div>
+                    </div>
+
+
+                    <div class="sm:col-span-7 bg-black/90 border border-gray-800 hover:border-amber-400 p-2.5 flex flex-col justify-between group cursor-pointer transition"
+                         onclick='openInspectModal("Traxus \u2014 Ho\u1ea1t \u1ea3nh Nh\u1eadn di\u1ec7n (GIF)", "ASSET TYPE 02 // ANIMATED GIF", "Si\u00eau T\u1eadp \u0111o\u00e0n Khai th\u00e1c V\u0169 tr\u1ee5, C\u00f4ng ngh\u1ec7 & C\u00f4ng nghi\u1ec7p", this.querySelector("img").src)'>
+                        <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-2">
+                            <span class="text-neon-lime font-bold"><i class="fas fa-film mr-1"></i>02. ANIMATED GIF</span>
+                            <span>[ ZOOM ]</span>
+                        </div>
+                        <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/40">
+                            <img src="factions/NuCaloric/NuCaloric_AI.jpg"
+                                 onerror="if(!this.dataset.step){this.dataset.step='1';this.src='factions/traxus.gif';}else if(this.dataset.step==='1'){this.dataset.step='2';this.src='traxus.gif';}else if(this.dataset.step==='2'){this.dataset.step='3';this.src='traxus-gif.gif';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/fbbf24?text=TRAXUS+ANIMATED+GIF';}"
+                                 alt="Traxus GIF" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="text-[9px] font-mono text-gray-500 text-center mt-1.5 truncate">traxus.gif</div>
+                    </div>
+                </div>
+                </div>
+
+            <!-- Right Column: Toàn văn Hồ sơ Cốt truyện & Phân tích Chiến lược -->
+            <div class="lg:col-span-7 flex flex-col justify-between space-y-4">
+                
+                <!-- Khối Văn bản Hồ sơ Chính thức -->
+                <div class="bg-black/60 border border-gray-800 p-5">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-emerald-400 font-bold mb-3 pb-2 border-b border-gray-800">
+                        <span><i class="fas fa-database mr-1.5"></i>HỒ SƠ DỮ LIỆU CHÍNH THỨC (OFFICIAL LORE ARCHIVE)</span>
+                        <span>ESSENTIAL CONSUMER GOODS, AGRICULTURE & HAB UNITS</span>
+                    </div>
+                    <div>
+                        <p class="text-xs md:text-sm text-gray-200 leading-relaxed mb-3.5 last:mb-0">NuCaloric trở nên nổi tiếng nhờ các hoạt động nhân đạo trong thời kỳ xảy ra nạn đói tàn khốc vào những năm 2360. Gus Moraine, người sáng lập công ty, đã đặt các hoạt động từ thiện công cộng làm trụ cột cốt lõi trong chiến lược doanh nghiệp của NuCaloric. Sự kết hợp giữa lợi ích xã hội và phương thức tối ưu hóa triệt để đã biến NuCaloric thành nhà cung cấp hàng tiêu dùng thiết yếu chiếm ưu thế tại hệ Mặt Trời (Sol); công ty không chỉ dừng lại ở lĩnh vực nông nghiệp mà còn mở rộng sang nhiều mảng khác, từ các đơn vị nhà ở (hab units) cho đến mỹ phẩm.</p><p class="text-xs md:text-sm text-gray-200 leading-relaxed mb-3.5 last:mb-0">NuCaloric đã ký hợp đồng với UESC để cung cấp hàng hóa dân dụng cho dự án UESC Marathon, qua đó trở thành một bên liên quan hợp pháp trong dự án thuộc địa này. Tuy nhiên, các nỗ lực của họ nhằm thực thi quyền trục vớt (salvage rights) trên hành tinh Tau Ceti IV hiện vẫn còn hạn chế về phạm vi. NuCaloric dường như không muốn xảy ra xung đột kéo dài với UESC hay các đối tác doanh nghiệp khác; thay vào đó, họ chọn cách thu thập dữ liệu lịch sử và thông tin tình báo cụ thể thông qua việc thuê các đặc vụ "Runner".</p>
+                    </div>
+                </div>
+
+                <!-- Khối Điểm nhấn Chiến lược & Công nghệ -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="text-[10px] font-mono text-cyber-blue font-bold mb-2 flex items-center gap-1.5">
+                        <i class="fas fa-bolt"></i>
+                        <span>ĐIỂM NHẤN CÔNG NGHỆ & TẦM ẢNH HƯỞNG TRONG THẾ GIỚI GAME:</span>
+                    </div>
+                    <ul class="space-y-1.5 mb-3">
+                        <li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-emerald-400 font-bold">▹</span><span>Sáng lập bởi Gus Moraine; vươn lên từ các hoạt động nhân đạo trong nạn đói những năm 2360.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-emerald-400 font-bold">▹</span><span>Thống lĩnh thị trường hàng tiêu dùng thiết yếu tại hệ Mặt Trời (Sol): từ nông nghiệp đến hab units và mỹ phẩm.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-emerald-400 font-bold">▹</span><span>Ưu tiên thu thập dữ liệu lịch sử và tình báo kín đáo qua Runner thay vì xung đột vũ trang kéo dài.</span></li>
+                    </ul>
+                    <div class="bg-panel-blue/90 border-l-2 border-emerald-400 p-2.5 text-xs text-gray-200 font-mono">
+                        <strong class="text-emerald-400">→ MỤC TIÊU TẠI TAU CETI IV:</strong> Tránh xung đột trực diện; thuê Runner thu thập dữ liệu lịch sử và thông tin tình báo cụ thể
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </article>
+    
+
+    <article id="faction-traxus" class="terminal-panel p-6 md:p-8 border-l-4 border-amber-400 hover:shadow-[0_0_30px_rgba(0,208,255,0.12)] transition duration-300">
+        <!-- Card Top Header -->
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-gray-800 pb-4 mb-6">
+            <div class="flex items-center gap-4">
+                <!-- Mini Faction Icon -->
+                <div class="w-14 h-14 bg-black border border-amber-400 p-1.5 flex items-center justify-center shrink-0 cursor-pointer"
+                     onclick='openInspectModal("Traxus \u2014 Faction Icon", "Space Mining, Heavy Industry & Proprietary Tech", "Khai th\u00e1c v\u0169 tr\u1ee5, C\u00f4ng nghi\u1ec7p n\u1eb7ng, Ch\u1ebf t\u1ea1o t\u00e0u v\u0169 tr\u1ee5 & C\u00f4ng ngh\u1ec7 \u0111\u1ed9c quy\u1ec1n", this.querySelector("img").src)'>
+                    <img src="factions/Traxus/Traxus_Icon.webp"
+                         onerror="if(!this.dataset.step){this.dataset.step='1';this.src='factions/traxus-icon.png';}else if(this.dataset.step==='1'){this.dataset.step='2';this.src='traxus-icon.png';}else if(this.dataset.step==='2'){this.dataset.step='3';this.src='traxus_icon.png';}else{this.onerror=null;this.src='https://placehold.co/300x300/0a0f18/fbbf24?text=TRAXUS+ICON';}"
+                         alt="Traxus Icon" class="w-full h-full object-contain">
+                </div>
+                <div>
+                    <span class="text-[10px] font-mono text-gray-400 block tracking-widest">FACTION ARCHIVE // CODE_03 // TRAXUS</span>
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-xl md:text-2xl font-heading font-black text-amber-400">[03]</span>
+                        <h3 class="text-2xl md:text-3xl text-white font-heading font-black tracking-wider">TRAXUS</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="px-3 py-1 border text-xs font-mono font-bold uppercase tracking-wider bg-amber-400/15 text-amber-300 border-amber-400/50">
+                    <i class="fas fa-network-wired mr-1.5"></i>Siêu Tập đoàn Khai thác Vũ trụ, Công nghệ & Công nghiệp
+                </span>
+            </div>
+        </div>
+
+        <!-- Main Content Grid: Left (3 Media Assets: Icon, GIF, Image) | Right (Full Lore & Strategic Data) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+            
+            <!-- Left Column: Bộ 3 Tệp Đa Phương Tiện (1. ICON, 2. GIF, 3. ẢNH) -->
+            <div class="lg:col-span-5 flex flex-col justify-between gap-4">
+                
+                <!-- Hàng trên: Cột 1 là ICON chuẩn, Cột 2 là GIF chuyển động -->
+                <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+                    <!-- 1. TỆP ICON -->
+                    <div class="sm:col-span-5 bg-black/90 border border-gray-800 hover:border-amber-400 p-2.5 flex flex-col justify-between group cursor-pointer transition"
+                         onclick='openInspectModal("Traxus \u2014 Bi\u1ec3u t\u01b0\u1ee3ng Phe ph\u00e1i (ICON)", "ASSET TYPE 01 // FACTION ICON", "Si\u00eau T\u1eadp \u0111o\u00e0n Khai th\u00e1c V\u0169 tr\u1ee5, C\u00f4ng ngh\u1ec7 & C\u00f4ng nghi\u1ec7p", this.querySelector("img").src)'>
+                        <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-2">
+                            <span class="text-amber-400 font-bold"><i class="fas fa-shield-halved mr-1"></i>01. ICON</span>
+                            <span>[ ZOOM ]</span>
+                        </div>
+                        <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/40 p-2">
+                            <img src="factions/Traxus/Traxus_Icon.webp"
+                                 onerror="if(!this.dataset.step){this.dataset.step='1';this.src='factions/traxus-icon.png';}else if(this.dataset.step==='1'){this.dataset.step='2';this.src='traxus-icon.png';}else if(this.dataset.step==='2'){this.dataset.step='3';this.src='traxus_icon.png';}else{this.onerror=null;this.src='https://placehold.co/300x300/0a0f18/fbbf24?text=TRAXUS+ICON';}"
+                                 alt="Traxus Icon" class="max-h-32 w-auto object-contain group-hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="text-[9px] font-mono text-gray-500 text-center mt-1.5 truncate">traxus-icon.png</div>
+                    </div>
+
+                    <!-- 2. TỆP GIF -->
+                    <div class="sm:col-span-7 bg-black/90 border border-gray-800 hover:border-amber-400 p-2.5 flex flex-col justify-between group cursor-pointer transition"
+                         onclick='openInspectModal("Traxus \u2014 Ho\u1ea1t \u1ea3nh Nh\u1eadn di\u1ec7n (GIF)", "ASSET TYPE 02 // ANIMATED GIF", "Si\u00eau T\u1eadp \u0111o\u00e0n Khai th\u00e1c V\u0169 tr\u1ee5, C\u00f4ng ngh\u1ec7 & C\u00f4ng nghi\u1ec7p", this.querySelector("img").src)'>
+                        <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-2">
+                            <span class="text-neon-lime font-bold"><i class="fas fa-film mr-1"></i>02. ANIMATED GIF</span>
+                            <span>[ ZOOM ]</span>
+                        </div>
+                        <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/40">
+                            <img src="factions/Traxus/Factions_Traxus.gif"
+                                 onerror="if(!this.dataset.step){this.dataset.step='1';this.src='factions/traxus.gif';}else if(this.dataset.step==='1'){this.dataset.step='2';this.src='traxus.gif';}else if(this.dataset.step==='2'){this.dataset.step='3';this.src='traxus-gif.gif';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/fbbf24?text=TRAXUS+ANIMATED+GIF';}"
+                                 alt="Traxus GIF" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="text-[9px] font-mono text-gray-500 text-center mt-1.5 truncate">traxus.gif</div>
+                    </div>
+                </div>
+
+                <!-- Hàng dưới: 3. TỆP ẢNH (MAIN CONCEPT / FACTION ARTWORK) -->
+                <div class="bg-black/90 border border-gray-800 hover:border-amber-400 p-2.5 flex flex-col justify-between group cursor-pointer transition flex-1"
+                     onclick='openInspectModal("Traxus \u2014 \u1ea2nh Minh h\u1ecda Phe ph\u00e1i (IMAGE)", "ASSET TYPE 03 // FACTION ARTWORK", "Tuy\u00ean b\u1ed1 quy\u1ec1n thu h\u1ed3i to\u00e0n b\u1ed9 c\u00f4ng ngh\u1ec7 \u0111\u1ed9c quy\u1ec1n v\u00e0 ng\u1ea7m d\u00f9ng Runner qu\u00e9t s\u1ea1ch thu\u1ed9c \u0111\u1ecba", this.querySelector("img").src)'>
+                    <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1.5 mb-2">
+                        <span class="text-cyber-blue font-bold"><i class="fas fa-image mr-1"></i>03. ẢNH MINH HỌA PHE PHÁI (FACTION IMAGE)</span>
+                        <span>[ CLICK ZOOM ]</span>
+                    </div>
+                    <div class="h-52 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                        <img src="factions/Traxus/Traxus_AI.webp"
+                             onerror="if(!this.dataset.step){this.dataset.step='1';this.src='factions/traxus.png';}else if(this.dataset.step==='1'){this.dataset.step='2';this.src='traxus.png';}else if(this.dataset.step==='2'){this.dataset.step='3';this.src='traxus-img.png';}else if(this.dataset.step==='3'){this.dataset.step='4';this.src='traxus.jpg';}else{this.onerror=null;this.src='https://placehold.co/800x450/0a0f18/fbbf24?text=TRAXUS+CONCEPT+IMAGE';}"
+                             alt="Traxus Artwork" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="text-[9px] font-mono text-gray-500 text-center mt-1.5 truncate">traxus.png / traxus-img.png</div>
+                </div>
+
+            </div>
+
+            <!-- Right Column: Toàn văn Hồ sơ Cốt truyện & Phân tích Chiến lược -->
+            <div class="lg:col-span-7 flex flex-col justify-between space-y-4">
+                
+                <!-- Khối Văn bản Hồ sơ Chính thức -->
+                <div class="bg-black/60 border border-gray-800 p-5">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-amber-400 font-bold mb-3 pb-2 border-b border-gray-800">
+                        <span><i class="fas fa-database mr-1.5"></i>HỒ SƠ DỮ LIỆU CHÍNH THỨC (OFFICIAL LORE ARCHIVE)</span>
+                        <span>SPACE MINING, HEAVY INDUSTRY & PROPRIETARY TECH</span>
+                    </div>
+                    <div>
+                        <p class="text-xs md:text-sm text-gray-200 leading-relaxed mb-3.5 last:mb-0">TRAXUS là siêu tập đoàn khai thác vũ trụ, công nghệ và công nghiệp hàng đầu trên khắp Sol. Được công nhận là tập đoàn tư nhân hùng mạnh nhất trong lịch sử loài người, tầm ảnh hưởng của TRAXUS chỉ đứng sau HỘI ĐỒNG KHÔNG GIAN THỐNG NHẤT TRÁI ĐẤT [UESC].</p><p class="text-xs md:text-sm text-gray-200 leading-relaxed mb-3.5 last:mb-0">TRAXUS đóng vai trò quan trọng trong quá trình phát triển, đóng tàu MARATHON và sứ mệnh tiếp theo của TAU CETI IV. Do đó, TRAXUS đã công khai tuyên bố quyền mua lại tất cả công nghệ độc quyền và các hoạt động phát triển liên quan gắn liền với giải MARATHON và thuộc địa TAU CETI. Tuy nhiên, họ chưa công khai việc sử dụng các đặc nhiệm RUNNER để quét sạch thuộc địa nhằm phản đối trực tiếp lực lượng UESC.</p>
+                    </div>
+                </div>
+
+                <!-- Khối Điểm nhấn Chiến lược & Công nghệ -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="text-[10px] font-mono text-cyber-blue font-bold mb-2 flex items-center gap-1.5">
+                        <i class="fas fa-bolt"></i>
+                        <span>ĐIỂM NHẤN CÔNG NGHỆ & TẦM ẢNH HƯỞNG TRONG THẾ GIỚI GAME:</span>
+                    </div>
+                    <ul class="space-y-1.5 mb-3">
+                        <li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-amber-400 font-bold">▹</span><span>Siêu tập đoàn tư nhân hùng mạnh nhất lịch sử nhân loại, quyền lực chỉ xếp sau UESC.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-amber-400 font-bold">▹</span><span>Đóng vai trò nòng cốt trong việc chế tạo tàu UESC Marathon và sứ mệnh Tau Ceti IV.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-amber-400 font-bold">▹</span><span>Công khai đòi quyền sở hữu công nghệ độc quyền và bí mật điều phối Runner đối đầu trực tiếp với UESC.</span></li>
+                    </ul>
+                    <div class="bg-panel-blue/90 border-l-2 border-amber-400 p-2.5 text-xs text-gray-200 font-mono">
+                        <strong class="text-amber-400">→ MỤC TIÊU TẠI TAU CETI IV:</strong> Tuyên bố quyền thu hồi toàn bộ công nghệ độc quyền và ngầm dùng Runner quét sạch thuộc địa
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </article>
+    
+
+    <article id="faction-mida" class="terminal-panel p-6 md:p-8 border-l-4 border-purple-400 hover:shadow-[0_0_30px_rgba(0,208,255,0.12)] transition duration-300">
+        <!-- Card Top Header -->
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-gray-800 pb-4 mb-6">
+            <div class="flex items-center gap-4">
+                <!-- Mini Faction Icon -->
+                <div class="w-14 h-14 bg-black border border-purple-400 p-1.5 flex items-center justify-center shrink-0 cursor-pointer"
+                     onclick='openInspectModal("MIDA \u2014 Faction Icon", "Revolutionary Insurgency & Anti-UESC Liberation", "T\u1ed5 ch\u1ee9c C\u00e1ch m\u1ea1ng Ch\u00ednh tr\u1ecb, Chi\u1ebfn tranh Du k\u00edch & Ph\u00e1 ho\u1ea1i H\u1ec7 th\u1ed1ng", this.querySelector("img").src)'>
+                    <img src="factions/MIDA/MIDA_Icon.webp"
+                         onerror="if(!this.dataset.step){this.dataset.step='1';this.src='factions/mida-icon.png';}else if(this.dataset.step==='1'){this.dataset.step='2';this.src='mida-icon.png';}else if(this.dataset.step==='2'){this.dataset.step='3';this.src='mida_icon.png';}else{this.onerror=null;this.src='https://placehold.co/300x300/0a0f18/c084fc?text=MIDA+ICON';}"
+                         alt="MIDA Icon" class="w-full h-full object-contain">
+                </div>
+                <div>
+                    <span class="text-[10px] font-mono text-gray-400 block tracking-widest">FACTION ARCHIVE // CODE_04 // MIDA</span>
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-xl md:text-2xl font-heading font-black text-purple-400">[04]</span>
+                        <h3 class="text-2xl md:text-3xl text-white font-heading font-black tracking-wider">MIDA</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="px-3 py-1 border text-xs font-mono font-bold uppercase tracking-wider bg-purple-500/15 text-purple-300 border-purple-400/50">
+                    <i class="fas fa-network-wired mr-1.5"></i>Phong trào Cách mạng Chính trị & Phản kháng UESC
+                </span>
+            </div>
+        </div>
+
+        <!-- Main Content Grid: Left (3 Media Assets: Icon, GIF, Image) | Right (Full Lore & Strategic Data) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+            
+            <!-- Left Column: Bộ 3 Tệp Đa Phương Tiện (1. ICON, 2. GIF, 3. ẢNH) -->
+            <div class="lg:col-span-5 flex flex-col justify-between gap-4">
+                
+                <!-- Hàng trên: Cột 1 là ICON chuẩn, Cột 2 là GIF chuyển động -->
+                <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+                    <!-- 1. TỆP ICON -->
+                    <div class="sm:col-span-5 bg-black/90 border border-gray-800 hover:border-purple-400 p-2.5 flex flex-col justify-between group cursor-pointer transition"
+                         onclick='openInspectModal("MIDA \u2014 Bi\u1ec3u t\u01b0\u1ee3ng Phe ph\u00e1i (ICON)", "ASSET TYPE 01 // FACTION ICON", "Phong tr\u00e0o C\u00e1ch m\u1ea1ng Ch\u00ednh tr\u1ecb & Ph\u1ea3n kh\u00e1ng UESC", this.querySelector("img").src)'>
+                        <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-2">
+                            <span class="text-purple-400 font-bold"><i class="fas fa-shield-halved mr-1"></i>01. ICON</span>
+                            <span>[ ZOOM ]</span>
+                        </div>
+                        <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/40 p-2">
+                            <img src="factions/MIDA/MIDA_Icon.webp"
+                                 onerror="if(!this.dataset.step){this.dataset.step='1';this.src='factions/mida-icon.png';}else if(this.dataset.step==='1'){this.dataset.step='2';this.src='mida-icon.png';}else if(this.dataset.step==='2'){this.dataset.step='3';this.src='mida_icon.png';}else{this.onerror=null;this.src='https://placehold.co/300x300/0a0f18/c084fc?text=MIDA+ICON';}"
+                                 alt="MIDA Icon" class="max-h-32 w-auto object-contain group-hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="text-[9px] font-mono text-gray-500 text-center mt-1.5 truncate">mida-icon.png</div>
+                    </div>
+
+
+                    <div  div class="sm:col-span-7 bg-black/90 border border-gray-800 hover:border-alert-red p-2.5 flex flex-col justify-between group cursor-pointer transition"
+                         onclick='openInspectModal("Arachne \u2014 Ho\u1ea1t \u1ea3nh Nh\u1eadn di\u1ec7n (GIF)", "ASSET TYPE 02 // ANIMATED GIF", "Gi\u00e1o ph\u00e1i T\u00e2m linh 784s(g) & Nghi l\u1ec5 Chi\u1ebfn \u0111\u1ea5u", this.querySelector("img").src)'>
+                        <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-2">
+                            <span class="text-neon-lime font-bold"><i class="fas fa-film mr-1"></i>02. ANIMATED GIF</span>
+                            <span>[ ZOOM ]</span>
+                        </div>
+                        <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/40">
+                            <img src="factions/MIDA/MIDA_AI.webp"
+                                 onerror="if(!this.dataset.step){this.dataset.step='1';this.src='factions/arachne.gif';}else if(this.dataset.step==='1'){this.dataset.step='2';this.src='arachne.gif';}else if(this.dataset.step==='2'){this.dataset.step='3';this.src='arachne-gif.gif';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/ff3333?text=ARACHNE+ANIMATED+GIF';}"
+                                 alt="Arachne GIF" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="text-[9px] font-mono text-gray-500 text-center mt-1.5 truncate">arachne.gif</div>
+                    </div>
+
+            </div>
+            </div>
+
+            <!-- Right Column: Toàn văn Hồ sơ Cốt truyện & Phân tích Chiến lược -->
+            <div class="lg:col-span-7 flex flex-col justify-between space-y-4">
+                
+                <!-- Khối Văn bản Hồ sơ Chính thức -->
+                <div class="bg-black/60 border border-gray-800 p-5">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-purple-400 font-bold mb-3 pb-2 border-b border-gray-800">
+                        <span><i class="fas fa-database mr-1.5"></i>HỒ SƠ DỮ LIỆU CHÍNH THỨC (OFFICIAL LORE ARCHIVE)</span>
+                        <span>REVOLUTIONARY INSURGENCY & ANTI-UESC LIBERATION</span>
+                    </div>
+                    <div>
+                        <p class="text-xs md:text-sm text-gray-200 leading-relaxed mb-3.5 last:mb-0">MIDA là mối đe dọa chính trị ngày càng tăng trên khắp Sol. Họ phản đối UESC và sự kiểm soát của công ty đối với tài nguyên và công dân trên sao Hỏa. Mặc dù MIDA hiện đại là thế hệ những nhà cách mạng mới hơn nhưng chương trình nghị sự của họ lại liên quan đến những bất bình trước khi UESC MARATHON ra mắt. Họ đang nhóm lại những ngọn lửa cũ để đốt cháy một thế giới trì trệ, mục nát nhằm xây dựng một thế giới mới ở phía bên kia của cuộc cách mạng.</p>
+                    </div>
+                </div>
+
+                <!-- Khối Điểm nhấn Chiến lược & Công nghệ -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="text-[10px] font-mono text-cyber-blue font-bold mb-2 flex items-center gap-1.5">
+                        <i class="fas fa-bolt"></i>
+                        <span>ĐIỂM NHẤN CÔNG NGHỆ & TẦM ẢNH HƯỞNG TRONG THẾ GIỚI GAME:</span>
+                    </div>
+                    <ul class="space-y-1.5 mb-3">
+                        <li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-purple-400 font-bold">▹</span><span>Mối đe dọa chính trị lan rộng khắp hệ Mặt Trời (Sol), khởi nguồn từ các cuộc nổi dậy trên Sao Hỏa.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-purple-400 font-bold">▹</span><span>Kế thừa những bất bình lịch sử từ thời kỳ trước khi tàu UESC Marathon khởi hành.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-purple-400 font-bold">▹</span><span>Mục tiêu triệt để: phá hủy trật tự tập đoàn mục nát để kiến tạo một thế giới mới sau cách mạng.</span></li>
+                    </ul>
+                    <div class="bg-panel-blue/90 border-l-2 border-purple-400 p-2.5 text-xs text-gray-200 font-mono">
+                        <strong class="text-purple-400">→ MỤC TIÊU TẠI TAU CETI IV:</strong> Thổi bùng ngọn lửa cách mạng, thiêu rụi trật tự thế giới trì trệ mục nát để xây dựng thế giới mới
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </article>
+    
+
+    <article id="faction-arachne" class="terminal-panel p-6 md:p-8 border-l-4 border-alert-red hover:shadow-[0_0_30px_rgba(0,208,255,0.12)] transition duration-300">
+        <!-- Card Top Header -->
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-gray-800 pb-4 mb-6">
+            <div class="flex items-center gap-4">
+                <!-- Mini Faction Icon -->
+                <div class="w-14 h-14 bg-black border border-alert-red p-1.5 flex items-center justify-center shrink-0 cursor-pointer"
+                     onclick='openInspectModal("Arachne \u2014 Faction Icon", "Registered 784s(g) Spiritual Cult of the Gift of Silence", "T\u1ed5 ch\u1ee9c T\u00e2m linh / T\u00f4n gi\u00e1o \u0111\u0103ng k\u00fd m\u00e3 784s(g) & Chi\u1ebfn \u0111\u1ea5u theo nghi l\u1ec5", this.querySelector("img").src)'>
+                    <img src="factions/Arachne/Arachne_Icon.webp"
+                         onerror="if(!this.dataset.step){this.dataset.step='1';this.src='factions/arachne-icon.png';}else if(this.dataset.step==='1'){this.dataset.step='2';this.src='arachne-icon.png';}else if(this.dataset.step==='2'){this.dataset.step='3';this.src='arachne_icon.png';}else{this.onerror=null;this.src='https://placehold.co/300x300/0a0f18/ff3333?text=ARACHNE+ICON';}"
+                         alt="Arachne Icon" class="w-full h-full object-contain">
+                </div>
+                <div>
+                    <span class="text-[10px] font-mono text-gray-400 block tracking-widest">FACTION ARCHIVE // CODE_05 // ARACHNE</span>
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-xl md:text-2xl font-heading font-black text-alert-red">[05]</span>
+                        <h3 class="text-2xl md:text-3xl text-white font-heading font-black tracking-wider">ARACHNE</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="px-3 py-1 border text-xs font-mono font-bold uppercase tracking-wider bg-alert-red/15 text-alert-red border-alert-red/50">
+                    <i class="fas fa-network-wired mr-1.5"></i>Giáo phái Tâm linh 784s(g) & Nghi lễ Chiến đấu
+                </span>
+            </div>
+        </div>
+
+        <!-- Main Content Grid: Left (3 Media Assets: Icon, GIF, Image) | Right (Full Lore & Strategic Data) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+            
+            <!-- Left Column: Bộ 3 Tệp Đa Phương Tiện (1. ICON, 2. GIF, 3. ẢNH) -->
+            <div class="lg:col-span-5 flex flex-col justify-between gap-4">
+                
+                <!-- Hàng trên: Cột 1 là ICON chuẩn, Cột 2 là GIF chuyển động -->
+                <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+                    <!-- 1. TỆP ICON -->
+                    <div class="sm:col-span-5 bg-black/90 border border-gray-800 hover:border-alert-red p-2.5 flex flex-col justify-between group cursor-pointer transition"
+                         onclick='openInspectModal("Arachne \u2014 Bi\u1ec3u t\u01b0\u1ee3ng Phe ph\u00e1i (ICON)", "ASSET TYPE 01 // FACTION ICON", "Gi\u00e1o ph\u00e1i T\u00e2m linh 784s(g) & Nghi l\u1ec5 Chi\u1ebfn \u0111\u1ea5u", this.querySelector("img").src)'>
+                        <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-2">
+                            <span class="text-alert-red font-bold"><i class="fas fa-shield-halved mr-1"></i>01. ICON</span>
+                            <span>[ ZOOM ]</span>
+                        </div>
+                        <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/40 p-2">
+                            <img src="factions/Arachne/Arachne_Icon.webp"
+                                 onerror="if(!this.dataset.step){this.dataset.step='1';this.src='factions/arachne-icon.png';}else if(this.dataset.step==='1'){this.dataset.step='2';this.src='arachne-icon.png';}else if(this.dataset.step==='2'){this.dataset.step='3';this.src='arachne_icon.png';}else{this.onerror=null;this.src='https://placehold.co/300x300/0a0f18/ff3333?text=ARACHNE+ICON';}"
+                                 alt="Arachne Icon" class="max-h-32 w-auto object-contain group-hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="text-[9px] font-mono text-gray-500 text-center mt-1.5 truncate">arachne-icon.png</div>
+                    </div>
+
+                    <!-- 2. TỆP GIF -->
+                    <div class="sm:col-span-7 bg-black/90 border border-gray-800 hover:border-alert-red p-2.5 flex flex-col justify-between group cursor-pointer transition"
+                         onclick='openInspectModal("Arachne \u2014 Ho\u1ea1t \u1ea3nh Nh\u1eadn di\u1ec7n (GIF)", "ASSET TYPE 02 // ANIMATED GIF", "Gi\u00e1o ph\u00e1i T\u00e2m linh 784s(g) & Nghi l\u1ec5 Chi\u1ebfn \u0111\u1ea5u", this.querySelector("img").src)'>
+                        <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-2">
+                            <span class="text-neon-lime font-bold"><i class="fas fa-film mr-1"></i>02. ANIMATED GIF</span>
+                            <span>[ ZOOM ]</span>
+                        </div>
+                        <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/40">
+                            <img src="factions/Arachne/Arachne_AI.webp"
+                                 onerror="if(!this.dataset.step){this.dataset.step='1';this.src='factions/arachne.gif';}else if(this.dataset.step==='1'){this.dataset.step='2';this.src='arachne.gif';}else if(this.dataset.step==='2'){this.dataset.step='3';this.src='arachne-gif.gif';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/ff3333?text=ARACHNE+ANIMATED+GIF';}"
+                                 alt="Arachne GIF" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="text-[9px] font-mono text-gray-500 text-center mt-1.5 truncate">arachne.gif</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Column: Toàn văn Hồ sơ Cốt truyện & Phân tích Chiến lược -->
+            <div class="lg:col-span-7 flex flex-col justify-between space-y-4">
+                
+                <!-- Khối Văn bản Hồ sơ Chính thức -->
+                <div class="bg-black/60 border border-gray-800 p-5">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-alert-red font-bold mb-3 pb-2 border-b border-gray-800">
+                        <span><i class="fas fa-database mr-1.5"></i>HỒ SƠ DỮ LIỆU CHÍNH THỨC (OFFICIAL LORE ARCHIVE)</span>
+                        <span>REGISTERED 784S(G) SPIRITUAL CULT OF THE GIFT OF SILENCE</span>
+                    </div>
+                    <div>
+                        <p class="text-xs md:text-sm text-gray-200 leading-relaxed mb-3.5 last:mb-0">ARACHNE là một nhóm tâm linh 784s(g) đã đăng ký. ARACHNE là một tôn giáo khá gần đây, bị ảnh hưởng nặng nề bởi công nghệ du hành vũ trụ trong giấc ngủ lạnh thời kỳ đầu và nhận thấy sự quan tâm ngày càng tăng trong quá trình bố trí nhân sự của UESC MARATHON. Những niềm tin chính bao gồm việc coi giấc ngủ, giấc ngủ lạnh và cái chết là những hành trình cuối cùng sẽ dẫn những người tin tưởng cũng như những người không tin tưởng đến sự cứu rỗi. Vì mục đích này, những người sùng đạo ARACHNE cống hiến hết mình để mang đến cái chết (thứ mà họ coi là "món quà của sự im lặng") thông qua nhiều phương tiện khác nhau, bao gồm cả chiến đấu theo nghi lễ.</p><p class="text-xs md:text-sm text-gray-200 leading-relaxed mb-3.5 last:mb-0">Vì tất cả những cái chết đều được coi là tiến trình hướng tới sự cứu rỗi, bất chấp việc tải lên ý thức, RUNNERS gần như được ARACHNE thần thánh hóa. Sự quan tâm của họ đối với TAU CETI IV dường như phần lớn là do sự hiện diện của chính RUNNERS hơn là do tài nguyên của hành tinh.</p><p class="text-xs md:text-sm text-gray-200 leading-relaxed mb-3.5 last:mb-0">Lưu ý: Nguồn gốc của sự giàu có đáng kể của ARACHNE vẫn chưa được biết rõ.</p>
+                    </div>
+                </div>
+
+                <!-- Khối Điểm nhấn Chiến lược & Công nghệ -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="text-[10px] font-mono text-cyber-blue font-bold mb-2 flex items-center gap-1.5">
+                        <i class="fas fa-bolt"></i>
+                        <span>ĐIỂM NHẤN CÔNG NGHỆ & TẦM ẢNH HƯỞNG TRONG THẾ GIỚI GAME:</span>
+                    </div>
+                    <ul class="space-y-1.5 mb-3">
+                        <li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-alert-red font-bold">▹</span><span>Nhóm tâm linh đăng ký mã 784s(g), chịu ảnh hưởng sâu sắc từ công nghệ ngủ đông (Cryosleep).</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-alert-red font-bold">▹</span><span>Tôn thờ cái chết như 'món quà của sự im lặng' dẫn tới sự cứu rỗi thông qua chiến đấu nghi lễ.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-alert-red font-bold">▹</span><span>Thần thánh hóa các Runner (những kẻ liên tục trải qua cái chết và tái tải ý thức); sở hữu khối tài sản khổng lồ chưa rõ nguồn gốc.</span></li>
+                    </ul>
+                    <div class="bg-panel-blue/90 border-l-2 border-alert-red p-2.5 text-xs text-gray-200 font-mono">
+                        <strong class="text-alert-red">→ MỤC TIÊU TẠI TAU CETI IV:</strong> Hướng tới chính sự hiện diện của các Runner trên Tau Ceti IV hơn là tài nguyên vật chất
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </article>
+    
+
+    <article id="faction-sekiguchi" class="terminal-panel p-6 md:p-8 border-l-4 border-cyber-blue hover:shadow-[0_0_30px_rgba(0,208,255,0.12)] transition duration-300">
+        <!-- Card Top Header -->
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-gray-800 pb-4 mb-6">
+            <div class="flex items-center gap-4">
+                <!-- Mini Faction Icon -->
+                <div class="w-14 h-14 bg-black border border-cyber-blue p-1.5 flex items-center justify-center shrink-0 cursor-pointer"
+                     onclick='openInspectModal("Sekiguchi Genetics \u2014 Faction Icon", "Biosynthetic 'Second Body' Shells, WeaveWorm & Neural Sync", "C\u00f4ng ngh\u1ec7 Di truy\u1ec1n, Ch\u1ebf t\u1ea1o V\u1ecf b\u1ecdc Sinh h\u1ecdc (Biomata Shells) & \u0110\u1ed3ng b\u1ed9 Th\u1ea7n kinh", this.querySelector("img").src)'>
+                    <img src="factions/Sekiguchi/Sekiguchi_Icon.webp"
+                         onerror="if(!this.dataset.step){this.dataset.step='1';this.src='factions/sekiguchi-icon.png';}else if(this.dataset.step==='1'){this.dataset.step='2';this.src='sekiguchi-icon.png';}else if(this.dataset.step==='2'){this.dataset.step='3';this.src='sekiguchi_icon.png';}else{this.onerror=null;this.src='https://placehold.co/300x300/0a0f18/00d0ff?text=SEKIGUCHI+GENETICS+ICON';}"
+                         alt="Sekiguchi Genetics Icon" class="w-full h-full object-contain">
+                </div>
+                <div>
+                    <span class="text-[10px] font-mono text-gray-400 block tracking-widest">FACTION ARCHIVE // CODE_06 // SEKIGUCHI</span>
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-xl md:text-2xl font-heading font-black text-cyber-blue">[06]</span>
+                        <h3 class="text-2xl md:text-3xl text-white font-heading font-black tracking-wider">SEKIGUCHI GENETICS</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="px-3 py-1 border text-xs font-mono font-bold uppercase tracking-wider bg-cyber-blue/15 text-cyber-blue border-cyber-blue/50">
+                    <i class="fas fa-network-wired mr-1.5"></i>Công nghệ Vỏ Sinh học 'Cơ thể thứ hai', WeaveWorm & Đồng bộ Thần kinh
+                </span>
+            </div>
+        </div>
+
+        <!-- Main Content Grid: Left (3 Media Assets: Icon, GIF, Image) | Right (Full Lore & Strategic Data) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+            
+            <!-- Left Column: Bộ 3 Tệp Đa Phương Tiện (1. ICON, 2. GIF, 3. ẢNH) -->
+            <div class="lg:col-span-5 flex flex-col justify-between gap-4">
+                
+                <!-- Hàng trên: Cột 1 là ICON chuẩn, Cột 2 là GIF chuyển động -->
+                <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+                    <!-- 1. TỆP ICON -->
+                    <div class="sm:col-span-5 bg-black/90 border border-gray-800 hover:border-cyber-blue p-2.5 flex flex-col justify-between group cursor-pointer transition"
+                         onclick='openInspectModal("Sekiguchi Genetics \u2014 Bi\u1ec3u t\u01b0\u1ee3ng Phe ph\u00e1i (ICON)", "ASSET TYPE 01 // FACTION ICON", "C\u00f4ng ngh\u1ec7 V\u1ecf Sinh h\u1ecdc 'C\u01a1 th\u1ec3 th\u1ee9 hai', WeaveWorm & \u0110\u1ed3ng b\u1ed9 Th\u1ea7n kinh", this.querySelector("img").src)'>
+                        <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-2">
+                            <span class="text-cyber-blue font-bold"><i class="fas fa-shield-halved mr-1"></i>01. ICON</span>
+                            <span>[ ZOOM ]</span>
+                        </div>
+                        <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/40 p-2">
+                            <img src="factions/Sekiguchi/Sekiguchi_Icon.webp"
+                                 onerror="if(!this.dataset.step){this.dataset.step='1';this.src='factions/sekiguchi-icon.png';}else if(this.dataset.step==='1'){this.dataset.step='2';this.src='sekiguchi-icon.png';}else if(this.dataset.step==='2'){this.dataset.step='3';this.src='sekiguchi_icon.png';}else{this.onerror=null;this.src='https://placehold.co/300x300/0a0f18/00d0ff?text=SEKIGUCHI+GENETICS+ICON';}"
+                                 alt="Sekiguchi Genetics Icon" class="max-h-32 w-auto object-contain group-hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="text-[9px] font-mono text-gray-500 text-center mt-1.5 truncate">sekiguchi-icon.png</div>
+                    </div>
+
+                    <!-- 2. TỆP GIF -->
+                    <div class="sm:col-span-7 bg-black/90 border border-gray-800 hover:border-cyber-blue p-2.5 flex flex-col justify-between group cursor-pointer transition"
+                         onclick='openInspectModal("Sekiguchi Genetics \u2014 Ho\u1ea1t \u1ea3nh Nh\u1eadn di\u1ec7n (GIF)", "ASSET TYPE 02 // ANIMATED GIF", "C\u00f4ng ngh\u1ec7 V\u1ecf Sinh h\u1ecdc 'C\u01a1 th\u1ec3 th\u1ee9 hai', WeaveWorm & \u0110\u1ed3ng b\u1ed9 Th\u1ea7n kinh", this.querySelector("img").src)'>
+                        <div class="flex items-center justify-between text-[9px] font-mono text-gray-400 border-b border-gray-800/80 pb-1 mb-2">
+                            <span class="text-neon-lime font-bold"><i class="fas fa-film mr-1"></i>02. ANIMATED GIF</span>
+                            <span>[ ZOOM ]</span>
+                        </div>
+                        <div class="h-36 flex items-center justify-center overflow-hidden relative bg-deep-blue/40">
+                            <img src="factions/Sekiguchi/Sekiguchi_AI.webp"
+                                 onerror="if(!this.dataset.step){this.dataset.step='1';this.src='factions/sekiguchi.gif';}else if(this.dataset.step==='1'){this.dataset.step='2';this.src='sekiguchi.gif';}else if(this.dataset.step==='2'){this.dataset.step='3';this.src='sekiguchi-gif.gif';}else{this.onerror=null;this.src='https://placehold.co/600x400/0a0f18/00d0ff?text=SEKIGUCHI+GENETICS+ANIMATED+GIF';}"
+                                 alt="Sekiguchi Genetics GIF" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="text-[9px] font-mono text-gray-500 text-center mt-1.5 truncate">sekiguchi.gif</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Column: Toàn văn Hồ sơ Cốt truyện & Phân tích Chiến lược -->
+            <div class="lg:col-span-7 flex flex-col justify-between space-y-4">
+                
+                <!-- Khối Văn bản Hồ sơ Chính thức -->
+                <div class="bg-black/60 border border-gray-800 p-5">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-cyber-blue font-bold mb-3 pb-2 border-b border-gray-800">
+                        <span><i class="fas fa-database mr-1.5"></i>HỒ SƠ DỮ LIỆU CHÍNH THỨC (OFFICIAL LORE ARCHIVE)</span>
+                        <span>BIOSYNTHETIC 'SECOND BODY' SHELLS, WEAVEWORM & NEURAL SYNC</span>
+                    </div>
+                    <div>
+                        <p class="text-xs md:text-sm text-gray-200 leading-relaxed mb-3.5 last:mb-0">‘Tại Sekiguchi Genetics, chúng tôi tự hào mang đến những trải nghiệm "cơ thể thứ hai" được thiết kế cho nơi chứa thần kinh theo chủ nghĩa tự nhiên và sự thoải mái theo bản năng khi vận động, suy nghĩ, cảm xúc. Vỏ sinh học mô hình tiên tiến của chúng tôi được thiết kế bằng cách sử dụng công nghệ WeaveWorm và Neural Sync độc quyền do Phòng nghiên cứu / khám phá di truyền Sekiguchi độc quyền tiên phong. Tất cả các shell của chúng tôi đều hoàn chỉnh với các bộ giao diện và tích hợp tùy chỉnh, chu kỳ bộ nhớ hàng loạt hàng đầu trong ngành và các khóa gần được mã hóa để đảm bảo cuộc sống của bạn trong shell mới vẫn là của bạn.’</p>
+                    </div>
+                </div>
+
+                <!-- Khối Điểm nhấn Chiến lược & Công nghệ -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="text-[10px] font-mono text-cyber-blue font-bold mb-2 flex items-center gap-1.5">
+                        <i class="fas fa-bolt"></i>
+                        <span>ĐIỂM NHẤN CÔNG NGHỆ & TẦM ẢNH HƯỞNG TRONG THẾ GIỚI GAME:</span>
+                    </div>
+                    <ul class="space-y-1.5 mb-3">
+                        <li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-cyber-blue font-bold">▹</span><span>Tiên phong thiết kế 'cơ thể thứ hai' (Biomata Runner Shells) mang lại cảm giác vận động, suy nghĩ và cảm xúc tự nhiên theo bản năng.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-cyber-blue font-bold">▹</span><span>Ứng dụng công nghệ WeaveWorm và Neural Sync độc quyền từ Phòng nghiên cứu / khám phá di truyền Sekiguchi.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-cyber-blue font-bold">▹</span><span>Trang bị bộ giao diện tùy chỉnh, chu kỳ bộ nhớ hàng loạt dẫn đầu ngành và khóa gần mã hóa bảo vệ quyền sở hữu cơ thể.</span></li>
+                    </ul>
+                    <div class="bg-panel-blue/90 border-l-2 border-cyber-blue p-2.5 text-xs text-gray-200 font-mono">
+                        <strong class="text-cyber-blue">→ MỤC TIÊU TẠI TAU CETI IV:</strong> Thử nghiệm, duy trì và bảo mật tuyệt đối các lớp vỏ sinh học tiên tiến trong môi trường thực chiến
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </article>
+    
+            </div>
+        </section>
+
+        <!-- Bottom Navigation Footer -->
+        <footer class="mt-16 pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="main.html" class="cyber-btn">
+                <i class="fas fa-chevron-left"></i>
+                <span>QUAY VỀ TRANG CHÍNH (MAIN GDD)</span>
+            </a>
+            <div class="flex items-center gap-4">
+                <a href="characters.html" class="cyber-btn">
+                    <i class="fas fa-user-astronaut"></i>
+                    <span>HỒ SƠ RUNNER SHELLS</span>
+                </a>
+                <a href="ui-quest.html" class="cyber-btn">
+                    <span>GIAO DIỆN NHIỆM VỤ PHE PHÁI</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        const factionsData = [{"num": "01", "id": "cyberacme", "name": "CyberAcme", "tagline": "AI Architecture, Data Analytics & Cybersecurity", "tagline_vi": "Kiến trúc AI, Phân tích Dữ liệu & An ninh Mạng", "accent": "neon-lime", "hex": "#ccff00", "border_cls": "border-neon-lime", "text_cls": "text-neon-lime", "badge_cls": "bg-neon-lime/15 text-neon-lime border-neon-lime/50", "domain": "Kiến trúc AI, Phân tích dữ liệu, An ninh mạng & Hệ thống ONI", "key_tech": "ONI (Onboard Navigational Intelligence) & Trí tuệ cộng đồng phân tán (Diffuse Communal Intelligence)", "uesc_relation": "Vận hành nhiều hệ thống cốt lõi và mạng lưới AI liên kết trên tàu UESC Marathon", "tau_ceti_goal": "Thu thập thông tin về điều kiện hành tinh Tau Ceti IV và số phận của thuộc địa New Cascadia", "paragraphs": ["CyberAcme là đơn vị dẫn đầu ngành trong các lĩnh vực thiết kế kiến trúc AI, phân tích dữ liệu và an ninh mạng. Họ hướng tới việc tích hợp liền mạch các hệ thống tiên tiến của mình vào mọi khía cạnh của đời sống hiện đại.", "Nhiều hệ thống tại UESC Marathon được vận hành bởi CyberAcme, bao gồm cả mạng lưới AI liên kết với nhau. Ngày nay, CyberAcme còn cung cấp sự hỗ trợ toàn diện cho các Runner (Người vận hành), quản lý mọi khía cạnh từ thông tin liên lạc, giám sát khí quyển cho đến các thuật toán mua sắm và bảo mật đồng bộ thần kinh. ONI – hệ thống Trí tuệ Điều hướng Tích hợp (Onboard Navigational Intelligence) được trang bị trên mỗi lớp vỏ (shell) của Runner – sử dụng kiến trúc \"trí tuệ cộng đồng phân tán\" (diffuse communal intelligence) đã được cấp bằng sáng chế của CyberAcme. Nhờ đó, các Runner luôn nhận được sự hỗ trợ đồng nhất, đảm bảo dịch vụ không bị gián đoạn và dữ liệu không bị mất đi ngay cả khi lớp vỏ bị phá hủy. Với ONI, không một Runner nào phải đơn độc trong công việc của mình.", "Thông qua quan hệ đối tác với các Runner, CyberAcme đặt mục tiêu thu thập thông tin về các điều kiện trên hành tinh Tau Ceti IV cũng như số phận của thuộc địa New Cascadia."], "highlights": ["Vận hành mạng lưới AI liên kết trên tàu UESC Marathon.", "Cung cấp hệ thống ONI trên mỗi Runner Shell với kiến trúc 'trí tuệ cộng đồng phân tán' độc quyền.", "Bảo toàn dữ liệu và duy trì dịch vụ liên lạc, giám sát khí quyển, đồng bộ thần kinh ngay cả khi Shell bị phá hủy."], "icon_file": "fractions/cyberacme-icon.png", "gif_file": "fractions/cyberacme.gif", "img_file": "fractions/cyberacme.png"}, {"num": "02", "id": "nucaloric", "name": "NuCaloric", "tagline": "Essential Consumer Goods, Agriculture & Hab Units", "tagline_vi": "Nông nghiệp, Hàng Tiêu dùng Thiết yếu & Đơn vị Nhà ở", "accent": "emerald-400", "hex": "#34d399", "border_cls": "border-emerald-400", "text_cls": "text-emerald-400", "badge_cls": "bg-emerald-500/15 text-emerald-300 border-emerald-400/50", "domain": "Nông nghiệp, Thực phẩm, Đơn vị nhà ở (Hab Units) & Mỹ phẩm", "key_tech": "Chuỗi cung ứng hàng tiêu dùng tối ưu hóa triệt để & Hạ tầng sinh hoạt thuộc địa", "uesc_relation": "Đối tác ký hợp đồng cung cấp hàng hóa dân dụng hợp pháp cho dự án UESC Marathon", "tau_ceti_goal": "Tránh xung đột trực diện; thuê Runner thu thập dữ liệu lịch sử và thông tin tình báo cụ thể", "paragraphs": ["NuCaloric trở nên nổi tiếng nhờ các hoạt động nhân đạo trong thời kỳ xảy ra nạn đói tàn khốc vào những năm 2360. Gus Moraine, người sáng lập công ty, đã đặt các hoạt động từ thiện công cộng làm trụ cột cốt lõi trong chiến lược doanh nghiệp của NuCaloric. Sự kết hợp giữa lợi ích xã hội và phương thức tối ưu hóa triệt để đã biến NuCaloric thành nhà cung cấp hàng tiêu dùng thiết yếu chiếm ưu thế tại hệ Mặt Trời (Sol); công ty không chỉ dừng lại ở lĩnh vực nông nghiệp mà còn mở rộng sang nhiều mảng khác, từ các đơn vị nhà ở (hab units) cho đến mỹ phẩm.", "NuCaloric đã ký hợp đồng với UESC để cung cấp hàng hóa dân dụng cho dự án UESC Marathon, qua đó trở thành một bên liên quan hợp pháp trong dự án thuộc địa này. Tuy nhiên, các nỗ lực của họ nhằm thực thi quyền trục vớt (salvage rights) trên hành tinh Tau Ceti IV hiện vẫn còn hạn chế về phạm vi. NuCaloric dường như không muốn xảy ra xung đột kéo dài với UESC hay các đối tác doanh nghiệp khác; thay vào đó, họ chọn cách thu thập dữ liệu lịch sử và thông tin tình báo cụ thể thông qua việc thuê các đặc vụ \"Runner\"."], "highlights": ["Sáng lập bởi Gus Moraine; vươn lên từ các hoạt động nhân đạo trong nạn đói những năm 2360.", "Thống lĩnh thị trường hàng tiêu dùng thiết yếu tại hệ Mặt Trời (Sol): từ nông nghiệp đến hab units và mỹ phẩm.", "Ưu tiên thu thập dữ liệu lịch sử và tình báo kín đáo qua Runner thay vì xung đột vũ trang kéo dài."], "icon_file": "fractions/nucaloric-icon.png", "gif_file": "fractions/nucaloric.gif", "img_file": "fractions/nucaloric.png"}, {"num": "03", "id": "traxus", "name": "Traxus", "tagline": "Space Mining, Heavy Industry & Proprietary Tech", "tagline_vi": "Siêu Tập đoàn Khai thác Vũ trụ, Công nghệ & Công nghiệp", "accent": "amber-400", "hex": "#fbbf24", "border_cls": "border-amber-400", "text_cls": "text-amber-400", "badge_cls": "bg-amber-400/15 text-amber-300 border-amber-400/50", "domain": "Khai thác vũ trụ, Công nghiệp nặng, Chế tạo tàu vũ trụ & Công nghệ độc quyền", "key_tech": "Đóng tàu UESC Marathon, Hạ tầng khai khoáng hành tinh & Vũ khí công nghiệp", "uesc_relation": "Tập đoàn tư nhân quyền lực nhất lịch sử (chỉ đứng sau UESC); ngầm đối đầu lực lượng UESC", "tau_ceti_goal": "Tuyên bố quyền thu hồi toàn bộ công nghệ độc quyền và ngầm dùng Runner quét sạch thuộc địa", "paragraphs": ["TRAXUS là siêu tập đoàn khai thác vũ trụ, công nghệ và công nghiệp hàng đầu trên khắp Sol. Được công nhận là tập đoàn tư nhân hùng mạnh nhất trong lịch sử loài người, tầm ảnh hưởng của TRAXUS chỉ đứng sau HỘI ĐỒNG KHÔNG GIAN THỐNG NHẤT TRÁI ĐẤT [UESC].", "TRAXUS đóng vai trò quan trọng trong quá trình phát triển, đóng tàu MARATHON và sứ mệnh tiếp theo của TAU CETI IV. Do đó, TRAXUS đã công khai tuyên bố quyền mua lại tất cả công nghệ độc quyền và các hoạt động phát triển liên quan gắn liền với giải MARATHON và thuộc địa TAU CETI. Tuy nhiên, họ chưa công khai việc sử dụng các đặc nhiệm RUNNER để quét sạch thuộc địa nhằm phản đối trực tiếp lực lượng UESC."], "highlights": ["Siêu tập đoàn tư nhân hùng mạnh nhất lịch sử nhân loại, quyền lực chỉ xếp sau UESC.", "Đóng vai trò nòng cốt trong việc chế tạo tàu UESC Marathon và sứ mệnh Tau Ceti IV.", "Công khai đòi quyền sở hữu công nghệ độc quyền và bí mật điều phối Runner đối đầu trực tiếp với UESC."], "icon_file": "fractions/traxus-icon.png", "gif_file": "fractions/traxus.gif", "img_file": "fractions/traxus.png"}, {"num": "04", "id": "mida", "name": "MIDA", "tagline": "Revolutionary Insurgency & Anti-UESC Liberation", "tagline_vi": "Phong trào Cách mạng Chính trị & Phản kháng UESC", "accent": "purple-400", "hex": "#c084fc", "border_cls": "border-purple-400", "text_cls": "text-purple-400", "badge_cls": "bg-purple-500/15 text-purple-300 border-purple-400/50", "domain": "Tổ chức Cách mạng Chính trị, Chiến tranh Du kích & Phá hoại Hệ thống", "key_tech": "Chiếm quyền phát thanh (MIDA Audio Override), Tác chiến phi đối xứng & Vũ khí độ chế", "uesc_relation": "Kẻ thù chính trị trực diện; chống lại UESC và ách kiểm soát tập đoàn trên Sao Hỏa", "tau_ceti_goal": "Thổi bùng ngọn lửa cách mạng, thiêu rụi trật tự thế giới trì trệ mục nát để xây dựng thế giới mới", "paragraphs": ["MIDA là mối đe dọa chính trị ngày càng tăng trên khắp Sol. Họ phản đối UESC và sự kiểm soát của công ty đối với tài nguyên và công dân trên sao Hỏa. Mặc dù MIDA hiện đại là thế hệ những nhà cách mạng mới hơn nhưng chương trình nghị sự của họ lại liên quan đến những bất bình trước khi UESC MARATHON ra mắt. Họ đang nhóm lại những ngọn lửa cũ để đốt cháy một thế giới trì trệ, mục nát nhằm xây dựng một thế giới mới ở phía bên kia của cuộc cách mạng."], "highlights": ["Mối đe dọa chính trị lan rộng khắp hệ Mặt Trời (Sol), khởi nguồn từ các cuộc nổi dậy trên Sao Hỏa.", "Kế thừa những bất bình lịch sử từ thời kỳ trước khi tàu UESC Marathon khởi hành.", "Mục tiêu triệt để: phá hủy trật tự tập đoàn mục nát để kiến tạo một thế giới mới sau cách mạng."], "icon_file": "fractions/mida-icon.png", "gif_file": "fractions/mida.gif", "img_file": "fractions/mida.png"}, {"num": "05", "id": "arachne", "name": "Arachne", "tagline": "Registered 784s(g) Spiritual Cult of the Gift of Silence", "tagline_vi": "Giáo phái Tâm linh 784s(g) & Nghi lễ Chiến đấu", "accent": "alert-red", "hex": "#ff3333", "border_cls": "border-alert-red", "text_cls": "text-alert-red", "badge_cls": "bg-alert-red/15 text-alert-red border-alert-red/50", "domain": "Tổ chức Tâm linh / Tôn giáo đăng ký mã 784s(g) & Chiến đấu theo nghi lễ", "key_tech": "Triết lý Giấc ngủ lạnh (Cryosleep), 'Món quà của sự im lặng' & Thần thánh hóa Runner", "uesc_relation": "Gia tăng ảnh hưởng mạnh mẽ từ quá trình bố trí nhân sự tàu ngủ đông UESC Marathon", "tau_ceti_goal": "Hướng tới chính sự hiện diện của các Runner trên Tau Ceti IV hơn là tài nguyên vật chất", "paragraphs": ["ARACHNE là một nhóm tâm linh 784s(g) đã đăng ký. ARACHNE là một tôn giáo khá gần đây, bị ảnh hưởng nặng nề bởi công nghệ du hành vũ trụ trong giấc ngủ lạnh thời kỳ đầu và nhận thấy sự quan tâm ngày càng tăng trong quá trình bố trí nhân sự của UESC MARATHON. Những niềm tin chính bao gồm việc coi giấc ngủ, giấc ngủ lạnh và cái chết là những hành trình cuối cùng sẽ dẫn những người tin tưởng cũng như những người không tin tưởng đến sự cứu rỗi. Vì mục đích này, những người sùng đạo ARACHNE cống hiến hết mình để mang đến cái chết (thứ mà họ coi là \"món quà của sự im lặng\") thông qua nhiều phương tiện khác nhau, bao gồm cả chiến đấu theo nghi lễ.", "Vì tất cả những cái chết đều được coi là tiến trình hướng tới sự cứu rỗi, bất chấp việc tải lên ý thức, RUNNERS gần như được ARACHNE thần thánh hóa. Sự quan tâm của họ đối với TAU CETI IV dường như phần lớn là do sự hiện diện của chính RUNNERS hơn là do tài nguyên của hành tinh.", "Lưu ý: Nguồn gốc của sự giàu có đáng kể của ARACHNE vẫn chưa được biết rõ."], "highlights": ["Nhóm tâm linh đăng ký mã 784s(g), chịu ảnh hưởng sâu sắc từ công nghệ ngủ đông (Cryosleep).", "Tôn thờ cái chết như 'món quà của sự im lặng' dẫn tới sự cứu rỗi thông qua chiến đấu nghi lễ.", "Thần thánh hóa các Runner (những kẻ liên tục trải qua cái chết và tái tải ý thức); sở hữu khối tài sản khổng lồ chưa rõ nguồn gốc."], "icon_file": "fractions/arachne-icon.png", "gif_file": "fractions/arachne.gif", "img_file": "fractions/arachne.png"}, {"num": "06", "id": "sekiguchi", "name": "Sekiguchi Genetics", "tagline": "Biosynthetic 'Second Body' Shells, WeaveWorm & Neural Sync", "tagline_vi": "Công nghệ Vỏ Sinh học 'Cơ thể thứ hai', WeaveWorm & Đồng bộ Thần kinh", "accent": "cyber-blue", "hex": "#00d0ff", "border_cls": "border-cyber-blue", "text_cls": "text-cyber-blue", "badge_cls": "bg-cyber-blue/15 text-cyber-blue border-cyber-blue/50", "domain": "Công nghệ Di truyền, Chế tạo Vỏ bọc Sinh học (Biomata Shells) & Đồng bộ Thần kinh", "key_tech": "Công nghệ WeaveWorm, Neural Sync độc quyền, Chu kỳ bộ nhớ hàng loạt & Khóa gần mã hóa", "uesc_relation": "Nhà sản xuất độc quyền hệ thống cơ thể sinh học thứ hai (Runner Shells) cho các chiến dịch", "tau_ceti_goal": "Thử nghiệm, duy trì và bảo mật tuyệt đối các lớp vỏ sinh học tiên tiến trong môi trường thực chiến", "paragraphs": ["‘Tại Sekiguchi Genetics, chúng tôi tự hào mang đến những trải nghiệm \"cơ thể thứ hai\" được thiết kế cho nơi chứa thần kinh theo chủ nghĩa tự nhiên và sự thoải mái theo bản năng khi vận động, suy nghĩ, cảm xúc. Vỏ sinh học mô hình tiên tiến của chúng tôi được thiết kế bằng cách sử dụng công nghệ WeaveWorm và Neural Sync độc quyền do Phòng nghiên cứu / khám phá di truyền Sekiguchi độc quyền tiên phong. Tất cả các shell của chúng tôi đều hoàn chỉnh với các bộ giao diện và tích hợp tùy chỉnh, chu kỳ bộ nhớ hàng loạt hàng đầu trong ngành và các khóa gần được mã hóa để đảm bảo cuộc sống của bạn trong shell mới vẫn là của bạn.’"], "highlights": ["Tiên phong thiết kế 'cơ thể thứ hai' (Biomata Runner Shells) mang lại cảm giác vận động, suy nghĩ và cảm xúc tự nhiên theo bản năng.", "Ứng dụng công nghệ WeaveWorm và Neural Sync độc quyền từ Phòng nghiên cứu / khám phá di truyền Sekiguchi.", "Trang bị bộ giao diện tùy chỉnh, chu kỳ bộ nhớ hàng loạt dẫn đầu ngành và khóa gần mã hóa bảo vệ quyền sở hữu cơ thể."], "icon_file": "fractions/sekiguchi-icon.png", "gif_file": "fractions/sekiguchi.gif", "img_file": "fractions/sekiguchi.png"}];
+        let activeFactionIndex = 0;
+
+        function renderFactionTabs() {
+            const container = document.getElementById('faction-tabs-container');
+            container.innerHTML = factionsData.map((f, idx) => `
+                <button type="button" onclick="switchFaction(${idx})" 
+                        class="cyber-btn faction-tab ${idx === activeFactionIndex ? 'active' : ''} !py-2.5 !px-4 !text-xs">
+                    <span>${f.num}. ${f.name.toUpperCase()}</span>
+                </button>
+            `).join('');
+        }
+
+        function renderFactionSpotlight() {
+            const f = factionsData[activeFactionIndex];
+            const fid = f.id;
+            const hexClean = f.hex.replace('#', '');
+            const iconPh = `https://placehold.co/300x300/0a0f18/${hexClean}?text=${encodeURIComponent(f.name.toUpperCase() + ' ICON')}`;
+            const gifPh = `https://placehold.co/600x400/0a0f18/${hexClean}?text=${encodeURIComponent(f.name.toUpperCase() + ' GIF')}`;
+            const imgPh = `https://placehold.co/800x450/0a0f18/${hexClean}?text=${encodeURIComponent(f.name.toUpperCase() + ' IMAGE')}`;
+
+            const paragraphsHtml = f.paragraphs.map(p => `
+                <p class="text-xs md:text-sm text-gray-200 leading-relaxed mb-3.5 last:mb-0">${p}</p>
+            `).join('');
+
+            const highlightsHtml = f.highlights.map(hl => `
+                <li class="flex items-start gap-2 text-xs md:text-sm text-gray-300">
+                    <span class="${f.text_cls} font-bold">▹</span>
+                    <span>${hl}</span>
+                </li>
+            `).join('');
+
+            const arena = document.getElementById('faction-spotlight-arena');
+            arena.innerHTML = `
+                <div class="terminal-panel p-6 md:p-8 border-l-4 ${f.border_cls}">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                        
+                        <!-- Cột Trái: Bộ 3 Tệp Đa Phương Tiện (ICON + GIF + ẢNH) -->
+                        <div class="lg:col-span-5 flex flex-col justify-between gap-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+                                <!-- 1. ICON -->
+                                <div class="sm:col-span-5 bg-black border border-gray-800 hover:${f.border_cls} p-3 flex flex-col justify-between cursor-pointer group transition"
+                                     onclick='openInspectModal("${f.name} — Biểu tượng Phe phái (ICON)", "ASSET 01 // FACTION ICON", ${JSON.stringify(f.tagline_vi)}, this.querySelector("img").src)'>
+                                    <div class="flex items-center justify-between text-[10px] font-mono text-gray-400 border-b border-gray-800 pb-1.5 mb-2">
+                                        <span class="${f.text_cls} font-bold"><i class="fas fa-shield-halved mr-1"></i>01. ICON</span>
+                                        <span class="group-hover:text-neon-lime">[ ZOOM ]</span>
+                                    </div>
+                                    <div class="h-40 flex items-center justify-center overflow-hidden relative bg-deep-blue/50 p-2">
+                                        <img src="fractions/${fid}-icon.png"
+                                             onerror="if(!this.dataset.step){this.dataset.step='1';this.src='factions/${fid}-icon.png';}else if(this.dataset.step==='1'){this.dataset.step='2';this.src='${fid}-icon.png';}else if(this.dataset.step==='2'){this.dataset.step='3';this.src='${fid}_icon.png';}else{this.onerror=null;this.src='${iconPh}';}"
+                                             alt="${f.name} Icon" class="max-h-36 w-auto object-contain group-hover:scale-110 transition duration-500">
+                                    </div>
+                                    <div class="text-[9px] font-mono text-gray-500 text-center mt-2 truncate">fractions/${fid}-icon.png</div>
+                                </div>
+
+                                <!-- 2. GIF -->
+                                <div class="sm:col-span-7 bg-black border border-gray-800 hover:${f.border_cls} p-3 flex flex-col justify-between cursor-pointer group transition"
+                                     onclick='openInspectModal("${f.name} — Hoạt ảnh Phe phái (GIF)", "ASSET 02 // ANIMATED GIF", ${JSON.stringify(f.tagline_vi)}, this.querySelector("img").src)'>
+                                    <div class="flex items-center justify-between text-[10px] font-mono text-gray-400 border-b border-gray-800 pb-1.5 mb-2">
+                                        <span class="text-neon-lime font-bold"><i class="fas fa-film mr-1"></i>02. GIF</span>
+                                        <span class="group-hover:text-neon-lime">[ ZOOM ]</span>
+                                    </div>
+                                    <div class="h-40 flex items-center justify-center overflow-hidden relative bg-deep-blue/50">
+                                        <img src="fractions/${fid}.gif"
+                                             onerror="if(!this.dataset.step){this.dataset.step='1';this.src='factions/${fid}.gif';}else if(this.dataset.step==='1'){this.dataset.step='2';this.src='${fid}.gif';}else if(this.dataset.step==='2'){this.dataset.step='3';this.src='${fid}-gif.gif';}else{this.onerror=null;this.src='${gifPh}';}"
+                                             alt="${f.name} GIF" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                    </div>
+                                    <div class="text-[9px] font-mono text-gray-500 text-center mt-2 truncate">fractions/${fid}.gif</div>
+                                </div>
+                            </div>
+
+                            <!-- 3. ẢNH MINH HỌA CHÍNH -->
+                            <div class="bg-black border border-gray-800 hover:${f.border_cls} p-3 flex flex-col justify-between cursor-pointer group transition flex-1"
+                                 onclick='openInspectModal("${f.name} — Ảnh Minh họa Phe phái (IMAGE)", "ASSET 03 // FACTION ARTWORK", ${JSON.stringify(f.tau_ceti_goal)}, this.querySelector("img").src)'>
+                                <div class="flex items-center justify-between text-[10px] font-mono text-gray-400 border-b border-gray-800 pb-1.5 mb-2">
+                                    <span class="text-cyber-blue font-bold"><i class="fas fa-image mr-1"></i>03. ẢNH PHE PHÁI (CONCEPT / LORE IMAGE)</span>
+                                    <span class="group-hover:text-neon-lime">[ CLICK ZOOM ]</span>
+                                </div>
+                                <div class="h-56 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                                    <img src="fractions/${fid}.png"
+                                         onerror="if(!this.dataset.step){this.dataset.step='1';this.src='factions/${fid}.png';}else if(this.dataset.step==='1'){this.dataset.step='2';this.src='${fid}.png';}else if(this.dataset.step==='2'){this.dataset.step='3';this.src='${fid}-img.png';}else if(this.dataset.step==='3'){this.dataset.step='4';this.src='${fid}.jpg';}else{this.onerror=null;this.src='${imgPh}';}"
+                                         alt="${f.name} Image" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                </div>
+                                <div class="text-[9px] font-mono text-gray-500 text-center mt-2 truncate">fractions/${fid}.png (hoặc ${fid}.png)</div>
+                            </div>
+                        </div>
+
+                        <!-- Cột Phải: Hồ sơ Chi tiết Phe Phái -->
+                        <div class="lg:col-span-7 flex flex-col justify-between space-y-5">
+                            <div>
+                                <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                                    <span class="text-xs font-mono text-gray-400">FACTION DOSSIER // CODE_${f.num}</span>
+                                    <span class="px-3 py-0.5 border text-xs font-mono font-bold uppercase ${f.badge_cls}">
+                                        ${f.tagline_vi}
+                                    </span>
+                                </div>
+                                <h3 class="text-3xl md:text-4xl text-white font-heading font-black mb-1">
+                                    ${f.num}. ${f.name.toUpperCase()}
+                                </h3>
+                                <p class="text-xs font-mono ${f.text_cls} mb-5">${f.tagline}</p>
+
+                                <!-- Toàn văn thông tin phe phái -->
+                                <div class="bg-black/65 border border-gray-800 p-5 mb-4">
+                                    <span class="text-[10px] font-mono text-neon-lime font-bold block mb-2.5 border-b border-gray-800 pb-1.5">
+                                        <i class="fas fa-book-journal-whills mr-1.5"></i>THÔNG TIN TỔ CHỨC & LỊCH SỬ HOẠT ĐỘNG:
+                                    </span>
+                                    ${paragraphsHtml}
+                                </div>
+
+                                <!-- Điểm nhấn cốt lõi -->
+                                <div class="bg-black/65 border border-gray-800 p-4">
+                                    <span class="text-[10px] font-mono text-cyber-blue font-bold block mb-2">
+                                        <i class="fas fa-microchip mr-1.5"></i>ĐẶC ĐIỂM NHẬN DIỆN & VAI TRÒ TRONG MARATHON:
+                                    </span>
+                                    <ul class="space-y-1.5">
+                                        ${highlightsHtml}
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="bg-panel-blue/90 border-l-4 ${f.border_cls} p-3.5 text-xs font-mono text-gray-200 flex items-center justify-between gap-4">
+                                <div>
+                                    <strong class="${f.text_cls} block">MỤC TIÊU CHIẾN LƯỢC TẠI TAU CETI IV:</strong>
+                                    <span>${f.tau_ceti_goal}</span>
+                                </div>
+                                <a href="#faction-${fid}" class="cyber-btn !py-1.5 !px-3 !text-[10px] shrink-0">ĐẾN THẺ HỒ SƠ ↓</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            `;
+        }
+
+        function switchFaction(index) {
+            activeFactionIndex = index;
+            renderFactionTabs();
+            renderFactionSpotlight();
+            document.getElementById('interactive-faction-deck').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Modal Zoom
+        const inspectModal = document.getElementById('inspect-modal');
+        function openInspectModal(title, role, desc, imgSrc) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-role').innerText = role;
+            document.getElementById('modal-desc').innerText = desc;
+            document.getElementById('modal-img').src = imgSrc;
+            inspectModal.classList.remove('hidden');
+            inspectModal.classList.add('flex');
+        }
+        function closeInspectModal() {
+            inspectModal.classList.add('hidden');
+            inspectModal.classList.remove('flex');
+        }
+        inspectModal.addEventListener('click', (e) => {
+            if (e.target === inspectModal) closeInspectModal();
+        });
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeInspectModal();
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderFactionTabs();
+            renderFactionSpotlight();
+        });
+
+        // Hiệu ứng Glitch khi click giống trang main.html
+        document.body.addEventListener('click', (e) => {
+            if (e.target.closest('a') || e.target.closest('button') || e.target.closest('tr') || e.target.closest('#inspect-modal')) return;
+
+            document.body.classList.add('glitch-effect');
+            setTimeout(() => {
+                document.body.classList.remove('glitch-effect');
+            }, 300);
+        });
+    </script>
+</body>
+</html>
