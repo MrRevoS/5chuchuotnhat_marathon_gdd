@@ -162,24 +162,98 @@
     </div>
 
 
-    <!-- ================= HERO SCROLL SECTION ================= -->
-    <div id="scroll-hero" class="relative w-full bg-black" style="height: 250vh;">
-        <div class="sticky top-0 w-full h-screen overflow-hidden flex items-center justify-center bg-black">
+<!-- ================= HERO SCROLL-TRIGGERED VIDEO & TACTICAL HUD ================= -->
+    <style>
+        /* Tùy chỉnh tọa độ khóa khuôn mặt lúc kết thúc video (có thể chỉnh từng px nếu cần) */
+        :root {
+            --lock-x: -14px; /* Dịch nhẹ sang trái để khớp sống mũi/mắt của Recon */
+            --lock-y: 46px;  /* Dịch từ tâm xuống dưới 24px theo chuyển động cúi đầu mở mũ */
+        }
+
+        /* Hiệu ứng quét Radar xoay tròn bên trong HUD */
+        .hud-radar-sweep {
+            background: conic-gradient(from 0deg, transparent 72%, rgba(0, 208, 255, 0.18) 95%, rgba(255, 0, 0, 0.45) 100%);
+            animation: spin 3.5s linear infinite;
+        }
+
+        /* Hiệu ứng chớp nhiễu Glitch khi chuyển từ ảnh tĩnh sang video */
+        @keyframes bootFlash {
+            0% { opacity: 0; }
+            20% { opacity: 0.85; background: rgba(0, 208, 255, 0.25); }
+            40% { opacity: 0.15; }
+            65% { opacity: 0.6; background: rgba(204, 255, 0, 0.18); }
+            100% { opacity: 0; }
+        }
+        .boot-flash-active {
+            animation: bootFlash 0.55s ease-out forwards;
+        }
+
+        /* Tia laser quét dọc màn hình khi mở mũ */
+        @keyframes laserScanDown {
+            0% { top: -5%; opacity: 0; }
+            15% { opacity: 1; }
+            85% { opacity: 1; }
+            100% { top: 105%; opacity: 0; }
+        }
+        .laser-scan-active {
+            animation: laserScanDown 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        /* Hiệu ứng thu hẹp 4 góc khóa mục tiêu (Target Lock-On) */
+        #hud-brackets-box {
+            inset: -24px;
+            opacity: 0;
+            transition: inset 0.85s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease-out;
+        }
+        .hud-locked #hud-brackets-box {
+            inset: 22px;
+            opacity: 1;
+        }
+
+        /* Sóng sinh học Biometric nhảy nhịp */
+        @keyframes bioPulse {
+            0%, 100% { transform: scaleY(0.25); }
+            50% { transform: scaleY(1); }
+        }
+        .bio-bar {
+            transform-origin: bottom;
+            animation: bioPulse var(--spd, 0.6s) ease-in-out infinite alternate;
+        }
+    </style>
+
+    <!-- Các thẻ ẩn mang ID cũ để vô hiệu hóa xung đột từ script cuộn trang cũ ở cuối file main.html -->
+    <div class="hidden" aria-hidden="true">
+        <div id="img-closed"></div>
+        <div id="img-open"></div>
+        <div id="hero-ui"></div>
+        <div id="hud-left"></div>
+        <div id="hud-center"></div>
+        <div id="hud-right"></div>
+        <div id="scroll-prompt"></div>
+    </div>
+
+    <div id="scroll-hero" class="relative w-full bg-black" style="height: 220vh;">
+        <div class="sticky top-0 w-full h-screen overflow-hidden bg-black select-none">
             
-            <!-- Closed Helmet (Fades out) -->
-            <img id="img-closed" src="closedrecon.png" onerror="this.src='https://placehold.co/1920x1080/0a0f18/00d0ff?text=CLOSED+RECON+HELMET'" alt="Recon Closed" class="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-100 ease-out z-20">
+            <!-- 1. Ảnh tĩnh Closed Recon (Hiển thị ban đầu, mờ dần khi cuộn xuống) -->
+            <img id="recon-closed-layer" src="closedrecon.png" onerror="this.src='https://placehold.co/1920x1080/0a0f18/00d0ff?text=CLOSED+RECON+HELMET'" alt="Recon Closed" class="absolute inset-0 w-full h-full object-cover object-center transition-all duration-500 ease-out z-20">
             
-            <!-- Open Helmet (Fades in) -->
-            <img id="img-open" src="openrecon.png" onerror="this.src='https://placehold.co/1920x1080/0a0f18/ccff00?text=OPEN+RECON+HELMET'" alt="Recon Open" class="absolute inset-0 w-full h-full object-cover object-center opacity-0 transition-opacity duration-100 ease-out z-10">
+            <!-- 2. Video dcmm.mp4 (Thay cho openrecon, tự động phát khi cuộn và giữ nguyên frame cuối) -->
+            <video id="recon-video-layer" src="dcmm.mp4" muted playsinline preload="auto" class="absolute inset-0 w-full h-full object-cover object-center z-10"></video>
+
+            <!-- 3. Lớp chớp Glitch & Tia Laser quét sinh trắc học khi bắt đầu mở mũ -->
+            <div id="boot-glitch-overlay" class="absolute inset-0 z-25 pointer-events-none opacity-0"></div>
+            <div id="boot-laser-line" class="absolute left-0 right-0 h-[2px] bg-neon-lime shadow-[0_0_20px_#ccff00,0_0_40px_#00d0ff] z-25 pointer-events-none opacity-0"></div>
             
-            <!-- Vignette / Dark Overlay for readability -->
+            <!-- 4. Lớp phủ tối Vignette giúp nổi bật giao diện HUD -->
             <div class="absolute inset-0 bg-gradient-to-t from-deep-blue via-transparent to-deep-blue opacity-80 z-30 pointer-events-none"></div>
 
-            <!-- HERO HUD AND 4 BANNER BUTTONS -->
-            <div id="hero-ui" class="absolute inset-0 z-40 flex items-center justify-between px-4 md:px-12 lg:px-28 opacity-0 pointer-events-none -translate-x-10 translate-y-10 transition-opacity duration-300">
+            <!-- 5. HỆ THỐNG GIAO DIỆN HERO HUD & 4 NÚT ĐIỀU HƯỚNG -->
+            <div id="hero-hud-wrapper" class="absolute inset-0 z-40 opacity-0 pointer-events-none">
                 
-                <!-- Left Banner Buttons: CUTES1TG & MARATHON -->
-                <div class="flex flex-col gap-6 transform -translate-x-10 transition-transform duration-500" id="hud-left">
+                <!-- CỤM NÚT TRÁI (Đặt vị trí tuyệt đối để không đẩy lệch tâm vòng tròn HUD) -->
+                <div id="hud-left-panel" class="absolute left-4 md:left-12 lg:left-24 top-1/2 -translate-y-1/2 flex flex-col gap-5 transition-all duration-700 ease-out" style="transform: translate(-40px, -50%); opacity: 0;">
+                
                     <button type="button" onclick="openTeamModal()" class="hero-btn shadow-[0_0_15px_rgba(0,208,255,0.3)]">
                         <i class="fas fa-users mr-2 text-xs"></i>5 CHÚ CHUỘT NHẮT
                     </button>
@@ -188,65 +262,250 @@
                     </a>
                 </div>
 
-                <!-- Center Iron Man HUD -->
-                <div class="relative w-[280px] h-[280px] md:w-[430px] md:h-[430px] flex items-center justify-center transform scale-90 -translate-x-5 transition-transform duration-500" id="hud-center">
-                    <!-- Concentric Rings -->
-                    <div class="absolute inset-0 rounded-full border-4 border-dashed border-cyber-blue opacity-30 animate-[spin_20s_linear_infinite]"></div>
-                    <div class="absolute inset-6 rounded-full border-2 border-solid border-neon-lime border-l-transparent border-r-transparent opacity-50 animate-[spin_12s_linear_infinite_reverse]"></div>
-                    <div class="absolute inset-16 rounded-full border border-dotted border-white opacity-20 animate-[spin_30s_linear_infinite]"></div>
+                <!-- VÒNG TRÒN TACTICAL HUD TRUNG TÂM (Căn giữa tuyệt đối 50%/50% và trượt theo khuôn mặt) -->
+                <div id="hud-center-reticle" 
+                     class="absolute left-1/2 top-1/2 w-[280px] h-[280px] md:w-[430px] md:h-[430px] flex items-center justify-center pointer-events-none"
+                     style="transform: translate3d(-50%, -50%, 0) scale(1.18);">
                     
-                    <!-- Crosshair -->
-                    <div class="absolute w-full h-[1px] bg-cyber-blue opacity-40"></div>
-                    <div class="absolute h-full w-[1px] bg-cyber-blue opacity-40"></div>
+                    <!-- Vòng tròn la bàn ngoài cùng -->
+                    <div class="absolute inset-0 rounded-full border-[3px] border-dashed border-cyber-blue/35 animate-[spin_22s_linear_infinite]"></div>
                     
-                    <!-- Targeting Brackets -->
-                    <div class="hud-bracket bracket-tl"></div>
-                    <div class="hud-bracket bracket-tr"></div>
-                    <div class="hud-bracket bracket-bl"></div>
-                    <div class="hud-bracket bracket-br"></div>
+                    <!-- Vòng tròn vạch chia độ SVG -->
+                    <svg class="absolute inset-2 w-[calc(100%-16px)] h-[calc(100%-16px)] animate-[spin_40s_linear_infinite_reverse] opacity-35" viewBox="0 0 200 200">
+                        <circle cx="100" cy="100" r="96" fill="none" stroke="#00d0ff" stroke-width="0.7" stroke-dasharray="2 6" />
+                        <circle cx="100" cy="100" r="82" fill="none" stroke="#ccff00" stroke-width="0.5" stroke-dasharray="15 10 5 10" />
+                    </svg>
+
+                    <!-- Vòng cung Neon Lime xoay ngược -->
+                    <div class="absolute inset-7 rounded-full border-2 border-solid border-neon-lime border-l-transparent border-r-transparent opacity-60 animate-[spin_10s_linear_infinite_reverse] shadow-[0_0_15px_rgba(204,255,0,0.2)]"></div>
                     
-                    <!-- Telemetry Data -->
-                    <div class="absolute top-1/4 left-0 text-[10px] text-cyber-blue font-mono text-left bg-black/50 p-1 backdrop-blur-sm">
-                        <div>TRGT_LC: <span id="tel-1">839.22</span></div>
-                        <div>AZIMUTH: <span id="tel-2">12.4</span></div>
+                    <!-- Quét Radar 360 độ bên trong -->
+                    <div class="absolute inset-16 rounded-full hud-radar-sweep opacity-40"></div>
+                    <div class="absolute inset-16 rounded-full border border-dotted border-white/25 animate-[spin_28s_linear_infinite]"></div>
+                    
+                    <!-- Đường ngắm Crosshair ngang & dọc -->
+                    <div class="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-cyber-blue/60 to-transparent"></div>
+                    <div class="absolute h-full w-[1px] bg-gradient-to-b from-transparent via-cyber-blue/60 to-transparent"></div>
+
+                    <!-- Tâm khóa mục tiêu ở giữa khuôn mặt (Chuyển sang Neon Lime khi Lock) -->
+                    <div id="reticle-core-lock" class="relative w-10 h-10 flex items-center justify-center transition-all duration-500 scale-150 opacity-60">
+                        <div class="w-3 h-3 border border-neon-lime rotate-45 shadow-[0_0_10px_#ccff00]"></div>
+                        <div class="absolute w-1 h-1 bg-alert-red rounded-full animate-ping"></div>
                     </div>
-                    <div class="absolute bottom-1/4 right-0 text-[10px] text-neon-lime font-mono text-right bg-black/50 p-1 backdrop-blur-sm">
-                        <div>MEM_ALLOC: <span id="tel-3">0xFA2B</span></div>
-                        <div>SYS_TEMP: <span id="tel-4">42.0</span>°C</div>
+                    
+                    <!-- 4 Góc khóa mục tiêu (Co lại ôm sát mặt nhân vật) -->
+                    <div id="hud-brackets-box" class="absolute pointer-events-none">
+                        <div class="hud-bracket bracket-tl"></div>
+                        <div class="hud-bracket bracket-tr"></div>
+                        <div class="hud-bracket bracket-bl"></div>
+                        <div class="hud-bracket bracket-br"></div>
                     </div>
-                    <div class="absolute top-12 text-[10px] text-alert-red font-mono text-center tracking-widest animate-pulse bg-black/50 px-2 backdrop-blur-sm">
-                        REC_ACTIVE
+                    
+                    <!-- Thông số Telemetry Góc Trên Trái -->
+                    <div class="absolute top-[20%] -left-2 md:-left-6 text-[10px] text-cyber-blue font-mono text-left bg-black/65 px-2.5 py-1.5 border-l-2 border-cyber-blue backdrop-blur-sm shadow-lg">
+                        <div class="text-[8px] text-gray-400 tracking-widest">ONI_OPTICS // CH_03</div>
+                        <div>TRGT_LC: <span id="tel-1" class="text-white font-bold">839.22</span></div>
+                        <div>AZIMUTH: <span id="tel-2" class="text-neon-lime">12.4°</span></div>
+                    </div>
+
+                    <!-- Thông số Telemetry Góc Dưới Phải -->
+                    <div class="absolute bottom-[20%] -right-2 md:-right-6 text-[10px] text-neon-lime font-mono text-right bg-black/65 px-2.5 py-1.5 border-r-2 border-neon-lime backdrop-blur-sm shadow-lg">
+                        <div>MEM_ALLOC: <span id="tel-3" class="text-cyber-blue">0xFA2B</span></div>
+                        <div>SYS_TEMP: <span id="tel-4" class="text-white">42.0</span>°C</div>
+                        <div class="text-[9px] text-neon-lime/80">SYNC: <span id="tel-sync">0.0%</span></div>
+                    </div>
+
+                    <!-- Nhãn trạng thái REC_ACTIVE / BIOMATA LOCKED phía trên -->
+                    <div id="hud-status-badge" class="absolute top-9 text-[10px] text-cyber-blue font-mono text-center tracking-widest bg-black/75 border border-cyber-blue/40 px-3 py-0.5 backdrop-blur-sm">
+                        <span class="inline-block w-1.5 h-1.5 rounded-full bg-cyber-blue animate-ping mr-1"></span>
+                        <span id="hud-status-text">SCANNING_BIOMATA...</span>
+                    </div>
+
+                    <!-- Thanh xung nhịp sinh học phía dưới vòng tròn -->
+                    <div class="absolute bottom-9 flex items-end gap-1 h-3 px-3 py-0.5 bg-black/60 backdrop-blur-sm border-b border-neon-lime/40">
+                        <span class="text-[8px] font-mono text-gray-400 mr-1">NHẠC NỀN OST:Escape Will Make Me God </span>
+                        <div class="bio-bar w-1 h-full bg-alert-red" style="--spd: 0.45s"></div>
+                        <div class="bio-bar w-1 h-4/5 bg-alert-red" style="--spd: 0.7s"></div>
+                        <div class="bio-bar w-1 h-full bg-alert-red" style="--spd: 0.55s"></div>
+                        <div class="bio-bar w-1 h-3/5 bg-alert-red" style="--spd: 0.8s"></div>
+                        <div class="bio-bar w-1 h-full bg-alert-red" style="--spd: 0.5s"></div>
+                        <div class="bio-bar w-1 h-4/5 bg-alert-red" style="--spd: 0.65s"></div>
                     </div>
                 </div>
 
-                <!-- Right Banner Buttons: OVERVIEW & GALLERY -->
-                <div class="flex flex-col gap-6 transform translate-x-10 transition-transform duration-500" id="hud-right">
+                <!-- CỤM NÚT PHẢI (Đặt vị trí tuyệt đối đối xứng với bên trái) -->
+                <div id="hud-right-panel" class="absolute right-40 md:right-40 lg:right-60 top-1/2 -translate-y-1/2 flex flex-col gap-5 transition-all duration-700 ease-out" style="transform: translate(40px, -50%); opacity: 0;">
+            
                     <a href="#overview" class="hero-btn shadow-[0_0_15px_rgba(0,208,255,0.3)]">
                         <i class="fas fa-terminal mr-2 text-xs"></i>OVERVIEW
                     </a>
-                    <!-- Thay đường link của nhóm bạn vào thuộc tính href bên dưới -->
-                    <a href="https://l.facebook.com/l.php?u=https%3A%2F%2Fdrive.google.com%2Fdrive%2Ffolders%2F11ZsRigwUOBSQm6zZ2Ac8egpOlIQq9wCM%3Fusp%3Ddrive_link%26fbclid%3DIwZXh0bgNhZW0CMTAAcGRvZgVicmlkETFiaWN4emZtU3VPVzJpd2s1c3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABH9J7YtqpQc7B1dpZtoo4SNPGspHamh0BXALo-DzG7fW8PTJX-bFBTazF3r8t_aem_mqC-_OJChh1pUP7A16PkXA&h=AUDggNjiCSNlHPgXcTaCWdI2NMuquRLpNFCSdgW-rCQg7BUHlrpZxKd-13cVdtHsZsBMMBGRwvIIbpdEA4YeE5MI8HtcFWfNxEP0xH_mH6lEtlnmwqwFZ_CHdlorTBK4JTHlzBIOHdC83oE" target="_blank" rel="noopener noreferrer" class="hero-btn shadow-[0_0_15px_rgba(0,208,255,0.3)]">
+                    <a href="https://drive.google.com/drive/folders/11ZsRigwUOBSQm6zZ2Ac8egpOlIQq9wCM" target="_blank" rel="noopener noreferrer" class="hero-btn shadow-[0_0_15px_rgba(0,208,255,0.3)]">
                         <i class="fas fa-images mr-2 text-xs"></i>GALLERY
                     </a>
                 </div>
             </div>
 
-            <!-- Scroll Down Indicator -->
-            <div id="scroll-prompt" class="absolute bottom-10 z-40 text-cyber-blue font-mono text-xs text-center animate-bounce">
-                [ INITIATE BOOT SEQUENCE ]<br>
+            <!-- Chỉ báo cuộn chuột lúc mới vào trang -->
+            <div id="hero-scroll-indicator" class="absolute bottom-8 left-1/2 -translate-x-1/2 z-40 text-cyber-blue font-mono text-xs text-center animate-bounce transition-opacity duration-500">
+                [ SCROLL PLZ ]<br>
                 <i class="fas fa-chevron-down mt-2"></i>
             </div>
         </div>
     </div>
 
+    <!-- Script Điều Khiển Scroll -> Phát Video -> Khóa HUD Theo Khuôn Mặt -->
+    <script>
+        (function() {
+            const closedImg = document.getElementById('recon-closed-layer');
+            const video = document.getElementById('recon-video-layer');
+            const glitchOverlay = document.getElementById('boot-glitch-overlay');
+            const laserLine = document.getElementById('boot-laser-line');
+            const hudWrapper = document.getElementById('hero-hud-wrapper');
+            const hudCenter = document.getElementById('hud-center-reticle');
+            const hudLeft = document.getElementById('hud-left-panel');
+            const hudRight = document.getElementById('hud-right-panel');
+            const reticleCore = document.getElementById('reticle-core-lock');
+            const statusBadge = document.getElementById('hud-status-badge');
+            const statusText = document.getElementById('hud-status-text');
+            const scrollIndicator = document.getElementById('hero-scroll-indicator');
+
+            const tel1 = document.getElementById('tel-1');
+            const tel2 = document.getElementById('tel-2');
+            const tel3 = document.getElementById('tel-3');
+            const tel4 = document.getElementById('tel-4');
+            const telSync = document.getElementById('tel-sync');
+
+            let sequenceStarted = false;
+            let hudRevealed = false;
+            let telemetryInterval = null;
+
+            // Hiệu ứng nhảy số Telemetry liên tục khi đang quét và khóa cố định khi hoàn tất
+            function startTelemetryScramble() {
+                let syncVal = 12.0;
+                const hexPool = ['0xFA2B', '0x9C4E', '0x71D0', '0xE88A', '0x3F19', '0xCA06'];
+                telemetryInterval = setInterval(() => {
+                    tel1.innerText = (300 + Math.random() * 600).toFixed(2);
+                    tel2.innerText = (10 + Math.random() * 340).toFixed(1) + '°';
+                    tel3.innerText = hexPool[Math.floor(Math.random() * hexPool.length)];
+                    tel4.innerText = (39.5 + Math.random() * 3.5).toFixed(1);
+                    syncVal = Math.min(99.8, syncVal + 8.5);
+                    telSync.innerText = syncVal.toFixed(1) + '%';
+                }, 80);
+            }
+
+            function lockFinalTelemetry() {
+                if (telemetryInterval) clearInterval(telemetryInterval);
+                tel1.innerText = '321.01';
+                tel2.innerText = '276.0°';
+                tel3.innerText = '0xCA06';
+                tel4.innerText = '40.3';
+                telSync.innerText = '99.8%';
+
+                reticleCore.style.transform = 'scale(1)';
+                reticleCore.style.opacity = '1';
+
+                statusBadge.className = 'absolute top-9 text-[10px] text-alert-red font-mono text-center tracking-widest bg-black/80 border border-alert-red/60 px-3 py-0.5 backdrop-blur-sm shadow-[0_0_15px_rgba(255,51,51,0.3)] animate-pulse';
+                statusText.innerText = 'REC_ACTIVE // TARGET_LOCKED';
+            }
+
+            // Kích hoạt HUD trong 1 giây cuối và trượt từ chính giữa xuống khớp khuôn mặt
+            function revealAndTrackHud() {
+                if (hudRevealed) return;
+                hudRevealed = true;
+
+                // Đảm bảo vị trí ban đầu ở đúng tâm (0px, 0px) trước khi trượt
+                void hudCenter.offsetWidth;
+
+                hudWrapper.style.transition = 'opacity 0.4s ease-out';
+                hudWrapper.style.opacity = '1';
+                hudWrapper.style.pointerEvents = 'auto';
+                hudWrapper.classList.add('hud-locked');
+
+                // Trượt mượt từ chính giữa xuống dưới 24px (và dịch trái 16px) theo khuôn mặt nhân vật trong 1s cuối
+                hudCenter.style.transition = 'transform 1.05s cubic-bezier(0.22, 1, 0.36, 1)';
+                hudCenter.style.transform = 'translate3d(calc(-50% + var(--lock-x)), calc(-50% + var(--lock-y)), 0) scale(1)';
+
+                // Trượt 2 cụm nút Trái & Phải vào vị trí
+                hudLeft.style.transform = 'translate(0px, -50%)';
+                hudLeft.style.opacity = '1';
+
+                hudRight.style.transform = 'translate(0px, -50%)';
+                hudRight.style.opacity = '1';
+
+                startTelemetryScramble();
+                setTimeout(lockFinalTelemetry, 1050);
+            }
+
+            // Bắt đầu chuỗi chuyển cảnh khi người dùng cuộn xuống
+            function startBootSequence() {
+                if (sequenceStarted) return;
+                sequenceStarted = true;
+
+                // 1. Ẩn dòng nhắc cuộn chuột
+                scrollIndicator.style.opacity = '0';
+                setTimeout(() => scrollIndicator.classList.add('hidden'), 500);
+
+                // 2. Kích hoạt hiệu ứng chớp Glitch & Tia Laser quét
+                glitchOverlay.classList.add('boot-flash-active');
+                laserLine.classList.add('laser-scan-active');
+
+                // 3. Làm mờ ảnh tĩnh closedrecon.png để lộ video dcmm.mp4
+                closedImg.style.opacity = '0';
+                closedImg.style.transform = 'scale(1.03)';
+                setTimeout(() => {
+                    closedImg.style.pointerEvents = 'none';
+                }, 500);
+
+                // 4. Phát video dcmm.mp4
+                video.currentTime = 0;
+                const playPromise = video.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(() => {
+                        // Dự phòng nếu trình duyệt chặn tự phát thì hiện luôn HUD sau 1s
+                        setTimeout(revealAndTrackHud, 800);
+                    });
+                }
+            }
+
+            // Lắng nghe thời gian thực của video: Khi còn <= 1.05 giây cuối thì bung HUD và trượt theo mặt
+            video.addEventListener('timeupdate', () => {
+                if (!sequenceStarted) return;
+                const duration = video.duration || 3.0;
+                const remaining = duration - video.currentTime;
+                if (remaining <= 1.05 && !hudRevealed) {
+                    revealAndTrackHud();
+                }
+            });
+
+            // Khi hết video: Giữ nguyên khung hình cuối cùng và khóa cố định HUD
+            video.addEventListener('ended', () => {
+                video.pause();
+                revealAndTrackHud();
+                lockFinalTelemetry();
+            });
+
+            // Dự phòng nếu file video chưa kịp tải
+            video.addEventListener('error', () => {
+                if (sequenceStarted) revealAndTrackHud();
+            });
+
+            // Kích hoạt ngay khi người dùng bắt đầu cuộn xuống
+            window.addEventListener('scroll', () => {
+                if (!sequenceStarted && window.scrollY > 25) {
+                    startBootSequence();
+                }
+            }, { passive: true });
+        })();
+    </script>
+    
     <!-- ================= MAIN LAYOUT ================= -->
     <div class="flex flex-col md:flex-row min-h-screen relative z-40 bg-deep-blue shadow-[0_-20px_50px_rgba(0,0,0,1)]">
         
         <!-- Sticky Sidebar Navigation (6 Danh Mục Chính) -->
         <aside class="w-full md:w-72 bg-panel-blue border-r border-gray-800 md:sticky md:top-0 md:h-screen flex flex-col p-6 shadow-2xl z-50">
             <div class="mb-8">
-                <h1 class="text-3xl text-neon-lime font-black tracking-widest">[ MARATHON ]</h1>
-                <p class="text-[10px] text-cyber-blue mt-2 uppercase tracking-widest">GDD Bài giữa kì</p>
+                <h1 class="text-3xl text-neon-lime font-black tracking-widest">[MARATHON]</h1>
+                <p class="text-[10px] text-cyber-blue mt-2 uppercase tracking-widest">GDD/Bài Giữa kì</p>
                 <div class="h-px w-full bg-gray-800 mt-4 relative">
                     <div class="absolute left-0 top-0 h-full w-1/2 bg-gradient-to-r from-neon-lime to-transparent"></div>
                 </div>
@@ -272,7 +531,6 @@
                 </div>
             </div>
         </aside>
-
         <!-- Main Content Area -->
         <main class="flex-1 p-6 md:p-12 lg:p-16 max-w-6xl mx-auto">
             
@@ -619,31 +877,31 @@ Nhóm thiết kế của Bungie nhắm tới 3 tệp khách hàng:
                     </div>
 
                     <div class="terminal-panel p-5 hover:border-neon-lime transition flex flex-col justify-between group">
-    <div>
-        <i class="fas fa-user-astronaut text-2xl text-neon-lime mb-3 group-hover:scale-110 transition inline-block"></i>
-        <h3 class="text-base text-white mb-2 tracking-wider">CHARACTERS</h3>
-        <p class="text-xs text-gray-400 mb-4">Hồ sơ nhân vật, ngoại hình, tiểu sử, kỹ năng chiến đấu và dữ liệu nhận dạng.</p>
-    </div>
-    <a href="characters.html" class="cyber-btn w-full">TRUY CẬP HỒ SƠ <i class="fas fa-arrow-right"></i></a>
-</div>
+                        <div>
+                            <i class="fas fa-user-astronaut text-2xl text-neon-lime mb-3 group-hover:scale-110 transition inline-block"></i>
+                            <h3 class="text-base text-white mb-2 tracking-wider">CHARACTERS</h3>
+                            <p class="text-xs text-gray-400 mb-4">Hồ sơ nhân vật, ngoại hình, tiểu sử, kỹ năng chiến đấu và dữ liệu nhận dạng.</p>
+                        </div>
+                        <a href="characters.html" class="cyber-btn w-full">TRUY CẬP HỒ SƠ <i class="fas fa-arrow-right"></i></a>
+                    </div>
 
-<div class="terminal-panel p-5 hover:border-neon-purple transition flex flex-col justify-between group">
-    <div>
-        <i class="fas fa-shield-alt text-2xl text-purple-400 mb-3 group-hover:rotate-12 transition inline-block"></i>
-        <h3 class="text-base text-white mb-2 tracking-wider">FACTIONS</h3>
-        <p class="text-xs text-gray-400 mb-4">Các tổ chức, thế lực, liên minh và phe đối địch. Khám phá biểu tượng, hệ thống quyền lực và lịch sử.</p>
-    </div>
-    <a href="art-factions.html" class="cyber-btn w-full">GIẢI MÃ THẾ LỰC <i class="fas fa-arrow-right"></i></a>
-</div>
+                    <div class="terminal-panel p-5 hover:border-neon-purple transition flex flex-col justify-between group">
+                        <div>
+                            <i class="fas fa-shield-alt text-2xl text-purple-400 mb-3 group-hover:rotate-12 transition inline-block"></i>
+                            <h3 class="text-base text-white mb-2 tracking-wider">FACTIONS</h3>
+                            <p class="text-xs text-gray-400 mb-4">Các tổ chức, thế lực, liên minh và phe đối địch. Khám phá biểu tượng, hệ thống quyền lực và lịch sử.</p>
+                        </div>
+                        <a href="art-factions.html" class="cyber-btn w-full">GIẢI MÃ THẾ LỰC <i class="fas fa-arrow-right"></i></a>
+                    </div>
 
-<div class="terminal-panel p-5 hover:border-cyber-blue transition flex flex-col justify-between group">
-    <div>
-        <i class="fas fa-film text-2xl text-cyber-blue mb-3 group-hover:scale-110 transition inline-block"></i>
-        <h3 class="text-base text-white mb-2 tracking-wider">ANIMATION</h3>
-        <p class="text-xs text-gray-400 mb-4">Thư viện chuyển động, cinematic, hiệu ứng hình ảnh, animation nhân vật và các phân cảnh đặc biệt.</p>
-    </div>
-    <a href="art-animation.html" class="cyber-btn w-full">KHỞI CHẠY ANIMATION <i class="fas fa-arrow-right"></i></a>
-</div>
+                    <div class="terminal-panel p-5 hover:border-cyber-blue transition flex flex-col justify-between group">
+                        <div>
+                            <i class="fas fa-film text-2xl text-cyber-blue mb-3 group-hover:scale-110 transition inline-block"></i>
+                            <h3 class="text-base text-white mb-2 tracking-wider">ANIMATION</h3>
+                            <p class="text-xs text-gray-400 mb-4">Thư viện chuyển động, cinematic, hiệu ứng hình ảnh, animation nhân vật và các phân cảnh đặc biệt.</p>
+                        </div>
+                        <a href="art-animation.html" class="cyber-btn w-full">KHỞI CHẠY ANIMATION <i class="fas fa-arrow-right"></i></a>
+                    </div>
 
                 </div>
 
