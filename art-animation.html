@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Style - Hệ Thống Hoạt Ảnh (Animation System) | Marathon GDD - CUTES1TG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Liên kết tới file CSS dùng chung -->
+    <link rel="stylesheet" href="style.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Orbitron', 'sans-serif'],
+                        mono: ['Share Tech Mono', 'monospace'],
+                    },
+                    colors: {
+                        'deep-blue': '#0a0f18',
+                        'panel-blue': '#121a28',
+                        'neon-lime': '#ccff00',
+                        'alert-red': '#ff3333',
+                        'cyber-blue': '#00d0ff'
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        .anim-tab.active, .filter-btn.active {
+            background-color: #ccff00;
+            border-color: #ccff00;
+            color: #0a0f18;
+            box-shadow: 0 0 15px rgba(204, 255, 0, 0.45);
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Scanline Overlay -->
+    <div class="scanline"></div>
+
+    <!-- ================= MODAL PHÓNG TO GIF / VIDEO ================= -->
+    <div id="inspect-modal" class="fixed inset-0 z-[9999] hidden items-center justify-center bg-black/85 backdrop-blur-md p-4">
+        <div class="terminal-panel max-w-5xl w-full p-6 md:p-8 border border-neon-lime shadow-[0_0_50px_rgba(204,255,0,0.25)] relative">
+            <button onclick="closeInspectModal()" class="absolute top-4 right-4 text-gray-400 hover:text-alert-red font-mono text-xs border border-gray-700 hover:border-alert-red px-3 py-1 transition">
+                [ X ] ĐÓNG
+            </button>
+            <div class="text-xs font-mono text-cyber-blue mb-1" id="modal-category">ANIMATION SEQUENCE INSPECTOR</div>
+            <h3 class="text-2xl md:text-3xl text-white font-heading mb-4" id="modal-title">ANIMATION NAME</h3>
+            
+            <div id="modal-media-container" class="bg-black border border-gray-800 p-3 flex items-center justify-center h-[440px] mb-4 relative overflow-hidden">
+                <!-- Media injected dynamically -->
+            </div>
+
+            <div class="bg-black/70 border-l-2 border-neon-lime p-3.5 text-xs md:text-sm text-gray-200 leading-relaxed" id="modal-desc"></div>
+        </div>
+    </div>
+
+    <!-- ================= TOP BAR / HEADER ================= -->
+    <header class="sticky top-0 z-50 bg-panel-blue/95 backdrop-blur-md border-b border-gray-800 px-6 py-4 shadow-lg">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <a href="main.html#art-sound" class="cyber-btn !py-2 !px-4">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>QUAY LẠI TRANG CHÍNH</span>
+                </a>
+                <div class="hidden md:block h-6 w-px bg-gray-700"></div>
+                <div class="hidden md:block">
+                    <span class="text-[10px] text-cyber-blue font-mono block tracking-widest">SECTION 05 // ART STYLE + SOUND</span>
+                    <span class="text-xs text-white font-heading font-bold tracking-wider">ANIMATION SYSTEM & MOTION TELEMETRY</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 text-[11px] font-mono">
+                <span class="text-gray-400">SEQUENCES: <strong class="text-neon-lime">12 ANIMATION CATEGORIES</strong></span>
+                <span class="text-gray-600">|</span>
+                <span class="text-gray-400">FORMAT: <strong class="text-cyber-blue">GIF / MOTION LOOP</strong></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-neon-lime animate-ping"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= MAIN LAYOUT ================= -->
+    <div class="flex-1 max-w-7xl w-full mx-auto p-6 md:p-10 lg:p-12">
+
+        <!-- Page Title Banner -->
+        <div class="mb-10 border-b border-gray-800 pb-6 relative">
+            <h1 class="text-3xl md:text-5xl text-white font-black tracking-wider mb-3">
+                <span class="text-neon-lime">ANIMATION: </span> HỆ THỐNG HOẠT ẢNH
+            </h1>
+            <p class="text-sm text-gray-300 max-w-4xl leading-relaxed">
+                Hệ thống hoạt ảnh trong <strong class="text-white">MARATHON (2026)</strong> là sự giao thoa giữa chuyển động cơ học chính xác của vỏ bọc nhân tạo (<strong class="text-neon-lime">Biomata Runner Shells</strong>), phản hồi xúc giác góc nhìn thứ nhất (<span class="text-cyber-blue font-bold">First-Person Tactile Viewmodel</span>) và ngôn ngữ đồ họa chuyển động trên giao diện HUD (<span class="text-neon-lime font-bold">Diegetic Motion Telemetry</span>). Dưới đây là 12 danh mục hoạt ảnh cốt lõi trong vòng lặp trải nghiệm của người chơi.
+            </p>
+        </div>
+
+        <!-- ================= BẢNG TỔNG HỢP NHANH 12 DANH MỤC HOẠT ẢNH ================= -->
+        <section id="animation-matrix" class="mb-14">
+            <div class="terminal-panel p-6 md:p-8 border-l-4 border-l-cyber-blue">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6 border-b border-gray-800 pb-4">
+                    <div>
+                        <span class="text-[10px] font-mono text-cyber-blue tracking-widest uppercase">MOTION INDEX // 12 CORE ANIMATION SEQUENCES</span>
+                        <h2 class="text-xl md:text-2xl text-white mt-1">DANH MỤC 12 HOẠT ẢNH TRONG GAMEPLAY & GIAO DIỆN</h2>
+                    </div>
+                    <a href="#full-animation-list" class="text-xs font-mono text-neon-lime hover:underline">
+                        [ CUỘN XUỐNG XEM TOÀN BỘ 12 GIF ↓ ]
+                    </a>
+                </div>
+
+                <div class="overflow-x-auto border border-gray-800">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="bg-black text-neon-lime font-heading border-b border-gray-800">
+                                <th class="p-3 border-r border-gray-800">MÃ</th>
+                                <th class="p-3 border-r border-gray-800">TÊN DANH MỤC (FILE GIF)</th>
+                                <th class="p-3 border-r border-gray-800">NHÓM CHỨC NĂNG</th>
+                                <th class="p-3">Ý NGHĨA THỊ GIÁC & GAMEPLAY</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-800 bg-black/50 text-gray-300 font-mono">
+                            <tr class="hover:bg-panel-blue/60 cursor-pointer transition" onclick="switchSpotlight(0)">
+                                <td class="p-3 border-r border-gray-800 text-neon-lime font-bold">01</td>
+                                <td class="p-3 border-r border-gray-800 text-white font-bold">Consumables.gif</td>
+                                <td class="p-3 border-r border-gray-800 text-neon-lime">Sinh tồn & Hồi phục</td>
+                                <td class="p-3 font-sans">Thao tác kích hoạt và sử dụng vật phẩm tiêu hao ở góc nhìn thứ nhất</td>
+                            </tr>
+                            <tr class="hover:bg-panel-blue/60 cursor-pointer transition" onclick="switchSpotlight(1)">
+                                <td class="p-3 border-r border-gray-800 text-cyber-blue font-bold">02</td>
+                                <td class="p-3 border-r border-gray-800 text-white font-bold">Equipment.gif</td>
+                                <td class="p-3 border-r border-gray-800 text-cyber-blue">Chiến đấu & Chiến thuật</td>
+                                <td class="p-3 font-sans">Rút, bung mở mô-đun và triển khai thiết bị tác chiến / lựu đạn</td>
+                            </tr>
+                            <tr class="hover:bg-panel-blue/60 cursor-pointer transition" onclick="switchSpotlight(2)">
+                                <td class="p-3 border-r border-gray-800 text-neon-lime font-bold">03</td>
+                                <td class="p-3 border-r border-gray-800 text-white font-bold">Event profit oportunity start.gif</td>
+                                <td class="p-3 border-r border-gray-800 text-neon-lime">Sự kiện & HUD</td>
+                                <td class="p-3 font-sans">Tín hiệu HUD bùng lên khi khởi phát sự kiện cơ hội lợi nhuận trên bản đồ</td>
+                            </tr>
+                            <tr class="hover:bg-panel-blue/60 cursor-pointer transition" onclick="switchSpotlight(3)">
+                                <td class="p-3 border-r border-gray-800 text-amber-400 font-bold">04</td>
+                                <td class="p-3 border-r border-gray-800 text-white font-bold">Event profit oportunity end.gif</td>
+                                <td class="p-3 border-r border-gray-800 text-amber-400">Sự kiện & HUD</td>
+                                <td class="p-3 font-sans">Hoạt ảnh đóng giao thức và tổng kết dữ liệu khi sự kiện kết thúc</td>
+                            </tr>
+                            <tr class="hover:bg-panel-blue/60 cursor-pointer transition" onclick="switchSpotlight(4)">
+                                <td class="p-3 border-r border-gray-800 text-neon-lime font-bold">05</td>
+                                <td class="p-3 border-r border-gray-800 text-white font-bold">Fight win.gif</td>
+                                <td class="p-3 border-r border-gray-800 text-neon-lime">Chiến đấu & Chiến thuật</td>
+                                <td class="p-3 font-sans">Hoạt ảnh chiến thắng giao tranh và xác nhận hạ gục đối phương</td>
+                            </tr>
+                            <tr class="hover:bg-panel-blue/60 cursor-pointer transition" onclick="switchSpotlight(5)">
+                                <td class="p-3 border-r border-gray-800 text-alert-red font-bold">06</td>
+                                <td class="p-3 border-r border-gray-800 text-white font-bold">Fight lost.gif</td>
+                                <td class="p-3 border-r border-gray-800 text-alert-red">Chiến đấu & Chiến thuật</td>
+                                <td class="p-3 font-sans">Thất bại giao tranh, nhiễu loạn tín hiệu và mất kết nối vỏ bọc Biomata</td>
+                            </tr>
+                            <tr class="hover:bg-panel-blue/60 cursor-pointer transition" onclick="switchSpotlight(6)">
+                                <td class="p-3 border-r border-gray-800 text-cyber-blue font-bold">07</td>
+                                <td class="p-3 border-r border-gray-800 text-white font-bold">Matchmake sequence.gif</td>
+                                <td class="p-3 border-r border-gray-800 text-cyber-blue">Hệ thống & Triển khai</td>
+                                <td class="p-3 font-sans">Chuỗi ghép trận, liên kết ý thức và dịch chuyển Etherstep xuống hành tinh</td>
+                            </tr>
+                            <tr class="hover:bg-panel-blue/60 cursor-pointer transition" onclick="switchSpotlight(7)">
+                                <td class="p-3 border-r border-gray-800 text-amber-400 font-bold">08</td>
+                                <td class="p-3 border-r border-gray-800 text-white font-bold">Open loot.gif</td>
+                                <td class="p-3 border-r border-gray-800 text-amber-400">Thám hiểm & Thu thập</td>
+                                <td class="p-3 font-sans">Mở khóa container chiến lợi phẩm và quét phân cấp độ hiếm vật phẩm</td>
+                            </tr>
+                            <tr class="hover:bg-panel-blue/60 cursor-pointer transition" onclick="switchSpotlight(8)">
+                                <td class="p-3 border-r border-gray-800 text-emerald-400 font-bold">09</td>
+                                <td class="p-3 border-r border-gray-800 text-white font-bold">Patch up.gif</td>
+                                <td class="p-3 border-r border-gray-800 text-emerald-400">Sinh tồn & Hồi phục</td>
+                                <td class="p-3 font-sans">Thao tác dùng Patch Kit bơm hợp chất vá mô sinh học phục hồi máu</td>
+                            </tr>
+                            <tr class="hover:bg-panel-blue/60 cursor-pointer transition" onclick="switchSpotlight(9)">
+                                <td class="p-3 border-r border-gray-800 text-cyber-blue font-bold">10</td>
+                                <td class="p-3 border-r border-gray-800 text-white font-bold">Scanning.gif</td>
+                                <td class="p-3 border-r border-gray-800 text-cyber-blue">Thám hiểm & Thu thập</td>
+                                <td class="p-3 font-sans">Phát xung cảm biến quét địa hình, bóc tách mục tiêu và dữ liệu ẩn</td>
+                            </tr>
+                            <tr class="hover:bg-panel-blue/60 cursor-pointer transition" onclick="switchSpotlight(10)">
+                                <td class="p-3 border-r border-gray-800 text-pink-400 font-bold">11</td>
+                                <td class="p-3 border-r border-gray-800 text-white font-bold">See ya.gif</td>
+                                <td class="p-3 border-r border-gray-800 text-pink-400">Hệ thống & Triển khai</td>
+                                <td class="p-3 font-sans">Bắn năng lượng</td>
+                            </tr>
+                            <tr class="hover:bg-panel-blue/60 cursor-pointer transition" onclick="switchSpotlight(11)">
+                                <td class="p-3 border-r border-gray-800 text-cyber-blue font-bold">12</td>
+                                <td class="p-3 border-r border-gray-800 text-white font-bold">Shield up.gif</td>
+                                <td class="p-3 border-r border-gray-800 text-cyber-blue">Sinh tồn & Hồi phục</td>
+                                <td class="p-3 font-sans">Thao tác nạp lõi năng lượng từ trường khôi phục các vạch giáp bảo vệ</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TRẠM TRÌNH CHIẾU TƯƠNG TÁC (SPOTLIGHT ANIMATION DECK) ================= -->
+
+        <!-- ================= DANH SÁCH ĐẦY ĐỦ 12 DANH MỤC HOẠT ẢNH (CÓ BỘ LỌC) ================= -->
+        <section id="full-animation-list" class="mb-16">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 border-b border-gray-800 pb-4">
+                <div>
+                    <span class="text-[10px] font-mono text-cyber-blue tracking-widest block">COMPLETE ANIMATION GALLERY // ALL 12 CATEGORIES</span>
+                    <h2 class="text-2xl md:text-4xl text-white font-black mt-1">
+                        CHI TIẾT TOÀN BỘ 12 DANH MỤC ANIMATION
+                    </h2>
+                </div>
+
+                <!-- Bộ lọc theo nhóm chức năng -->
+                <div class="flex flex-wrap gap-2">
+                    <button type="button" onclick="filterAnimations('ALL', this)" class="cyber-btn filter-btn active !py-1.5 !px-3 !text-[10px]">
+                        TẤT CẢ (12)
+                    </button>
+                    <button type="button" onclick="filterAnimations('SURVIVAL & HEALING', this)" class="cyber-btn filter-btn !py-1.5 !px-3 !text-[10px]">
+                        SINH TỒN & HỒI PHỤC (3)
+                    </button>
+                    <button type="button" onclick="filterAnimations('COMBAT & TACTICAL', this)" class="cyber-btn filter-btn !py-1.5 !px-3 !text-[10px]">
+                        CHIẾN ĐẤU (3)
+                    </button>
+                    <button type="button" onclick="filterAnimations('EXPLORATION & LOOT', this)" class="cyber-btn filter-btn !py-1.5 !px-3 !text-[10px]">
+                        THÁM HIỂM & LOOT (2)
+                    </button>
+                    <button type="button" onclick="filterAnimations('HUD & WORLD EVENT', this)" class="cyber-btn filter-btn !py-1.5 !px-3 !text-[10px]">
+                        SỰ KIỆN & HUD (2)
+                    </button>
+                    <button type="button" onclick="filterAnimations('SYSTEM & DEPLOYMENT', this)" class="cyber-btn filter-btn !py-1.5 !px-3 !text-[10px]">
+                        TRIỂN KHAI & EMOTE (2)
+                    </button>
+                </div>
+            </div>
+
+            <div class="space-y-10" id="anim-cards-container">
+                
+    <article id="anim-consumables" data-category="SURVIVAL & HEALING" class="anim-card terminal-panel p-6 md:p-8 border-l-4 border-neon-lime hover:shadow-[0_0_30px_rgba(0,208,255,0.12)] transition duration-300">
+        <!-- Card Header -->
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-800 pb-4 mb-6">
+            <div class="flex items-center gap-3">
+                <span class="text-2xl md:text-3xl font-heading font-black text-neon-lime">[01]</span>
+                <div>
+                    <span class="text-[10px] font-mono text-gray-400 block tracking-widest">ANIMATION SEQUENCE // SURVIVAL & HEALING</span>
+                    <h3 class="text-xl md:text-2xl text-white font-heading font-black tracking-wider">CONSUMABLES <span class="text-sm font-normal text-gray-400 font-mono">— Sử dụng Vật phẩm Tiêu hao</span></h3>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="px-3 py-1 border text-xs font-mono font-bold uppercase tracking-wider bg-neon-lime/15 text-neon-lime border-neon-lime/50">
+                    <i class="fas fa-film mr-1.5"></i>Sinh tồn & Hồi phục
+                </span>
+            </div>
+        </div>
+
+        <!-- Card Body: Left (GIF / Media Stage) | Right (Breakdown) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+            
+            <!-- Left: GIF Stage -->
+            <div class="lg:col-span-6 bg-black/90 border border-gray-800 hover:border-neon-lime p-3 flex flex-col justify-between group cursor-pointer transition"
+                 onclick="openAnimModal(0)">
+                <div class="flex items-center justify-between text-[10px] font-mono text-gray-400 border-b border-gray-800/80 pb-1.5 mb-2.5">
+                    <span class="text-neon-lime font-bold"><i class="fas fa-circle-play mr-1.5"></i>FILE: Consumables.gif</span>
+                    <span class="group-hover:text-neon-lime transition">[ CLICK PHÓNG TO ]</span>
+                </div>
+                <div class="h-64 sm:h-72 flex items-center justify-center overflow-hidden relative bg-deep-blue/60" id="media-box-0">
+                    <img id="anim-img-0"
+                         src="gif/Consumables.gif"
+                         data-gifs='["Consumables.gif", "consumables.gif", "animation/Consumables.gif", "animations/Consumables.gif", "animation/consumables.gif", "anim1.gif"]'
+                         data-mp4s='["Consumables.mp4", "consumables.mp4", "animation/Consumables.mp4"]'
+                         data-placeholder="https://placehold.co/800x450/0a0f18/ccff00?text=CONSUMABLES+(Consumables.gif)"
+                         onerror="handleMediaFallback(this, 0)"
+                         alt="CONSUMABLES"
+                         class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                </div>
+                <div class="flex items-center justify-between text-[9px] font-mono text-gray-500 mt-2 pt-1.5 border-t border-gray-800/60">
+                    <span>SOURCE: <strong class="text-gray-300">Consumables.gif</strong></span>
+                    <span class="text-cyber-blue">LOOP: INFINITE</span>
+                </div>
+            </div>
+
+            <!-- Right: Technical & Gameplay Breakdown -->
+            <div class="lg:col-span-6 flex flex-col justify-between space-y-4">
+                
+                <!-- 1. Mô tả hoạt ảnh -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-neon-lime font-bold mb-1.5">
+                        <span><i class="fas fa-eye mr-1.5"></i>MÔ TẢ CHUYỂN ĐỘNG & THỊ GIÁC:</span>
+                        <span>SEQ_01</span>
+                    </div>
+                    <p class="text-xs md:text-sm text-gray-200 leading-relaxed">
+                        Hoạt ảnh góc nhìn thứ nhất (First-Person Viewmodel) khi Runner kích hoạt các vật phẩm tiêu hao nhanh trong trận đấu. Từng chuyển động tháo nắp, nạp ống tiêm hoặc kích hoạt mô-đun sinh học đều được thể hiện với độ chi tiết cơ khí cao, phản ánh rõ nét cấu trúc cơ thể nhân tạo Biomata.
+                    </p>
+                </div>
+
+                <!-- 2. Đặc điểm kỹ thuật & thẩm mỹ -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="text-[10px] font-mono text-cyber-blue font-bold mb-2 flex items-center gap-1.5">
+                        <i class="fas fa-sliders"></i>
+                        <span>ĐẶC ĐIỂM KỸ THUẬT & NGÔN NGỮ HOẠT HỌA:</span>
+                    </div>
+                    <ul class="space-y-1.5">
+                        <li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-neon-lime font-bold">▹</span><span>Chuyển động tay dứt khoát, mang tính cơ học chính xác của khung xương Runner Shell.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-neon-lime font-bold">▹</span><span>Hiệu ứng đèn LED báo trạng thái và chất lỏng sinh học phát sáng màu Neon tương phản cao.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-neon-lime font-bold">▹</span><span>Đồng bộ chặt chẽ với chuỗi âm thanh cơ-điện tử (tiếng tháo chốt, tiếng bơm áp suất).</span></li>
+                    </ul>
+                </div>
+
+                <!-- 3. Vai trò Gameplay -->
+                <div class="bg-panel-blue/80 border-l-2 border-neon-lime p-3 text-xs text-gray-200">
+                    <strong class="text-neon-lime font-mono block mb-0.5">→ VAI TRÒ TRONG GAMEPLAY:</strong>
+                    <span>Tạo nhịp độ rủi ro – phần thưởng (Risk/Reward) trong giao tranh: thời gian hoạt ảnh buộc người chơi phải tìm vị trí ẩn nấp an toàn trước khi sử dụng vật phẩm.</span>
+                </div>
+
+            </div>
+
+        </div>
+    </article>
+    
+
+    <article id="anim-equipment" data-category="COMBAT & TACTICAL" class="anim-card terminal-panel p-6 md:p-8 border-l-4 border-cyber-blue hover:shadow-[0_0_30px_rgba(0,208,255,0.12)] transition duration-300">
+        <!-- Card Header -->
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-800 pb-4 mb-6">
+            <div class="flex items-center gap-3">
+                <span class="text-2xl md:text-3xl font-heading font-black text-cyber-blue">[02]</span>
+                <div>
+                    <span class="text-[10px] font-mono text-gray-400 block tracking-widest">ANIMATION SEQUENCE // COMBAT & TACTICAL</span>
+                    <h3 class="text-xl md:text-2xl text-white font-heading font-black tracking-wider">EQUIPMENT <span class="text-sm font-normal text-gray-400 font-mono">— Triển khai Thiết bị Chiến thuật</span></h3>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="px-3 py-1 border text-xs font-mono font-bold uppercase tracking-wider bg-cyber-blue/15 text-cyber-blue border-cyber-blue/50">
+                    <i class="fas fa-film mr-1.5"></i>Chiến đấu & Chiến thuật
+                </span>
+            </div>
+        </div>
+
+        <!-- Card Body: Left (GIF / Media Stage) | Right (Breakdown) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+            
+            <!-- Left: GIF Stage -->
+            <div class="lg:col-span-6 bg-black/90 border border-gray-800 hover:border-cyber-blue p-3 flex flex-col justify-between group cursor-pointer transition"
+                 onclick="openAnimModal(1)">
+                <div class="flex items-center justify-between text-[10px] font-mono text-gray-400 border-b border-gray-800/80 pb-1.5 mb-2.5">
+                    <span class="text-cyber-blue font-bold"><i class="fas fa-circle-play mr-1.5"></i>FILE: Equipment.gif</span>
+                    <span class="group-hover:text-neon-lime transition">[ CLICK PHÓNG TO ]</span>
+                </div>
+                <div class="h-64 sm:h-72 flex items-center justify-center overflow-hidden relative bg-deep-blue/60" id="media-box-1">
+                    <img id="anim-img-1"
+                         src="gif/Equpmnt.gif"
+                         data-gifs='["Equipment.gif", "equipment.gif", "animation/Equipment.gif", "animations/Equipment.gif", "animation/equipment.gif", "anim2.gif"]'
+                         data-mp4s='["Equipment.mp4", "equipment.mp4", "animation/Equipment.mp4"]'
+                         data-placeholder="https://placehold.co/800x450/0a0f18/00d0ff?text=EQUIPMENT+(Equipment.gif)"
+                         onerror="handleMediaFallback(this, 1)"
+                         alt="EQUIPMENT"
+                         class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                </div>
+                <div class="flex items-center justify-between text-[9px] font-mono text-gray-500 mt-2 pt-1.5 border-t border-gray-800/60">
+                    <span>SOURCE: <strong class="text-gray-300">Equipment.gif</strong></span>
+                    <span class="text-cyber-blue">LOOP: INFINITE</span>
+                </div>
+            </div>
+
+            <!-- Right: Technical & Gameplay Breakdown -->
+            <div class="lg:col-span-6 flex flex-col justify-between space-y-4">
+                
+                <!-- 1. Mô tả hoạt ảnh -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-cyber-blue font-bold mb-1.5">
+                        <span><i class="fas fa-eye mr-1.5"></i>MÔ TẢ CHUYỂN ĐỘNG & THỊ GIÁC:</span>
+                        <span>SEQ_02</span>
+                    </div>
+                    <p class="text-xs md:text-sm text-gray-200 leading-relaxed">
+                        Chuỗi hoạt ảnh rút, kích hoạt và triển khai các trang bị tác chiến chuyên dụng (như lựu đạn xung điện EMP, thiết bị tạo khói, mìn bẫy hoặc phụ kiện kỹ năng Shell). Thiết kế hoạt ảnh nhấn mạnh vào trọng lượng vật lý và cơ cấu bung mở mô-đun hình khối.
+                    </p>
+                </div>
+
+                <!-- 2. Đặc điểm kỹ thuật & thẩm mỹ -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="text-[10px] font-mono text-cyber-blue font-bold mb-2 flex items-center gap-1.5">
+                        <i class="fas fa-sliders"></i>
+                        <span>ĐẶC ĐIỂM KỸ THUẬT & NGÔN NGỮ HOẠT HỌA:</span>
+                    </div>
+                    <ul class="space-y-1.5">
+                        <li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-cyber-blue font-bold">▹</span><span>Các khớp nối hình khối lăng trụ bung mở sắc nét trước khi thiết bị rời tay nhân vật.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-cyber-blue font-bold">▹</span><span>Vệt sáng dẫn đường (trajectory/telemetry trail) mang thẩm mỹ Graphic Realism.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-cyber-blue font-bold">▹</span><span>Chuyển tiếp mượt mà giữa trạng thái cầm súng và trạng thái thao tác thiết bị phụ trợ.</span></li>
+                    </ul>
+                </div>
+
+                <!-- 3. Vai trò Gameplay -->
+                <div class="bg-panel-blue/80 border-l-2 border-cyber-blue p-3 text-xs text-gray-200">
+                    <strong class="text-cyber-blue font-mono block mb-0.5">→ VAI TRÒ TRONG GAMEPLAY:</strong>
+                    <span>Cung cấp phản hồi thị giác tức thì về trạng thái sẵn sàng của công cụ chiến thuật, giúp người chơi căn chuẩn thời điểm ném hoặc đặt thiết bị trong không gian 3D.</span>
+                </div>
+
+            </div>
+
+        </div>
+    </article>
+    
+
+    <article id="anim-event-start" data-category="HUD & WORLD EVENT" class="anim-card terminal-panel p-6 md:p-8 border-l-4 border-neon-lime hover:shadow-[0_0_30px_rgba(0,208,255,0.12)] transition duration-300">
+        <!-- Card Header -->
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-800 pb-4 mb-6">
+            <div class="flex items-center gap-3">
+                <span class="text-2xl md:text-3xl font-heading font-black text-neon-lime">[03]</span>
+                <div>
+                    <span class="text-[10px] font-mono text-gray-400 block tracking-widest">ANIMATION SEQUENCE // HUD & WORLD EVENT</span>
+                    <h3 class="text-xl md:text-2xl text-white font-heading font-black tracking-wider">EVENT PROFIT OPPORTUNITY START <span class="text-sm font-normal text-gray-400 font-mono">— Khởi phát Sự kiện Cơ hội Lợi nhuận</span></h3>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="px-3 py-1 border text-xs font-mono font-bold uppercase tracking-wider bg-neon-lime/15 text-neon-lime border-neon-lime/50">
+                    <i class="fas fa-film mr-1.5"></i>Sự kiện Bản đồ & Giao diện HUD
+                </span>
+            </div>
+        </div>
+
+        <!-- Card Body: Left (GIF / Media Stage) | Right (Breakdown) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+            
+            <!-- Left: GIF Stage -->
+            <div class="lg:col-span-6 bg-black/90 border border-gray-800 hover:border-neon-lime p-3 flex flex-col justify-between group cursor-pointer transition"
+                 onclick="openAnimModal(2)">
+                <div class="flex items-center justify-between text-[10px] font-mono text-gray-400 border-b border-gray-800/80 pb-1.5 mb-2.5">
+                    <span class="text-neon-lime font-bold"><i class="fas fa-circle-play mr-1.5"></i>FILE: Event profit oportunity start.gif</span>
+                    <span class="group-hover:text-neon-lime transition">[ CLICK PHÓNG TO ]</span>
+                </div>
+                <div class="h-64 sm:h-72 flex items-center justify-center overflow-hidden relative bg-deep-blue/60" id="media-box-2">
+                    <img id="anim-img-2"
+                         src="gif/Evnt prft op start (1).gif"
+                         data-gifs='["Event profit oportunity start.gif", "Event profit opportunity start.gif", "event-profit-oportunity-start.gif", "event-profit-opportunity-start.gif", "animation/Event profit oportunity start.gif", "anim3.gif"]'
+                         data-mp4s='["Event profit oportunity start.mp4", "Event profit opportunity start.mp4"]'
+                         data-placeholder="https://placehold.co/800x450/0a0f18/ccff00?text=EVENT+PROFIT+OPPORTUNITY+START+(Event+profit+oportunity+start.gif)"
+                         onerror="handleMediaFallback(this, 2)"
+                         alt="EVENT PROFIT OPPORTUNITY START"
+                         class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                </div>
+                <div class="flex items-center justify-between text-[9px] font-mono text-gray-500 mt-2 pt-1.5 border-t border-gray-800/60">
+                    <span>SOURCE: <strong class="text-gray-300">Event profit oportunity start.gif</strong></span>
+                    <span class="text-cyber-blue">LOOP: INFINITE</span>
+                </div>
+            </div>
+
+            <!-- Right: Technical & Gameplay Breakdown -->
+            <div class="lg:col-span-6 flex flex-col justify-between space-y-4">
+                
+                <!-- 1. Mô tả hoạt ảnh -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-neon-lime font-bold mb-1.5">
+                        <span><i class="fas fa-eye mr-1.5"></i>MÔ TẢ CHUYỂN ĐỘNG & THỊ GIÁC:</span>
+                        <span>SEQ_03</span>
+                    </div>
+                    <p class="text-xs md:text-sm text-gray-200 leading-relaxed">
+                        Hoạt ảnh cảnh báo và bung giao diện Telemetry khi một sự kiện săn thưởng hoặc điểm nóng tài nguyên giá trị cao (Profit Opportunity / Anomalous Event) vừa kích hoạt trên bản đồ. Hệ thống ONI lập tức chiếu các lớp đồ họa kỹ thuật số lên tầm nhìn của Runner.
+                    </p>
+                </div>
+
+                <!-- 2. Đặc điểm kỹ thuật & thẩm mỹ -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="text-[10px] font-mono text-cyber-blue font-bold mb-2 flex items-center gap-1.5">
+                        <i class="fas fa-sliders"></i>
+                        <span>ĐẶC ĐIỂM KỸ THUẬT & NGÔN NGỮ HOẠT HỌA:</span>
+                    </div>
+                    <ul class="space-y-1.5">
+                        <li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-neon-lime font-bold">▹</span><span>Đồ họa HUD 2D sắc lạnh với tông màu Acid Lime / Volt Yellow đặc trưng của Marathon.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-neon-lime font-bold">▹</span><span>Hiệu ứng chạy chữ dòng lệnh (Monospace Telemetry) và khung định vị mục tiêu nhấp nháy.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-neon-lime font-bold">▹</span><span>Biểu tượng tập đoàn và thông số phần thưởng xuất hiện theo nhịp quét kỹ thuật số.</span></li>
+                    </ul>
+                </div>
+
+                <!-- 3. Vai trò Gameplay -->
+                <div class="bg-panel-blue/80 border-l-2 border-neon-lime p-3 text-xs text-gray-200">
+                    <strong class="text-neon-lime font-mono block mb-0.5">→ VAI TRÒ TRONG GAMEPLAY:</strong>
+                    <span>Thu hút sự chú ý tức thì của các đội chơi trong khu vực, thúc đẩy quyết định di chuyển chiến thuật và tạo ra các điểm giao tranh PvPvE sôi động.</span>
+                </div>
+
+            </div>
+
+        </div>
+    </article>
+    
+
+    <article id="anim-event-end" data-category="HUD & WORLD EVENT" class="anim-card terminal-panel p-6 md:p-8 border-l-4 border-amber-400 hover:shadow-[0_0_30px_rgba(0,208,255,0.12)] transition duration-300">
+        <!-- Card Header -->
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-800 pb-4 mb-6">
+            <div class="flex items-center gap-3">
+                <span class="text-2xl md:text-3xl font-heading font-black text-amber-400">[04]</span>
+                <div>
+                    <span class="text-[10px] font-mono text-gray-400 block tracking-widest">ANIMATION SEQUENCE // HUD & WORLD EVENT</span>
+                    <h3 class="text-xl md:text-2xl text-white font-heading font-black tracking-wider">EVENT PROFIT OPPORTUNITY END <span class="text-sm font-normal text-gray-400 font-mono">— Kết thúc Sự kiện Cơ hội Lợi nhuận</span></h3>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="px-3 py-1 border text-xs font-mono font-bold uppercase tracking-wider bg-amber-400/15 text-amber-300 border-amber-400/50">
+                    <i class="fas fa-film mr-1.5"></i>Sự kiện Bản đồ & Giao diện HUD
+                </span>
+            </div>
+        </div>
+
+        <!-- Card Body: Left (GIF / Media Stage) | Right (Breakdown) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+            
+            <!-- Left: GIF Stage -->
+            <div class="lg:col-span-6 bg-black/90 border border-gray-800 hover:border-amber-400 p-3 flex flex-col justify-between group cursor-pointer transition"
+                 onclick="openAnimModal(3)">
+                <div class="flex items-center justify-between text-[10px] font-mono text-gray-400 border-b border-gray-800/80 pb-1.5 mb-2.5">
+                    <span class="text-amber-400 font-bold"><i class="fas fa-circle-play mr-1.5"></i>FILE: Event profit oportunity end.gif</span>
+                    <span class="group-hover:text-neon-lime transition">[ CLICK PHÓNG TO ]</span>
+                </div>
+                <div class="h-64 sm:h-72 flex items-center justify-center overflow-hidden relative bg-deep-blue/60" id="media-box-3">
+                    <img id="anim-img-3"
+                         src="gif/Evnt prft op end.gif"
+                         data-gifs='["Event profit oportunity end.gif", "Event profit opportunity end.gif", "event-profit-oportunity-end.gif", "event-profit-opportunity-end.gif", "animation/Event profit oportunity end.gif", "anim4.gif"]'
+                         data-mp4s='["Event profit oportunity end.mp4", "Event profit opportunity end.mp4"]'
+                         data-placeholder="https://placehold.co/800x450/0a0f18/fbbf24?text=EVENT+PROFIT+OPPORTUNITY+END+(Event+profit+oportunity+end.gif)"
+                         onerror="handleMediaFallback(this, 3)"
+                         alt="EVENT PROFIT OPPORTUNITY END"
+                         class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                </div>
+                <div class="flex items-center justify-between text-[9px] font-mono text-gray-500 mt-2 pt-1.5 border-t border-gray-800/60">
+                    <span>SOURCE: <strong class="text-gray-300">Event profit oportunity end.gif</strong></span>
+                    <span class="text-cyber-blue">LOOP: INFINITE</span>
+                </div>
+            </div>
+
+            <!-- Right: Technical & Gameplay Breakdown -->
+            <div class="lg:col-span-6 flex flex-col justify-between space-y-4">
+                
+                <!-- 1. Mô tả hoạt ảnh -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-amber-400 font-bold mb-1.5">
+                        <span><i class="fas fa-eye mr-1.5"></i>MÔ TẢ CHUYỂN ĐỘNG & THỊ GIÁC:</span>
+                        <span>SEQ_04</span>
+                    </div>
+                    <p class="text-xs md:text-sm text-gray-200 leading-relaxed">
+                        Hoạt ảnh tổng kết và đóng giao thức khi sự kiện cơ hội lợi nhuận kết thúc (do đã bị khai thác hoàn toàn hoặc hết thời gian giới hạn). Các lớp thông tin trên màn hình HUD thu gọn lại sau khi xác nhận trạng thái hoàn tất.
+                    </p>
+                </div>
+
+                <!-- 2. Đặc điểm kỹ thuật & thẩm mỹ -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="text-[10px] font-mono text-cyber-blue font-bold mb-2 flex items-center gap-1.5">
+                        <i class="fas fa-sliders"></i>
+                        <span>ĐẶC ĐIỂM KỸ THUẬT & NGÔN NGỮ HOẠT HỌA:</span>
+                    </div>
+                    <ul class="space-y-1.5">
+                        <li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-amber-400 font-bold">▹</span><span>Hiệu ứng đóng khung dữ liệu (Data Collapse) gọn gàng, không gây che khuất tầm nhìn chiến đấu.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-amber-400 font-bold">▹</span><span>Tín hiệu xác nhận trạng thái hoàn thành hợp đồng / thu hồi dữ liệu về quỹ đạo.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-amber-400 font-bold">▹</span><span>Chuyển đổi màu sắc từ trạng thái kích hoạt khẩn cấp về trạng thái trung tính.</span></li>
+                    </ul>
+                </div>
+
+                <!-- 3. Vai trò Gameplay -->
+                <div class="bg-panel-blue/80 border-l-2 border-amber-400 p-3 text-xs text-gray-200">
+                    <strong class="text-amber-400 font-mono block mb-0.5">→ VAI TRÒ TRONG GAMEPLAY:</strong>
+                    <span>Thông báo rõ ràng cho toàn bộ Runner trong khu vực biết điểm nóng đã khép lại, giúp người chơi nhanh chóng chuyển hướng sang mục tiêu tiếp theo hoặc tìm đường Exfil.</span>
+                </div>
+
+            </div>
+
+        </div>
+    </article>
+    
+
+    <article id="anim-fight-win" data-category="COMBAT & TACTICAL" class="anim-card terminal-panel p-6 md:p-8 border-l-4 border-neon-lime hover:shadow-[0_0_30px_rgba(0,208,255,0.12)] transition duration-300">
+        <!-- Card Header -->
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-800 pb-4 mb-6">
+            <div class="flex items-center gap-3">
+                <span class="text-2xl md:text-3xl font-heading font-black text-neon-lime">[05]</span>
+                <div>
+                    <span class="text-[10px] font-mono text-gray-400 block tracking-widest">ANIMATION SEQUENCE // COMBAT & TACTICAL</span>
+                    <h3 class="text-xl md:text-2xl text-white font-heading font-black tracking-wider">FIGHT WIN <span class="text-sm font-normal text-gray-400 font-mono">— Chiến thắng Giao tranh</span></h3>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="px-3 py-1 border text-xs font-mono font-bold uppercase tracking-wider bg-neon-lime/15 text-neon-lime border-neon-lime/50">
+                    <i class="fas fa-film mr-1.5"></i>Chiến đấu & Chiến thuật
+                </span>
+            </div>
+        </div>
+
+        <!-- Card Body: Left (GIF / Media Stage) | Right (Breakdown) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+            
+            <!-- Left: GIF Stage -->
+            <div class="lg:col-span-6 bg-black/90 border border-gray-800 hover:border-neon-lime p-3 flex flex-col justify-between group cursor-pointer transition"
+                 onclick="openAnimModal(4)">
+                <div class="flex items-center justify-between text-[10px] font-mono text-gray-400 border-b border-gray-800/80 pb-1.5 mb-2.5">
+                    <span class="text-neon-lime font-bold"><i class="fas fa-circle-play mr-1.5"></i>FILE: Fight win.gif</span>
+                    <span class="group-hover:text-neon-lime transition">[ CLICK PHÓNG TO ]</span>
+                </div>
+                <div class="h-64 sm:h-72 flex items-center justify-center overflow-hidden relative bg-deep-blue/60" id="media-box-4">
+                    <img id="anim-img-4"
+                         src="gif/win.gif"
+                         data-gifs='["Fight win.gif", "fight win.gif", "fight-win.gif", "animation/Fight win.gif", "animations/Fight win.gif", "anim5.gif"]'
+                         data-mp4s='["Fight win.mp4", "fight win.mp4", "fight-win.mp4"]'
+                         data-placeholder="https://placehold.co/800x450/0a0f18/ccff00?text=FIGHT+WIN+(Fight+win.gif)"
+                         onerror="handleMediaFallback(this, 4)"
+                         alt="FIGHT WIN"
+                         class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                </div>
+                <div class="flex items-center justify-between text-[9px] font-mono text-gray-500 mt-2 pt-1.5 border-t border-gray-800/60">
+                    <span>SOURCE: <strong class="text-gray-300">Fight win.gif</strong></span>
+                    <span class="text-cyber-blue">LOOP: INFINITE</span>
+                </div>
+            </div>
+
+            <!-- Right: Technical & Gameplay Breakdown -->
+            <div class="lg:col-span-6 flex flex-col justify-between space-y-4">
+                
+                <!-- 1. Mô tả hoạt ảnh -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-neon-lime font-bold mb-1.5">
+                        <span><i class="fas fa-eye mr-1.5"></i>MÔ TẢ CHUYỂN ĐỘNG & THỊ GIÁC:</span>
+                        <span>SEQ_05</span>
+                    </div>
+                    <p class="text-xs md:text-sm text-gray-200 leading-relaxed">
+                        Hoạt ảnh tôn vinh khoảnh khắc Runner giành chiến thắng áp đảo trong pha đụng độ trực diện. Kết hợp giữa chuyển động cơ thể đầy tự tin của nhân vật và tín hiệu xác nhận tiêu diệt mục tiêu từ hệ thống điều hành ONI.
+                    </p>
+                </div>
+
+                <!-- 2. Đặc điểm kỹ thuật & thẩm mỹ -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="text-[10px] font-mono text-cyber-blue font-bold mb-2 flex items-center gap-1.5">
+                        <i class="fas fa-sliders"></i>
+                        <span>ĐẶC ĐIỂM KỸ THUẬT & NGÔN NGỮ HOẠT HỌA:</span>
+                    </div>
+                    <ul class="space-y-1.5">
+                        <li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-neon-lime font-bold">▹</span><span>Ngôn ngữ cơ thể mạnh mẽ, làm nổi bật phom dáng thiết kế đặc trưng của từng Runner Shell.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-neon-lime font-bold">▹</span><span>Tín hiệu thị giác sắc nét xác nhận ưu thế tuyệt đối trên chiến trường.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-neon-lime font-bold">▹</span><span>Sự đối lập thú vị giữa vẻ ngoài nhựa bóng màu sắc rực rỡ và động tác chiến thắng sắc lạnh.</span></li>
+                    </ul>
+                </div>
+
+                <!-- 3. Vai trò Gameplay -->
+                <div class="bg-panel-blue/80 border-l-2 border-neon-lime p-3 text-xs text-gray-200">
+                    <strong class="text-neon-lime font-mono block mb-0.5">→ VAI TRÒ TRONG GAMEPLAY:</strong>
+                    <span>Tạo điểm nhấn cảm xúc giải tỏa căng thẳng (Catharsis) sau những pha đấu súng sinh tử có rủi ro mất toàn bộ trang bị cao.</span>
+                </div>
+
+            </div>
+
+        </div>
+    </article>
+    
+
+    <article id="anim-fight-lost" data-category="COMBAT & TACTICAL" class="anim-card terminal-panel p-6 md:p-8 border-l-4 border-alert-red hover:shadow-[0_0_30px_rgba(0,208,255,0.12)] transition duration-300">
+        <!-- Card Header -->
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-800 pb-4 mb-6">
+            <div class="flex items-center gap-3">
+                <span class="text-2xl md:text-3xl font-heading font-black text-alert-red">[06]</span>
+                <div>
+                    <span class="text-[10px] font-mono text-gray-400 block tracking-widest">ANIMATION SEQUENCE // COMBAT & TACTICAL</span>
+                    <h3 class="text-xl md:text-2xl text-white font-heading font-black tracking-wider">FIGHT LOST <span class="text-sm font-normal text-gray-400 font-mono">— Thất bại Giao tranh & Ngắt Kết nối Shell</span></h3>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="px-3 py-1 border text-xs font-mono font-bold uppercase tracking-wider bg-alert-red/15 text-alert-red border-alert-red/50">
+                    <i class="fas fa-film mr-1.5"></i>Chiến đấu & Chiến thuật
+                </span>
+            </div>
+        </div>
+
+        <!-- Card Body: Left (GIF / Media Stage) | Right (Breakdown) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+            
+            <!-- Left: GIF Stage -->
+            <div class="lg:col-span-6 bg-black/90 border border-gray-800 hover:border-alert-red p-3 flex flex-col justify-between group cursor-pointer transition"
+                 onclick="openAnimModal(5)">
+                <div class="flex items-center justify-between text-[10px] font-mono text-gray-400 border-b border-gray-800/80 pb-1.5 mb-2.5">
+                    <span class="text-alert-red font-bold"><i class="fas fa-circle-play mr-1.5"></i>FILE: Fight lost.gif</span>
+                    <span class="group-hover:text-neon-lime transition">[ CLICK PHÓNG TO ]</span>
+                </div>
+                <div class="h-64 sm:h-72 flex items-center justify-center overflow-hidden relative bg-deep-blue/60" id="media-box-5">
+                    <img id="anim-img-5"
+                         src="gif/loss.gif"
+                         data-gifs='["Fight lost.gif", "fight lost.gif", "fight-lost.gif", "animation/Fight lost.gif", "animations/Fight lost.gif", "anim6.gif"]'
+                         data-mp4s='["Fight lost.mp4", "fight lost.mp4", "fight-lost.mp4"]'
+                         data-placeholder="https://placehold.co/800x450/0a0f18/ff3333?text=FIGHT+LOST+(Fight+lost.gif)"
+                         onerror="handleMediaFallback(this, 5)"
+                         alt="FIGHT LOST"
+                         class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                </div>
+                <div class="flex items-center justify-between text-[9px] font-mono text-gray-500 mt-2 pt-1.5 border-t border-gray-800/60">
+                    <span>SOURCE: <strong class="text-gray-300">Fight lost.gif</strong></span>
+                    <span class="text-cyber-blue">LOOP: INFINITE</span>
+                </div>
+            </div>
+
+            <!-- Right: Technical & Gameplay Breakdown -->
+            <div class="lg:col-span-6 flex flex-col justify-between space-y-4">
+                
+                <!-- 1. Mô tả hoạt ảnh -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-alert-red font-bold mb-1.5">
+                        <span><i class="fas fa-eye mr-1.5"></i>MÔ TẢ CHUYỂN ĐỘNG & THỊ GIÁC:</span>
+                        <span>SEQ_06</span>
+                    </div>
+                    <p class="text-xs md:text-sm text-gray-200 leading-relaxed">
+                        Hoạt ảnh khi Runner bị hạ gục trong giao tranh và vỏ bọc sinh học (Biomata Shell) bị phá hủy hoàn toàn. Màn hình và cơ thể nhân vật trải qua hiện tượng nhiễu loạn tín hiệu (Digital Psychosis) trước khi đường truyền ý thức bị ngắt khỏi xác vỏ.
+                    </p>
+                </div>
+
+                <!-- 2. Đặc điểm kỹ thuật & thẩm mỹ -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="text-[10px] font-mono text-cyber-blue font-bold mb-2 flex items-center gap-1.5">
+                        <i class="fas fa-sliders"></i>
+                        <span>ĐẶC ĐIỂM KỸ THUẬT & NGÔN NGỮ HOẠT HỌA:</span>
+                    </div>
+                    <ul class="space-y-1.5">
+                        <li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-alert-red font-bold">▹</span><span>Hiệu ứng sập nguồn hệ thống quang học, nhiễu hạt kỹ thuật số (Glitch / Artifacting) và sắc đỏ cảnh báo (#FF3300).</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-alert-red font-bold">▹</span><span>Chuyển động gục ngã nặng nề như một cỗ máy sinh học mất hoàn toàn tín hiệu điều khiển thần kinh.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-alert-red font-bold">▹</span><span>Khắc họa rõ triết lý cốt truyện: cơ thể chỉ là lớp vỏ tạm thời chứa đựng dữ liệu ý thức.</span></li>
+                    </ul>
+                </div>
+
+                <!-- 3. Vai trò Gameplay -->
+                <div class="bg-panel-blue/80 border-l-2 border-alert-red p-3 text-xs text-gray-200">
+                    <strong class="text-alert-red font-mono block mb-0.5">→ VAI TRÒ TRONG GAMEPLAY:</strong>
+                    <span>Nhấn mạnh tính khắc nghiệt của thể loại Extraction Shooter: cái chết đồng nghĩa với việc bỏ lại xác vỏ cùng toàn bộ chiến lợi phẩm tại hiện trường.</span>
+                </div>
+
+            </div>
+
+        </div>
+    </article>
+    
+    
+  <article id="anim-open-loot" data-category="EXPLORATION & LOOT" class="anim-card terminal-panel p-6 md:p-8 border-l-4 border-amber-400 hover:shadow-[0_0_30px_rgba(0,208,255,0.12)] transition duration-300">
+        <!-- Card Header -->
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-800 pb-4 mb-6">
+            <div class="flex items-center gap-3">
+                <span class="text-2xl md:text-3xl font-heading font-black text-amber-400">[07]</span>
+                <div>
+                    <span class="text-[10px] font-mono text-gray-400 block tracking-widest">ANIMATION SEQUENCE // EXPLORATION & LOOT</span>
+                    <h3 class="text-xl md:text-2xl text-white font-heading font-black tracking-wider">OPEN LOOT <span class="text-sm font-normal text-gray-400 font-mono">— Mở Hòm Chiến lợi phẩm & Thu thập</span></h3>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="px-3 py-1 border text-xs font-mono font-bold uppercase tracking-wider bg-amber-400/15 text-amber-300 border-amber-400/50">
+                    <i class="fas fa-film mr-1.5"></i>Thám hiểm & Thu thập Vật phẩm
+                </span>
+            </div>
+        </div>
+
+        <!-- Card Body: Left (GIF / Media Stage) | Right (Breakdown) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+            
+            <!-- Left: GIF Stage -->
+            <div class="lg:col-span-6 bg-black/90 border border-gray-800 hover:border-amber-400 p-3 flex flex-col justify-between group cursor-pointer transition"
+                 onclick="openAnimModal(7)">
+                <div class="flex items-center justify-between text-[10px] font-mono text-gray-400 border-b border-gray-800/80 pb-1.5 mb-2.5">
+                    <span class="text-amber-400 font-bold"><i class="fas fa-circle-play mr-1.5"></i>FILE: Open loot.mp4</span>
+                    <span class="group-hover:text-neon-lime transition">[ CLICK PHÓNG TO ]</span>
+                </div>
+                <div class="h-64 sm:h-72 flex items-center justify-center overflow-hidden relative bg-deep-blue/60" id="media-box-7">
+                    <video id="anim-video-7"
+                         src="gif/Opn loot.mp4"
+                         autoplay loop muted playsinline disablePictureInPicture preload="metadata"
+                         data-mp4s='["Open loot.mp4", "animation/Open loot.mp4", "animations/Open loot.mp4", "open loot.mp4", "animation/open loot.mp4", "animations/open loot.mp4", "open-loot.mp4", "animation/open-loot.mp4", "animations/open-loot.mp4"]'
+                         data-gifs='["Open loot.gif", "open loot.gif", "open-loot.gif", "animation/Open loot.gif", "animations/Open loot.gif", "anim8.gif"]'
+                         data-placeholder="https://placehold.co/800x450/0a0f18/fbbf24?text=OPEN+LOOT+(Open+loot.mp4)"
+                         onerror="handleVideoFallback(this)"
+                         class="w-full h-full object-cover group-hover:scale-105 transition duration-500"></video>
+                </div>
+                <div class="flex items-center justify-between text-[9px] font-mono text-gray-500 mt-2 pt-1.5 border-t border-gray-800/60">
+                    <span>SOURCE: <strong class="text-gray-300">Open loot.mp4</strong></span>
+                    <span class="text-cyber-blue">LOOP: INFINITE</span>
+                </div>
+            </div>
+
+            <!-- Right: Technical & Gameplay Breakdown -->
+            <div class="lg:col-span-6 flex flex-col justify-between space-y-4">
+                
+                <!-- 1. Mô tả hoạt ảnh -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-amber-400 font-bold mb-1.5">
+                        <span><i class="fas fa-eye mr-1.5"></i>MÔ TẢ CHUYỂN ĐỘNG & THỊ GIÁC:</span>
+                        <span>SEQ_07</span>
+                    </div>
+                    <p class="text-xs md:text-sm text-gray-200 leading-relaxed">
+                        Hoạt ảnh tương tác trực tiếp khi Runner mở khóa các thùng hàng công nghiệp, két sắt tập đoàn hoặc xác đơn vị UESC để tìm kiếm vật phẩm. Cơ cấu khóa cơ học trượt mở kết hợp cùng giao diện quét vật phẩm hiện lên ngay trong tầm mắt.
+                    </p>
+                </div>
+
+                <!-- 2. Đặc điểm kỹ thuật & thẩm mỹ -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="text-[10px] font-mono text-cyber-blue font-bold mb-2 flex items-center gap-1.5">
+                        <i class="fas fa-sliders"></i>
+                        <span>ĐẶC ĐIỂM KỸ THUẬT & NGÔN NGỮ HOẠT HỌA:</span>
+                    </div>
+                    <ul class="space-y-1.5">
+                        <li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-amber-400 font-bold">▹</span><span>Thiết kế hòm chứa mang đậm phong cách Industrial Sci-Fi với các chốt khóa hình khối cơ bản.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-amber-400 font-bold">▹</span><span>Ánh sáng mã hóa theo cấp độ hiếm của vật phẩm (Trắng, Xanh lá, Electric Cyan, Tím, Vàng Volt, Đỏ Crimson).</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-amber-400 font-bold">▹</span><span>Cảm giác tương tác vật lý đầm chắc, liền mạch với giao diện kho đồ (Inventory UI).</span></li>
+                    </ul>
+                </div>
+
+                <!-- 3. Vai trò Gameplay -->
+                <div class="bg-panel-blue/80 border-l-2 border-amber-400 p-3 text-xs text-gray-200">
+                    <strong class="text-amber-400 font-mono block mb-0.5">→ VAI TRÒ TRONG GAMEPLAY:</strong>
+                    <span>Trực quan hóa vòng lặp cốt lõi (Core Loop) của trò chơi: khoảnh khắc hồi hộp chờ đợi giá trị vật phẩm (Loot Rarity) xuất hiện khi nắp hòm bật mở.</span>
+                </div>
+
+            </div>
+
+        </div>
+    </article>
+    
+
+  <article id="anim-patch-up" data-category="SURVIVAL & HEALING" class="anim-card terminal-panel p-6 md:p-8 border-l-4 border-emerald-400 hover:shadow-[0_0_30px_rgba(0,208,255,0.12)] transition duration-300">
+        <!-- Card Header -->
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-800 pb-4 mb-6">
+            <div class="flex items-center gap-3">
+                <span class="text-2xl md:text-3xl font-heading font-black text-emerald-400">[08]</span>
+                <div>
+                    <span class="text-[10px] font-mono text-gray-400 block tracking-widest">ANIMATION SEQUENCE // SURVIVAL & HEALING</span>
+                    <h3 class="text-xl md:text-2xl text-white font-heading font-black tracking-wider">PATCH UP <span class="text-sm font-normal text-gray-400 font-mono">— Bơm máu & Vá Mô Sinh học (Patch Kit)</span></h3>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="px-3 py-1 border text-xs font-mono font-bold uppercase tracking-wider bg-emerald-500/15 text-emerald-300 border-emerald-400/50">
+                    <i class="fas fa-film mr-1.5"></i>Sinh tồn & Hồi phục
+                </span>
+            </div>
+        </div>
+
+        <!-- Card Body: Left (GIF / Media Stage) | Right (Breakdown) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+            
+            <!-- Left: GIF Stage -->
+            <div class="lg:col-span-6 bg-black/90 border border-gray-800 hover:border-emerald-400 p-3 flex flex-col justify-between group cursor-pointer transition"
+                 onclick="openAnimModal(8)">
+                <div class="flex items-center justify-between text-[10px] font-mono text-gray-400 border-b border-gray-800/80 pb-1.5 mb-2.5">
+                    <span class="text-emerald-400 font-bold"><i class="fas fa-circle-play mr-1.5"></i>FILE: Patch up.mp4</span>
+                    <span class="group-hover:text-neon-lime transition">[ CLICK PHÓNG TO ]</span>
+                </div>
+                <div class="h-64 sm:h-72 flex items-center justify-center overflow-hidden relative bg-deep-blue/60" id="media-box-8">
+                    <video id="anim-video-8"
+                         src="gif/Ptch up.mp4"
+                         autoplay loop muted playsinline disablePictureInPicture preload="metadata"
+                         data-mp4s='["Patch up.mp4", "animation/Patch up.mp4", "animations/Patch up.mp4", "patch up.mp4", "animation/patch up.mp4", "animations/patch up.mp4", "patch-up.mp4", "animation/patch-up.mp4", "animations/patch-up.mp4"]'
+                         data-gifs='["Patch up.gif", "patch up.gif", "patch-up.gif", "animation/Patch up.gif", "animations/Patch up.gif", "anim9.gif"]'
+                         data-placeholder="https://placehold.co/800x450/0a0f18/34d399?text=PATCH+UP+(Patch+up.mp4)"
+                         onerror="handleVideoFallback(this)"
+                         class="w-full h-full object-cover group-hover:scale-105 transition duration-500"></video>
+                </div>
+                <div class="flex items-center justify-between text-[9px] font-mono text-gray-500 mt-2 pt-1.5 border-t border-gray-800/60">
+                    <span>SOURCE: <strong class="text-gray-300">Patch up.mp4</strong></span>
+                    <span class="text-cyber-blue">LOOP: INFINITE</span>
+                </div>
+            </div>
+
+            <!-- Right: Technical & Gameplay Breakdown -->
+            <div class="lg:col-span-6 flex flex-col justify-between space-y-4">
+                
+                <!-- 1. Mô tả hoạt ảnh -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-emerald-400 font-bold mb-1.5">
+                        <span><i class="fas fa-eye mr-1.5"></i>MÔ TẢ CHUYỂN ĐỘNG & THỊ GIÁC:</span>
+                        <span>SEQ_08</span>
+                    </div>
+                    <p class="text-xs md:text-sm text-gray-200 leading-relaxed">
+                        Hoạt ảnh chuyên biệt khi Runner sử dụng thiết bị Patch Kit để vá tổn thương và tái tạo dịch sinh học cho cơ thể Biomata sau khi trúng đạn. Thiết bị bơm áp lực cao gắn trực tiếp vào cổng tiếp nhận trên cánh tay hoặc giáp ngực của nhân vật.
+                    </p>
+                </div>
+
+                <!-- 2. Đặc điểm kỹ thuật & thẩm mỹ -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="text-[10px] font-mono text-cyber-blue font-bold mb-2 flex items-center gap-1.5">
+                        <i class="fas fa-sliders"></i>
+                        <span>ĐẶC ĐIỂM KỸ THUẬT & NGÔN NGỮ HOẠT HỌA:</span>
+                    </div>
+                    <ul class="space-y-1.5">
+                        <li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-emerald-400 font-bold">▹</span><span>Chi tiết cơ khí của thiết bị y tế dã chiến với ống dẫn chất lỏng sinh học phát sáng.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-emerald-400 font-bold">▹</span><span>Chuyển động ghim kim / khóa khớp nối dứt khoát vào bề mặt vỏ nhựa tổng hợp của Runner.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-emerald-400 font-bold">▹</span><span>Hiệu ứng màn hình giảm dần độ nhiễu đỏ khi chỉ số sinh tồn của cơ thể được khôi phục.</span></li>
+                    </ul>
+                </div>
+
+                <!-- 3. Vai trò Gameplay -->
+                <div class="bg-panel-blue/80 border-l-2 border-emerald-400 p-3 text-xs text-gray-200">
+                    <strong class="text-emerald-400 font-mono block mb-0.5">→ VAI TRÒ TRONG GAMEPLAY:</strong>
+                    <span>Cung cấp dấu hiệu thị giác và thính giác rõ ràng về quá trình hồi phục máu, buộc người chơi phải cân nhắc thời điểm tự cứu chữa giữa giao tranh.</span>
+                </div>
+
+            </div>
+
+        </div>
+    </article>
+
+    <article id="anim-scanning" data-category="EXPLORATION & LOOT" class="anim-card terminal-panel p-6 md:p-8 border-l-4 border-cyber-blue hover:shadow-[0_0_30px_rgba(0,208,255,0.12)] transition duration-300">
+        <!-- Card Header -->
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-800 pb-4 mb-6">
+            <div class="flex items-center gap-3">
+                <span class="text-2xl md:text-3xl font-heading font-black text-cyber-blue">[09]</span>
+                <div>
+                    <span class="text-[10px] font-mono text-gray-400 block tracking-widest">ANIMATION SEQUENCE // EXPLORATION & LOOT</span>
+                    <h3 class="text-xl md:text-2xl text-white font-heading font-black tracking-wider">SCANNING <span class="text-sm font-normal text-gray-400 font-mono">— Quét Dữ liệu Môi trường & Trinh sát</span></h3>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="px-3 py-1 border text-xs font-mono font-bold uppercase tracking-wider bg-cyber-blue/15 text-cyber-blue border-cyber-blue/50">
+                    <i class="fas fa-film mr-1.5"></i>Thám hiểm & Thu thập Vật phẩm
+                </span>
+            </div>
+        </div>
+
+        <!-- Card Body: Left (GIF / Media Stage) | Right (Breakdown) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+            
+            <!-- Left: GIF Stage -->
+            <div class="lg:col-span-6 bg-black/90 border border-gray-800 hover:border-cyber-blue p-3 flex flex-col justify-between group cursor-pointer transition"
+                 onclick="openAnimModal(9)">
+                <div class="flex items-center justify-between text-[10px] font-mono text-gray-400 border-b border-gray-800/80 pb-1.5 mb-2.5">
+                    <span class="text-cyber-blue font-bold"><i class="fas fa-circle-play mr-1.5"></i>FILE: Scanning.gif</span>
+                    <span class="group-hover:text-neon-lime transition">[ CLICK PHÓNG TO ]</span>
+                </div>
+                <div class="h-64 sm:h-72 flex items-center justify-center overflow-hidden relative bg-deep-blue/60" id="media-box-9">
+                    <img id="anim-img-9"
+                         src="gif/Scanning.gif"
+                         data-gifs='["Scanning.gif", "scanning.gif", "animation/Scanning.gif", "animations/Scanning.gif", "anim10.gif"]'
+                         data-mp4s='["Scanning.mp4", "scanning.mp4"]'
+                         data-placeholder="https://placehold.co/800x450/0a0f18/00d0ff?text=SCANNING+(Scanning.gif)"
+                         onerror="handleMediaFallback(this, 9)"
+                         alt="SCANNING"
+                         class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                </div>
+                <div class="flex items-center justify-between text-[9px] font-mono text-gray-500 mt-2 pt-1.5 border-t border-gray-800/60">
+                    <span>SOURCE: <strong class="text-gray-300">Scanning.gif</strong></span>
+                    <span class="text-cyber-blue">LOOP: INFINITE</span>
+                </div>
+            </div>
+
+            <!-- Right: Technical & Gameplay Breakdown -->
+            <div class="lg:col-span-6 flex flex-col justify-between space-y-4">
+                
+                <!-- 1. Mô tả hoạt ảnh -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-cyber-blue font-bold mb-1.5">
+                        <span><i class="fas fa-eye mr-1.5"></i>MÔ TẢ CHUYỂN ĐỘNG & THỊ GIÁC:</span>
+                        <span>SEQ_09</span>
+                    </div>
+                    <p class="text-xs md:text-sm text-gray-200 leading-relaxed">
+                        Hoạt ảnh phát xung cảm biến quang học và thu thập dữ liệu môi trường xung quanh (như kỹ năng Echo Pulse của Recon, kính X-Ray Visor của Thief hoặc thiết bị quét nhiệm vụ). Một lớp lưới sóng năng lượng lan tỏa qua các bề mặt kiến trúc và địa hình tự nhiên.
+                    </p>
+                </div>
+
+                <!-- 2. Đặc điểm kỹ thuật & thẩm mỹ -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="text-[10px] font-mono text-cyber-blue font-bold mb-2 flex items-center gap-1.5">
+                        <i class="fas fa-sliders"></i>
+                        <span>ĐẶC ĐIỂM KỸ THUẬT & NGÔN NGỮ HOẠT HỌA:</span>
+                    </div>
+                    <ul class="space-y-1.5">
+                        <li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-cyber-blue font-bold">▹</span><span>Lưới sóng quét Hologram sắc nét phủ lên địa hình chân thực, làm nổi bật các vật thể nhân tạo.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-cyber-blue font-bold">▹</span><span>Các điểm đánh dấu (Waypoints / Ping) và thông số khoảng cách hiển thị theo phong cách Telemetry.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-cyber-blue font-bold">▹</span><span>Minh chứng điển hình cho triết lý Graphic Realism: dùng đồ họa kỹ thuật số tương phản để dẫn dắt tầm nhìn.</span></li>
+                    </ul>
+                </div>
+
+                <!-- 3. Vai trò Gameplay -->
+                <div class="bg-panel-blue/80 border-l-2 border-cyber-blue p-3 text-xs text-gray-200">
+                    <strong class="text-cyber-blue font-mono block mb-0.5">→ VAI TRÒ TRONG GAMEPLAY:</strong>
+                    <span>Giúp người chơi phát hiện vị trí kẻ địch ẩn nấp, dấu chân hologram, hòm vật phẩm giá trị hoặc các thiết bị đầu cuối (Terminal) cần giải mã.</span>
+                </div>
+
+            </div>
+
+        </div>
+    </article>
+    
+
+    <article id="anim-see-ya" data-category="SYSTEM & DEPLOYMENT" class="anim-card terminal-panel p-6 md:p-8 border-l-4 border-pink-500 hover:shadow-[0_0_30px_rgba(0,208,255,0.12)] transition duration-300">
+        <!-- Card Header -->
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-800 pb-4 mb-6">
+            <div class="flex items-center gap-3">
+                <span class="text-2xl md:text-3xl font-heading font-black text-pink-400">[10]</span>
+                <div>
+                    <span class="text-[10px] font-mono text-gray-400 block tracking-widest">ANIMATION SEQUENCE // SYSTEM & DEPLOYMENT</span>
+                    <h3 class="text-xl md:text-2xl text-white font-heading font-black tracking-wider">SEE YA </span></h3>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="px-3 py-1 border text-xs font-mono font-bold uppercase tracking-wider bg-pink-500/15 text-pink-300 border-pink-500/50">
+                    <i class="fas fa-film mr-1.5"></i>Hệ thống & Triển khai Trận đấu
+                </span>
+            </div>
+        </div>
+
+        <!-- Card Body: Left (GIF / Media Stage) | Right (Breakdown) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+            
+            <!-- Left: GIF Stage -->
+            <div class="lg:col-span-6 bg-black/90 border border-gray-800 hover:border-pink-500 p-3 flex flex-col justify-between group cursor-pointer transition"
+                 onclick="openAnimModal(10)">
+                <div class="flex items-center justify-between text-[10px] font-mono text-gray-400 border-b border-gray-800/80 pb-1.5 mb-2.5">
+                    <span class="text-pink-400 font-bold"><i class="fas fa-circle-play mr-1.5"></i>FILE: See ya.mp4</span>
+                    <span class="group-hover:text-neon-lime transition">[ CLICK PHÓNG TO ]</span>
+                </div>
+                <div class="h-64 sm:h-72 flex items-center justify-center overflow-hidden relative bg-deep-blue/60" id="media-box-10">
+                    <video id="anim-video-10"
+                         src="gif/See ya.mp4"
+                         autoplay loop muted playsinline disablePictureInPicture preload="metadata"
+                         data-mp4s='["See ya.mp4", "animation/See ya.mp4", "animations/See ya.mp4", "see ya.mp4", "animation/see ya.mp4", "animations/see ya.mp4", "see-ya.mp4", "animation/see-ya.mp4", "animations/see-ya.mp4"]'
+                         data-gifs='["See ya.gif", "see ya.gif", "see-ya.gif", "animation/See ya.gif", "animations/See ya.gif", "anim11.gif"]'
+                         data-placeholder="https://placehold.co/800x450/0a0f18/ec4899?text=SEE+YA+(See+ya.mp4)"
+                         onerror="handleVideoFallback(this)"
+                         class="w-full h-full object-cover group-hover:scale-105 transition duration-500"></video>
+                </div>
+                <div class="flex items-center justify-between text-[9px] font-mono text-gray-500 mt-2 pt-1.5 border-t border-gray-800/60">
+                    <span>SOURCE: <strong class="text-gray-300">See ya.mp4</strong></span>
+                    <span class="text-cyber-blue">LOOP: INFINITE</span>
+                </div>
+            </div>
+
+            <!-- Right: Technical & Gameplay Breakdown -->
+            <div class="lg:col-span-6 flex flex-col justify-between space-y-4">
+                
+                <!-- 1. Mô tả hoạt ảnh -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-pink-400 font-bold mb-1.5">
+                        <span><i class="fas fa-eye mr-1.5"></i>MÔ TẢ CHUYỂN ĐỘNG & THỊ GIÁC:</span>
+                        <span>SEQ_10</span>
+                    </div>
+                    <p class="text-xs md:text-sm text-gray-200 leading-relaxed">
+                        Runner tích năng lượng và bắn 
+                </div>
+
+                <!-- 2. Đặc điểm kỹ thuật & thẩm mỹ -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="text-[10px] font-mono text-cyber-blue font-bold mb-2 flex items-center gap-1.5">
+                        <i class="fas fa-sliders"></i>
+                        <span>ĐẶC ĐIỂM KỸ THUẬT & NGÔN NGỮ HOẠT HỌA:</span>
+                    </div>
+                    <ul class="space-y-1.5">
+                        <li class="flex items-start gap-2 text-xs text-gray-300"><Chuyển class="text-pink-400 font-bold">Chuyển động mượt mà, giàu nhịp điệu, làm nổi bật trang phục và phụ kiện Cosmetic trên người Runner.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><sp class="text-pink-400 font-bold">▹</span></li>
+                    </ul>
+                </div>
+
+                <!-- 3. Vai trò Gameplay -->
+                <div class="bg-panel-blue/80 border-l-2 border-pink-500 p-3 text-xs text-gray-200">
+                    <strong class="text-pink-400 font-mono block mb-0.5">→ VAI TRÒ TRONG GAMEPLAY:</strong>
+                    <span>Tăng tính biểu cảm cá nhân trong môi trường chơi mạng PvPvE và tạo dấu ấn đáng nhớ ở khoảnh khắc kết thúc pha tẩu thoát ngoạn mục.</span>
+                </div>
+
+            </div>
+
+        </div>
+    </article>
+    
+
+    <article id="anim-shield-up" data-category="SURVIVAL & HEALING" class="anim-card terminal-panel p-6 md:p-8 border-l-4 border-cyber-blue hover:shadow-[0_0_30px_rgba(0,208,255,0.12)] transition duration-300">
+        <!-- Card Header -->
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-800 pb-4 mb-6">
+            <div class="flex items-center gap-3">
+                <span class="text-2xl md:text-3xl font-heading font-black text-cyber-blue">[11]</span>
+                <div>
+                    <span class="text-[10px] font-mono text-gray-400 block tracking-widest">ANIMATION SEQUENCE // SURVIVAL & HEALING</span>
+                    <h3 class="text-xl md:text-2xl text-white font-heading font-black tracking-wider">SHIELD UP <span class="text-sm font-normal text-gray-400 font-mono">— Nạp Giáp Từ trường (Shield Charge)</span></h3>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="px-3 py-1 border text-xs font-mono font-bold uppercase tracking-wider bg-cyber-blue/15 text-cyber-blue border-cyber-blue/50">
+                    <i class="fas fa-film mr-1.5"></i>Sinh tồn & Hồi phục
+                </span>
+            </div>
+        </div>
+
+        <!-- Card Body: Left (GIF / Media Stage) | Right (Breakdown) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+            
+            <!-- Left: GIF Stage -->
+            <div class="lg:col-span-6 bg-black/90 border border-gray-800 hover:border-cyber-blue p-3 flex flex-col justify-between group cursor-pointer transition"
+                 onclick="openAnimModal(11)">
+                <div class="flex items-center justify-between text-[10px] font-mono text-gray-400 border-b border-gray-800/80 pb-1.5 mb-2.5">
+                    <span class="text-cyber-blue font-bold"><i class="fas fa-circle-play mr-1.5"></i>FILE: Shield up.mp4</span>
+                    <span class="group-hover:text-neon-lime transition">[ CLICK PHÓNG TO ]</span>
+                </div>
+                <div class="h-64 sm:h-72 flex items-center justify-center overflow-hidden relative bg-deep-blue/60" id="media-box-11">
+                    <video id="anim-video-11"
+                         src="gif/Shld up.mp4"
+                         autoplay loop muted playsinline disablePictureInPicture preload="metadata"
+                         data-mp4s='["Shield up.mp4", "animation/Shield up.mp4", "animations/Shield up.mp4", "shield up.mp4", "animation/shield up.mp4", "animations/shield up.mp4", "shield-up.mp4", "animation/shield-up.mp4", "animations/shield-up.mp4"]'
+                         data-gifs='["Shield up.gif", "shield up.gif", "shield-up.gif", "animation/Shield up.gif", "animations/Shield up.gif", "anim12.gif"]'
+                         data-placeholder="https://placehold.co/800x450/0a0f18/00d0ff?text=SHIELD+UP+(Shield+up.mp4)"
+                         onerror="handleVideoFallback(this)"
+                         class="w-full h-full object-cover group-hover:scale-105 transition duration-500"></video>
+                </div>
+                <div class="flex items-center justify-between text-[9px] font-mono text-gray-500 mt-2 pt-1.5 border-t border-gray-800/60">
+                    <span>SOURCE: <strong class="text-gray-300">Shield up.mp4</strong></span>
+                    <span class="text-cyber-blue">LOOP: INFINITE</span>
+                </div>
+            </div>
+
+            <!-- Right: Technical & Gameplay Breakdown -->
+            <div class="lg:col-span-6 flex flex-col justify-between space-y-4">
+                
+                <!-- 1. Mô tả hoạt ảnh -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="flex items-center justify-between text-[10px] font-mono text-cyber-blue font-bold mb-1.5">
+                        <span><i class="fas fa-eye mr-1.5"></i>MÔ TẢ CHUYỂN ĐỘNG & THỊ GIÁC:</span>
+                        <span>SEQ_11</span>
+                    </div>
+                    <p class="text-xs md:text-sm text-gray-200 leading-relaxed">
+                        Hoạt ảnh nạp lại năng lượng cho hệ thống khiên chắn bảo vệ (1–4 vạch giáp) bằng thiết bị Shield Charge. Runner thao tác lắp lõi pin năng lượng (Volt Cell), kích hoạt dòng điện từ trường chạy dọc bề mặt giáp đi kèm hiệu ứng tản nhiệt.
+                    </p>
+                </div>
+
+                <!-- 2. Đặc điểm kỹ thuật & thẩm mỹ -->
+                <div class="bg-black/60 border border-gray-800 p-4">
+                    <div class="text-[10px] font-mono text-cyber-blue font-bold mb-2 flex items-center gap-1.5">
+                        <i class="fas fa-sliders"></i>
+                        <span>ĐẶC ĐIỂM KỸ THUẬT & NGÔN NGỮ HOẠT HỌA:</span>
+                    </div>
+                    <ul class="space-y-1.5">
+                        <li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-cyber-blue font-bold">▹</span><span>Hiệu ứng tia lửa điện và sóng năng lượng màu Electric Cyan (#00F0FF) lan tỏa trên bề mặt giáp.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-cyber-blue font-bold">▹</span><span>Cơ cấu đóng/mở nắp buồng nạp pin và khe thoát nhiệt cơ học hiển thị rõ ràng ở góc nhìn thứ nhất.</span></li><li class="flex items-start gap-2 text-xs text-gray-300"><span class="text-cyber-blue font-bold">▹</span><span>Thanh chỉ báo vạch giáp trên HUD lấp đầy đồng bộ với khoảnh khắc khóa chốt năng lượng.</span></li>
+                    </ul>
+                </div>
+
+                <!-- 3. Vai trò Gameplay -->
+                <div class="bg-panel-blue/80 border-l-2 border-cyber-blue p-3 text-xs text-gray-200">
+                    <strong class="text-cyber-blue font-mono block mb-0.5">→ VAI TRÒ TRONG GAMEPLAY:</strong>
+                    <span>Khôi phục lớp phòng ngự tuyến đầu quan trọng nhất của Runner trước khi bước vào đợt giao tranh mới, đi kèm tín hiệu âm thanh quạt tản nhiệt đặc trưng.</span>
+                </div>
+
+            </div>
+
+        </div>
+    </article>
+    
+            </div>
+        </section>
+
+        <!-- Bottom Navigation Footer -->
+        <footer class="mt-16 pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="main.html#art-sound" class="cyber-btn">
+                <i class="fas fa-chevron-left"></i>
+                <span>QUAY VỀ MỤC 05 TRÊN TRANG CHÍNH</span>
+            </a>
+            <div class="flex items-center gap-4">
+                <a href="characters.html" class="cyber-btn">
+                    <i class="fas fa-user-astronaut"></i>
+                    <span>HỒ SƠ RUNNER SHELLS</span>
+                </a>
+                <a href="art-sound-design.html" class="cyber-btn">
+                    <span>SOUND DESIGN & OST</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        const animationsData = [{"num": "01", "id": "consumables", "raw_name": "Consumables", "title": "CONSUMABLES", "title_vi": "Sử dụng Vật phẩm Tiêu hao", "category": "SURVIVAL & HEALING", "category_vi": "Sinh tồn & Hồi phục", "accent": "neon-lime", "hex": "#ccff00", "border_cls": "border-neon-lime", "text_cls": "text-neon-lime", "badge_cls": "bg-neon-lime/15 text-neon-lime border-neon-lime/50", "gif_candidates": ["Consumables.gif", "consumables.gif", "animation/Consumables.gif", "animations/Consumables.gif", "animation/consumables.gif", "anim1.gif"], "mp4_candidates": ["Consumables.mp4", "consumables.mp4", "animation/Consumables.mp4"], "desc": "Hoạt ảnh góc nhìn thứ nhất (First-Person Viewmodel) khi Runner kích hoạt các vật phẩm tiêu hao nhanh trong trận đấu. Từng chuyển động tháo nắp, nạp ống tiêm hoặc kích hoạt mô-đun sinh học đều được thể hiện với độ chi tiết cơ khí cao, phản ánh rõ nét cấu trúc cơ thể nhân tạo Biomata.", "gameplay_role": "Tạo nhịp độ rủi ro – phần thưởng (Risk/Reward) trong giao tranh: thời gian hoạt ảnh buộc người chơi phải tìm vị trí ẩn nấp an toàn trước khi sử dụng vật phẩm.", "visual_traits": ["Chuyển động tay dứt khoát, mang tính cơ học chính xác của khung xương Runner Shell.", "Hiệu ứng đèn LED báo trạng thái và chất lỏng sinh học phát sáng màu Neon tương phản cao.", "Đồng bộ chặt chẽ với chuỗi âm thanh cơ-điện tử (tiếng tháo chốt, tiếng bơm áp suất)."]}, {"num": "02", "id": "equipment", "raw_name": "Equipment", "title": "EQUIPMENT", "title_vi": "Triển khai Thiết bị Chiến thuật", "category": "COMBAT & TACTICAL", "category_vi": "Chiến đấu & Chiến thuật", "accent": "cyber-blue", "hex": "#00d0ff", "border_cls": "border-cyber-blue", "text_cls": "text-cyber-blue", "badge_cls": "bg-cyber-blue/15 text-cyber-blue border-cyber-blue/50", "gif_candidates": ["Equipment.gif", "equipment.gif", "animation/Equipment.gif", "animations/Equipment.gif", "animation/equipment.gif", "anim2.gif"], "mp4_candidates": ["Equipment.mp4", "equipment.mp4", "animation/Equipment.mp4"], "desc": "Chuỗi hoạt ảnh rút, kích hoạt và triển khai các trang bị tác chiến chuyên dụng (như lựu đạn xung điện EMP, thiết bị tạo khói, mìn bẫy hoặc phụ kiện kỹ năng Shell). Thiết kế hoạt ảnh nhấn mạnh vào trọng lượng vật lý và cơ cấu bung mở mô-đun hình khối.", "gameplay_role": "Cung cấp phản hồi thị giác tức thì về trạng thái sẵn sàng của công cụ chiến thuật, giúp người chơi căn chuẩn thời điểm ném hoặc đặt thiết bị trong không gian 3D.", "visual_traits": ["Các khớp nối hình khối lăng trụ bung mở sắc nét trước khi thiết bị rời tay nhân vật.", "Vệt sáng dẫn đường (trajectory/telemetry trail) mang thẩm mỹ Graphic Realism.", "Chuyển tiếp mượt mà giữa trạng thái cầm súng và trạng thái thao tác thiết bị phụ trợ."]}, {"num": "03", "id": "event-start", "raw_name": "Event profit oportunity start", "title": "EVENT PROFIT OPPORTUNITY START", "title_vi": "Khởi phát Sự kiện Cơ hội Lợi nhuận", "category": "HUD & WORLD EVENT", "category_vi": "Sự kiện Bản đồ & Giao diện HUD", "accent": "neon-lime", "hex": "#ccff00", "border_cls": "border-neon-lime", "text_cls": "text-neon-lime", "badge_cls": "bg-neon-lime/15 text-neon-lime border-neon-lime/50", "gif_candidates": ["Event profit oportunity start.gif", "Event profit opportunity start.gif", "event-profit-oportunity-start.gif", "event-profit-opportunity-start.gif", "animation/Event profit oportunity start.gif", "anim3.gif"], "mp4_candidates": ["Event profit oportunity start.mp4", "Event profit opportunity start.mp4"], "desc": "Hoạt ảnh cảnh báo và bung giao diện Telemetry khi một sự kiện săn thưởng hoặc điểm nóng tài nguyên giá trị cao (Profit Opportunity / Anomalous Event) vừa kích hoạt trên bản đồ. Hệ thống ONI lập tức chiếu các lớp đồ họa kỹ thuật số lên tầm nhìn của Runner.", "gameplay_role": "Thu hút sự chú ý tức thì của các đội chơi trong khu vực, thúc đẩy quyết định di chuyển chiến thuật và tạo ra các điểm giao tranh PvPvE sôi động.", "visual_traits": ["Đồ họa HUD 2D sắc lạnh với tông màu Acid Lime / Volt Yellow đặc trưng của Marathon.", "Hiệu ứng chạy chữ dòng lệnh (Monospace Telemetry) và khung định vị mục tiêu nhấp nháy.", "Biểu tượng tập đoàn và thông số phần thưởng xuất hiện theo nhịp quét kỹ thuật số."]}, {"num": "04", "id": "event-end", "raw_name": "Event profit oportunity end", "title": "EVENT PROFIT OPPORTUNITY END", "title_vi": "Kết thúc Sự kiện Cơ hội Lợi nhuận", "category": "HUD & WORLD EVENT", "category_vi": "Sự kiện Bản đồ & Giao diện HUD", "accent": "amber-400", "hex": "#fbbf24", "border_cls": "border-amber-400", "text_cls": "text-amber-400", "badge_cls": "bg-amber-400/15 text-amber-300 border-amber-400/50", "gif_candidates": ["Event profit oportunity end.gif", "Event profit opportunity end.gif", "event-profit-oportunity-end.gif", "event-profit-opportunity-end.gif", "animation/Event profit oportunity end.gif", "anim4.gif"], "mp4_candidates": ["Event profit oportunity end.mp4", "Event profit opportunity end.mp4"], "desc": "Hoạt ảnh tổng kết và đóng giao thức khi sự kiện cơ hội lợi nhuận kết thúc (do đã bị khai thác hoàn toàn hoặc hết thời gian giới hạn). Các lớp thông tin trên màn hình HUD thu gọn lại sau khi xác nhận trạng thái hoàn tất.", "gameplay_role": "Thông báo rõ ràng cho toàn bộ Runner trong khu vực biết điểm nóng đã khép lại, giúp người chơi nhanh chóng chuyển hướng sang mục tiêu tiếp theo hoặc tìm đường Exfil.", "visual_traits": ["Hiệu ứng đóng khung dữ liệu (Data Collapse) gọn gàng, không gây che khuất tầm nhìn chiến đấu.", "Tín hiệu xác nhận trạng thái hoàn thành hợp đồng / thu hồi dữ liệu về quỹ đạo.", "Chuyển đổi màu sắc từ trạng thái kích hoạt khẩn cấp về trạng thái trung tính."]}, {"num": "05", "id": "fight-win", "raw_name": "Fight win", "title": "FIGHT WIN", "title_vi": "Chiến thắng Giao tranh", "category": "COMBAT & TACTICAL", "category_vi": "Chiến đấu & Chiến thuật", "accent": "neon-lime", "hex": "#ccff00", "border_cls": "border-neon-lime", "text_cls": "text-neon-lime", "badge_cls": "bg-neon-lime/15 text-neon-lime border-neon-lime/50", "gif_candidates": ["Fight win.gif", "fight win.gif", "fight-win.gif", "animation/Fight win.gif", "animations/Fight win.gif", "anim5.gif"], "mp4_candidates": ["Fight win.mp4", "fight win.mp4", "fight-win.mp4"], "desc": "Hoạt ảnh tôn vinh khoảnh khắc Runner giành chiến thắng áp đảo trong pha đụng độ trực diện. Kết hợp giữa chuyển động cơ thể đầy tự tin của nhân vật và tín hiệu xác nhận tiêu diệt mục tiêu từ hệ thống điều hành ONI.", "gameplay_role": "Tạo điểm nhấn cảm xúc giải tỏa căng thẳng (Catharsis) sau những pha đấu súng sinh tử có rủi ro mất toàn bộ trang bị cao.", "visual_traits": ["Ngôn ngữ cơ thể mạnh mẽ, làm nổi bật phom dáng thiết kế đặc trưng của từng Runner Shell.", "Tín hiệu thị giác sắc nét xác nhận ưu thế tuyệt đối trên chiến trường.", "Sự đối lập thú vị giữa vẻ ngoài nhựa bóng màu sắc rực rỡ và động tác chiến thắng sắc lạnh."]}, {"num": "06", "id": "fight-lost", "raw_name": "Fight lost", "title": "FIGHT LOST", "title_vi": "Thất bại Giao tranh & Ngắt Kết nối Shell", "category": "COMBAT & TACTICAL", "category_vi": "Chiến đấu & Chiến thuật", "accent": "alert-red", "hex": "#ff3333", "border_cls": "border-alert-red", "text_cls": "text-alert-red", "badge_cls": "bg-alert-red/15 text-alert-red border-alert-red/50", "gif_candidates": ["Fight lost.gif", "fight lost.gif", "fight-lost.gif", "animation/Fight lost.gif", "animations/Fight lost.gif", "anim6.gif"], "mp4_candidates": ["Fight lost.mp4", "fight lost.mp4", "fight-lost.mp4"], "desc": "Hoạt ảnh khi Runner bị hạ gục trong giao tranh và vỏ bọc sinh học (Biomata Shell) bị phá hủy hoàn toàn. Màn hình và cơ thể nhân vật trải qua hiện tượng nhiễu loạn tín hiệu (Digital Psychosis) trước khi đường truyền ý thức bị ngắt khỏi xác vỏ.", "gameplay_role": "Nhấn mạnh tính khắc nghiệt của thể loại Extraction Shooter: cái chết đồng nghĩa với việc bỏ lại xác vỏ cùng toàn bộ chiến lợi phẩm tại hiện trường.", "visual_traits": ["Hiệu ứng sập nguồn hệ thống quang học, nhiễu hạt kỹ thuật số (Glitch / Artifacting) và sắc đỏ cảnh báo (#FF3300).", "Chuyển động gục ngã nặng nề như một cỗ máy sinh học mất hoàn toàn tín hiệu điều khiển thần kinh.", "Khắc họa rõ triết lý cốt truyện: cơ thể chỉ là lớp vỏ tạm thời chứa đựng dữ liệu ý thức."]}, {"num": "07", "id": "matchmake-sequence", "raw_name": "Matchmake sequence", "title": "MATCHMAKE SEQUENCE", "title_vi": "Chuỗi Hoạt ảnh Ghép trận & Triển khai", "category": "SYSTEM & DEPLOYMENT", "category_vi": "Hệ thống & Triển khai Trận đấu", "accent": "cyber-blue", "hex": "#00d0ff", "border_cls": "border-cyber-blue", "text_cls": "text-cyber-blue", "badge_cls": "bg-cyber-blue/15 text-cyber-blue border-cyber-blue/50", "gif_candidates": ["Matchmake sequence.gif", "matchmake sequence.gif", "matchmake-sequence.gif", "animation/Matchmake sequence.gif", "animations/Matchmake sequence.gif", "anim7.gif"], "mp4_candidates": ["Matchmake sequence.mp4", "matchmake sequence.mp4", "matchmake-sequence.mp4"], "desc": "Chuỗi hoạt ảnh chuyển cảnh liền mạch khi tổ đội Runner hoàn tất chuẩn bị tại sảnh chờ quỹ đạo (Orbit/Lobby), kích hoạt giao thức liên kết ý thức (`INITIATE CONSCIOUSNESS LINK`) và dịch chuyển (Etherstep) xuống bề mặt hành tinh Tau Ceti IV.", "gameplay_role": "Đóng vai trò cầu nối dẫn dắt cảm xúc từ trạng thái chuẩn bị chiến thuật tĩnh sang bầu không khí căng thẳng tột độ trước khi bước vào vùng chiến sự.", "visual_traits": ["Sự kết hợp ấn tượng giữa đồ họa giao diện Terminal của tập đoàn và hoạt ảnh 3D của tổ đội Runner.", "Hiệu ứng ánh sáng quang học và cổng dịch chuyển không gian đặc trưng của Marathon.", "Nhịp dựng phim dồn dập, đồng bộ hoàn hảo với các bản nhạc ngắn trong Album Vol. I."]}, {"num": "08", "id": "open-loot", "raw_name": "Open loot", "title": "OPEN LOOT", "title_vi": "Mở Hòm Chiến lợi phẩm & Thu thập", "category": "EXPLORATION & LOOT", "category_vi": "Thám hiểm & Thu thập Vật phẩm", "accent": "amber-400", "hex": "#fbbf24", "border_cls": "border-amber-400", "text_cls": "text-amber-400", "badge_cls": "bg-amber-400/15 text-amber-300 border-amber-400/50", "gif_candidates": ["Open loot.gif", "open loot.gif", "open-loot.gif", "animation/Open loot.gif", "animations/Open loot.gif", "anim8.gif"], "mp4_candidates": ["Open loot.mp4", "open loot.mp4", "open-loot.mp4"], "desc": "Hoạt ảnh tương tác trực tiếp khi Runner mở khóa các thùng hàng công nghiệp, két sắt tập đoàn hoặc xác đơn vị UESC để tìm kiếm vật phẩm. Cơ cấu khóa cơ học trượt mở kết hợp cùng giao diện quét vật phẩm hiện lên ngay trong tầm mắt.", "gameplay_role": "Trực quan hóa vòng lặp cốt lõi (Core Loop) của trò chơi: khoảnh khắc hồi hộp chờ đợi giá trị vật phẩm (Loot Rarity) xuất hiện khi nắp hòm bật mở.", "visual_traits": ["Thiết kế hòm chứa mang đậm phong cách Industrial Sci-Fi với các chốt khóa hình khối cơ bản.", "Ánh sáng mã hóa theo cấp độ hiếm của vật phẩm (Trắng, Xanh lá, Electric Cyan, Tím, Vàng Volt, Đỏ Crimson).", "Cảm giác tương tác vật lý đầm chắc, liền mạch với giao diện kho đồ (Inventory UI)."]}, {"num": "09", "id": "patch-up", "raw_name": "Patch up", "title": "PATCH UP", "title_vi": "Bơm máu & Vá Mô Sinh học (Patch Kit)", "category": "SURVIVAL & HEALING", "category_vi": "Sinh tồn & Hồi phục", "accent": "emerald-400", "hex": "#34d399", "border_cls": "border-emerald-400", "text_cls": "text-emerald-400", "badge_cls": "bg-emerald-500/15 text-emerald-300 border-emerald-400/50", "gif_candidates": ["Patch up.gif", "patch up.gif", "patch-up.gif", "animation/Patch up.gif", "animations/Patch up.gif", "anim9.gif"], "mp4_candidates": ["Patch up.mp4", "patch up.mp4", "patch-up.mp4"], "desc": "Hoạt ảnh chuyên biệt khi Runner sử dụng thiết bị Patch Kit để vá tổn thương và tái tạo dịch sinh học cho cơ thể Biomata sau khi trúng đạn. Thiết bị bơm áp lực cao gắn trực tiếp vào cổng tiếp nhận trên cánh tay hoặc giáp ngực của nhân vật.", "gameplay_role": "Cung cấp dấu hiệu thị giác và thính giác rõ ràng về quá trình hồi phục máu, buộc người chơi phải cân nhắc thời điểm tự cứu chữa giữa giao tranh.", "visual_traits": ["Chi tiết cơ khí của thiết bị y tế dã chiến với ống dẫn chất lỏng sinh học phát sáng.", "Chuyển động ghim kim / khóa khớp nối dứt khoát vào bề mặt vỏ nhựa tổng hợp của Runner.", "Hiệu ứng màn hình giảm dần độ nhiễu đỏ khi chỉ số sinh tồn của cơ thể được khôi phục."]}, {"num": "10", "id": "scanning", "raw_name": "Scanning", "title": "SCANNING", "title_vi": "Quét Dữ liệu Môi trường & Trinh sát", "category": "EXPLORATION & LOOT", "category_vi": "Thám hiểm & Thu thập Vật phẩm", "accent": "cyber-blue", "hex": "#00d0ff", "border_cls": "border-cyber-blue", "text_cls": "text-cyber-blue", "badge_cls": "bg-cyber-blue/15 text-cyber-blue border-cyber-blue/50", "gif_candidates": ["Scanning.gif", "scanning.gif", "animation/Scanning.gif", "animations/Scanning.gif", "anim10.gif"], "mp4_candidates": ["Scanning.mp4", "scanning.mp4"], "desc": "Hoạt ảnh phát xung cảm biến quang học và thu thập dữ liệu môi trường xung quanh (như kỹ năng Echo Pulse của Recon, kính X-Ray Visor của Thief hoặc thiết bị quét nhiệm vụ). Một lớp lưới sóng năng lượng lan tỏa qua các bề mặt kiến trúc và địa hình tự nhiên.", "gameplay_role": "Giúp người chơi phát hiện vị trí kẻ địch ẩn nấp, dấu chân hologram, hòm vật phẩm giá trị hoặc các thiết bị đầu cuối (Terminal) cần giải mã.", "visual_traits": ["Lưới sóng quét Hologram sắc nét phủ lên địa hình chân thực, làm nổi bật các vật thể nhân tạo.", "Các điểm đánh dấu (Waypoints / Ping) và thông số khoảng cách hiển thị theo phong cách Telemetry.", "Minh chứng điển hình cho triết lý Graphic Realism: dùng đồ họa kỹ thuật số tương phản để dẫn dắt tầm nhìn."]}, {"num": "11", "id": "see-ya", "raw_name": "See ya", "title": "SEE YA", "title_vi": "Cử chỉ Giao tiếp / Tạm biệt & Thoát hiểm", "category": "SYSTEM & DEPLOYMENT", "category_vi": "Hệ thống & Triển khai Trận đấu", "accent": "pink-500", "hex": "#ec4899", "border_cls": "border-pink-500", "text_cls": "text-pink-400", "badge_cls": "bg-pink-500/15 text-pink-300 border-pink-500/50", "gif_candidates": ["See ya.gif", "see ya.gif", "see-ya.gif", "animation/See ya.gif", "animations/See ya.gif", "anim11.gif"], "mp4_candidates": ["See ya.mp4", "see ya.mp4", "see-ya.mp4"], "desc": "Hoạt ảnh cử chỉ mang đậm cá tính con người (chào tạm biệt / khiêu khích 'See ya') được thực hiện bởi một cơ thể người máy sinh học. Thường xuất hiện trong các pha tương tác gần hoặc khoảnh khắc Runner bước vào luồng dịch chuyển Exfil an toàn.", "gameplay_role": "Tăng tính biểu cảm cá nhân trong môi trường chơi mạng PvPvE và tạo dấu ấn đáng nhớ ở khoảnh khắc kết thúc pha tẩu thoát ngoạn mục.", "visual_traits": ["Sự tương phản độc đáo giữa động tác vẫy chào phóng khoáng kiểu con người và khuôn mặt/vỏ bọc robot lạnh lùng.", "Chuyển động mượt mà, giàu nhịp điệu, làm nổi bật trang phục và phụ kiện Cosmetic trên người Runner.", "Góp phần khắc họa chất ngông (Anarchist / High-Fashion Sci-Fi) trong định hướng nghệ thuật của Marathon."]}, {"num": "12", "id": "shield-up", "raw_name": "Shield up", "title": "SHIELD UP", "title_vi": "Nạp Giáp Từ trường (Shield Charge)", "category": "SURVIVAL & HEALING", "category_vi": "Sinh tồn & Hồi phục", "accent": "cyber-blue", "hex": "#00d0ff", "border_cls": "border-cyber-blue", "text_cls": "text-cyber-blue", "badge_cls": "bg-cyber-blue/15 text-cyber-blue border-cyber-blue/50", "gif_candidates": ["Shield up.gif", "shield up.gif", "shield-up.gif", "animation/Shield up.gif", "animations/Shield up.gif", "anim12.gif"], "mp4_candidates": ["Shield up.mp4", "shield up.mp4", "shield-up.mp4"], "desc": "Hoạt ảnh nạp lại năng lượng cho hệ thống khiên chắn bảo vệ (1–4 vạch giáp) bằng thiết bị Shield Charge. Runner thao tác lắp lõi pin năng lượng (Volt Cell), kích hoạt dòng điện từ trường chạy dọc bề mặt giáp đi kèm hiệu ứng tản nhiệt.", "gameplay_role": "Khôi phục lớp phòng ngự tuyến đầu quan trọng nhất của Runner trước khi bước vào đợt giao tranh mới, đi kèm tín hiệu âm thanh quạt tản nhiệt đặc trưng.", "visual_traits": ["Hiệu ứng tia lửa điện và sóng năng lượng màu Electric Cyan (#00F0FF) lan tỏa trên bề mặt giáp.", "Cơ cấu đóng/mở nắp buồng nạp pin và khe thoát nhiệt cơ học hiển thị rõ ràng ở góc nhìn thứ nhất.", "Thanh chỉ báo vạch giáp trên HUD lấp đầy đồng bộ với khoảnh khắc khóa chốt năng lượng."]}];
+        let activeAnimIndex = 0;
+
+        // Cơ chế tự động dò tìm đường dẫn file .gif (và tự chuyển sang <video .mp4> nếu bạn để file .mp4)
+        function handleMediaFallback(imgEl, idx) {
+            const gifs = JSON.parse(imgEl.getAttribute('data-gifs') || '[]');
+            const mp4s = JSON.parse(imgEl.getAttribute('data-mp4s') || '[]');
+            const ph = imgEl.getAttribute('data-placeholder');
+            let step = parseInt(imgEl.getAttribute('data-step') || '0', 10) + 1;
+            imgEl.setAttribute('data-step', step);
+
+            if (step < gifs.length) {
+                imgEl.src = gifs[step];
+            } else if (step - gifs.length < mp4s.length) {
+                const mp4Src = mp4s[step - gifs.length];
+                const parentBox = imgEl.parentElement;
+                if (parentBox) {
+                    parentBox.innerHTML = `
+                        <video src="${mp4Src}" autoplay loop muted playsinline 
+                               onerror="this.outerHTML='<img src=\'${ph}\' class=\'w-full h-full object-cover\' alt=\'Placeholder\'>'"
+                               class="w-full h-full object-cover group-hover:scale-105 transition duration-500"></video>
+                    `;
+                }
+            } else {
+                imgEl.onerror = null;
+                imgEl.src = ph;
+            }
+        }
+
+        function renderAnimTabs() {
+            const container = document.getElementById('anim-tabs-container');
+            container.innerHTML = animationsData.map((a, idx) => `
+                <button type="button" onclick="switchSpotlight(${idx})" 
+                        class="cyber-btn anim-tab ${idx === activeAnimIndex ? 'active' : ''} !py-2 !px-3 !text-[11px]">
+                    <span>${a.num}. ${a.title}</span>
+                </button>
+            `).join('');
+        }
+
+        function renderSpotlightArena() {
+            const a = animationsData[activeAnimIndex];
+            const hexClean = a.hex.replace('#', '');
+            const phUrl = `https://placehold.co/900x500/0a0f18/${hexClean}?text=${encodeURIComponent(a.title + ' (' + a.raw_name + '.gif)')}`;
+            const gifsJson = JSON.stringify(a.gif_candidates);
+            const mp4sJson = JSON.stringify(a.mp4_candidates);
+
+            const traitsHtml = a.visual_traits.map(t => `
+                <li class="flex items-start gap-2 text-xs md:text-sm text-gray-300">
+                    <span class="${a.text_cls} font-bold">▹</span>
+                    <span>${t}</span>
+                </li>
+            `).join('');
+
+            const arena = document.getElementById('anim-spotlight-arena');
+            arena.innerHTML = `
+                <div class="terminal-panel p-6 md:p-8 border-l-4 ${a.border_cls}">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                        
+                        <!-- Cột Trái: Khung Trình Chiếu GIF Lớn -->
+                        <div class="lg:col-span-6 bg-black border border-gray-800 hover:${a.border_cls} p-3.5 flex flex-col justify-between cursor-pointer group transition"
+                             onclick="openAnimModal(${activeAnimIndex})">
+                            <div class="flex items-center justify-between text-[10px] font-mono text-gray-400 border-b border-gray-800 pb-2 mb-3">
+                                <span class="${a.text_cls} font-bold"><i class="fas fa-film mr-1.5"></i>ACTIVE MOTION LOOP // ${a.raw_name}.gif</span>
+                                <span class="group-hover:text-neon-lime">[ CLICK PHÓNG TO ]</span>
+                            </div>
+                            <div class="h-72 sm:h-80 md:h-96 flex items-center justify-center overflow-hidden relative bg-deep-blue/60">
+                                <img src="${a.gif_candidates[0]}"
+                                     data-gifs='${gifsJson}'
+                                     data-mp4s='${mp4sJson}'
+                                     data-placeholder="${phUrl}"
+                                     onerror="handleMediaFallback(this, 'spot')"
+                                     alt="${a.title}"
+                                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            </div>
+                            <div class="flex items-center justify-between text-[10px] font-mono text-gray-400 mt-3 pt-2 border-t border-gray-800">
+                                <span>FILE GỐC: <strong class="text-white">${a.raw_name}.gif</strong></span>
+                                <div class="flex items-center gap-2">
+                                    <button type="button" onclick="event.stopPropagation(); prevSpotlight()" class="px-2 py-0.5 border border-gray-700 hover:border-neon-lime text-gray-300 hover:text-neon-lime">◀ PREV</button>
+                                    <button type="button" onclick="event.stopPropagation(); nextSpotlight()" class="px-2 py-0.5 border border-gray-700 hover:border-neon-lime text-gray-300 hover:text-neon-lime">NEXT ▶</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cột Phải: Phân tích Chi tiết Hoạt ảnh -->
+                        <div class="lg:col-span-6 flex flex-col justify-between space-y-5">
+                            <div>
+                                <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                                    <span class="text-xs font-mono text-gray-400">SEQUENCE_ID // ${a.num} OF 12</span>
+                                    <span class="px-3 py-0.5 border text-xs font-mono font-bold uppercase ${a.badge_cls}">
+                                        ${a.category_vi}
+                                    </span>
+                                </div>
+                                <h3 class="text-2xl md:text-4xl text-white font-heading font-black mb-1">
+                                    ${a.num}. ${a.title}
+                                </h3>
+                                <p class="text-xs font-mono ${a.text_cls} mb-5">${a.title_vi} (${a.raw_name}.gif)</p>
+
+                                <div class="bg-black/65 border border-gray-800 p-4 mb-4">
+                                    <span class="text-[10px] font-mono text-neon-lime font-bold block mb-1.5">
+                                        <i class="fas fa-eye mr-1.5"></i>MÔ TẢ HOẠT ẢNH & CHUYỂN ĐỘNG:
+                                    </span>
+                                    <p class="text-xs md:text-sm text-gray-200 leading-relaxed">
+                                        ${a.desc}
+                                    </p>
+                                </div>
+
+                                <div class="bg-black/65 border border-gray-800 p-4">
+                                    <span class="text-[10px] font-mono text-cyber-blue font-bold block mb-2">
+                                        <i class="fas fa-microchip mr-1.5"></i>ĐẶC ĐIỂM THỊ GIÁC & KỸ THUẬT:
+                                    </span>
+                                    <ul class="space-y-1.5">
+                                        ${traitsHtml}
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="bg-panel-blue/90 border-l-4 ${a.border_cls} p-3.5 text-xs text-gray-200 flex items-center justify-between gap-4">
+                                <div>
+                                    <strong class="${a.text_cls} font-mono block mb-0.5">VAI TRÒ TRONG GAMEPLAY:</strong>
+                                    <span>${a.gameplay_role}</span>
+                                </div>
+                                <a href="#anim-${a.id}" class="cyber-btn !py-1.5 !px-3 !text-[10px] shrink-0">ĐẾN THẺ ↓</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            `;
+        }
+
+        function switchSpotlight(index) {
+            activeAnimIndex = index;
+            renderAnimTabs();
+            renderSpotlightArena();
+            document.getElementById('interactive-anim-deck').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function prevSpotlight() {
+            activeAnimIndex = (activeAnimIndex - 1 + animationsData.length) % animationsData.length;
+            renderAnimTabs();
+            renderSpotlightArena();
+        }
+
+        function nextSpotlight() {
+            activeAnimIndex = (activeAnimIndex + 1) % animationsData.length;
+            renderAnimTabs();
+            renderSpotlightArena();
+        }
+
+        // Bộ lọc danh mục
+        function filterAnimations(category, btnEl) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            if (btnEl) btnEl.classList.add('active');
+
+            document.querySelectorAll('.anim-card').forEach(card => {
+                if (category === 'ALL' || card.getAttribute('data-category') === category) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        // Modal Phóng to
+        const inspectModal = document.getElementById('inspect-modal');
+        function openAnimModal(idx) {
+            const a = animationsData[idx];
+            document.getElementById('modal-title').innerText = `${a.num}. ${a.title} — ${a.title_vi}`;
+            document.getElementById('modal-category').innerText = `${a.category} // FILE: ${a.raw_name}.gif`;
+            document.getElementById('modal-desc').innerText = a.desc;
+
+            const cardBox = document.getElementById(`media-box-${idx}`);
+            const modalContainer = document.getElementById('modal-media-container');
+            const existingVideo = cardBox ? cardBox.querySelector('video') : null;
+            const existingImg = cardBox ? cardBox.querySelector('img') : null;
+
+            if (existingVideo) {
+                modalContainer.innerHTML = `<video src="${existingVideo.src}" autoplay loop muted playsinline class="max-h-[410px] w-auto object-contain"></video>`;
+            } else if (existingImg) {
+                modalContainer.innerHTML = `<img src="${existingImg.src}" alt="${a.title}" class="max-h-[410px] w-auto object-contain">`;
+            }
+
+            inspectModal.classList.remove('hidden');
+            inspectModal.classList.add('flex');
+        }
+
+        function closeInspectModal() {
+            inspectModal.classList.add('hidden');
+            inspectModal.classList.remove('flex');
+            document.getElementById('modal-media-container').innerHTML = '';
+        }
+
+        inspectModal.addEventListener('click', (e) => {
+            if (e.target === inspectModal) closeInspectModal();
+        });
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeInspectModal();
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderAnimTabs();
+            renderSpotlightArena();
+        });
+
+        // Hiệu ứng Glitch khi click giống trang main.html
+        document.body.addEventListener('click', (e) => {
+            if (e.target.closest('a') || e.target.closest('button') || e.target.closest('tr') || e.target.closest('#inspect-modal')) return;
+
+            document.body.classList.add('glitch-effect');
+            setTimeout(() => {
+                document.body.classList.remove('glitch-effect');
+            }, 300);
+        });
+    </script>
+</body>
+</html>
