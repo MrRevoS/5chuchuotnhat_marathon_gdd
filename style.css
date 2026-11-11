@@ -4,7 +4,10 @@
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Share+Tech+Mono&display=swap');
+h1 {
+    font-family: 'Amatic SC', sans-serif !important;
+}
 :root {
     --deep-blue: #0a0f18;
     --panel-blue: #121a28;
