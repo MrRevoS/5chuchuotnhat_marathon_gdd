@@ -6,8 +6,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Share+Tech+Mono&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Sigmar+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Sigmar+One&display=swap');
 h1, h3 {
-    font-family: 'Sigmar One', sans-serif !important;
+    font-family: 'Black Ops One', sans-serif !important;
 }
 :root {
     --deep-blue: #0a0f18;
